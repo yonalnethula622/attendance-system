@@ -1,716 +1,733 @@
-```html
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
 
-<meta charset="UTF-8">
-
-<meta name="viewport"
-      content="width=device-width, initial-scale=1.0">
-
-<title>
-    ST. THERESA'S GEMS - Attendance
-</title>
-
-<!-- =========================================================
-     QR CODE LIBRARY
-========================================================= -->
-
-<script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.js"></script>
-
-
-<style>
-
-/* =========================================================
-   RESET
-========================================================= */
-
-* {
-    box-sizing: border-box;
-}
-
-body {
-    margin: 0;
-    font-family: Arial, Helvetica, sans-serif;
-    background: #f4f7fb;
-    color: #1f2937;
-}
-
-
-/* =========================================================
-   LOGIN PAGE
-========================================================= */
-
-#loginPage {
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 20px;
-    background: linear-gradient(
-        135deg,
-        #eef4ff,
-        #f8fbff
-    );
-}
-
-.login-card {
-    width: 100%;
-    max-width: 430px;
-    background: white;
-    padding: 30px;
-    border-radius: 18px;
-    box-shadow: 0 10px 35px rgba(0,0,0,0.10);
-}
-
-.login-logo {
-    text-align: center;
-    margin-bottom: 15px;
-}
-
-.login-logo img {
-    width: 90px;
-    height: 90px;
-    object-fit: contain;
-}
-
-.login-title {
-    text-align: center;
-    font-size: 22px;
-    font-weight: 700;
-    margin-bottom: 5px;
-}
-
-.login-subtitle {
-    text-align: center;
-    color: #64748b;
-    margin-bottom: 25px;
-    font-size: 14px;
-}
-
-
-/* =========================================================
-   FORM ELEMENTS
-========================================================= */
-
-label {
-    display: block;
-    font-weight: 600;
-    margin-top: 15px;
-    margin-bottom: 7px;
-}
-
-input,
-select {
-    width: 100%;
-    padding: 13px;
-    border: 1px solid #cbd5e1;
-    border-radius: 10px;
-    font-size: 15px;
-    outline: none;
-    background: white;
-}
-
-input:focus,
-select:focus {
-    border-color: #2563eb;
-    box-shadow: 0 0 0 3px rgba(37,99,235,0.10);
-}
-
-
-/* =========================================================
-   LOGIN MESSAGES
-========================================================= */
-
-.login-error,
-.login-success,
-.login-loading {
-    display: none;
-    padding: 11px;
-    border-radius: 9px;
-    margin-top: 15px;
-    font-size: 14px;
-}
-
-.login-error {
-    background: #fee2e2;
-    color: #991b1b;
-}
-
-.login-success {
-    background: #dcfce7;
-    color: #166534;
-}
-
-.login-loading {
-    background: #e0f2fe;
-    color: #075985;
-}
-
-
-/* =========================================================
-   BUTTONS
-========================================================= */
-
-.btn {
-    border: none;
-    border-radius: 10px;
-    padding: 12px 16px;
-    font-size: 14px;
-    font-weight: 700;
-    cursor: pointer;
-    transition: 0.2s;
-}
-
-.btn:hover {
-    transform: translateY(-1px);
-}
-
-.btn:disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
-    transform: none;
-}
-
-.primary {
-    background: #2563eb;
-    color: white;
-}
-
-.secondary {
-    background: #e2e8f0;
-    color: #334155;
-}
-
-.danger {
-    background: #dc2626;
-    color: white;
-}
-
-.whatsapp {
-    background: #16a34a;
-    color: white;
-}
-
-.full {
-    width: 100%;
-}
-
-
-/* =========================================================
-   APPLICATION
-========================================================= */
-
-#app {
-    display: none;
-    min-height: 100vh;
-}
-
-
-/* =========================================================
-   HEADER
-========================================================= */
-
-header {
-    background: white;
-    box-shadow: 0 2px 12px rgba(0,0,0,0.08);
-    position: sticky;
-    top: 0;
-    z-index: 100;
-}
-
-.header-inner {
-    max-width: 1200px;
-    margin: auto;
-    padding: 15px 20px;
-    display: flex;
-    align-items: center;
-    gap: 15px;
-}
-
-.logo img {
-    width: 65px;
-    height: 65px;
-    object-fit: contain;
-}
-
-.school-title {
-    flex: 1;
-}
-
-.school-title h1 {
-    margin: 0;
-    font-size: 20px;
-}
-
-.school-title p {
-    margin: 5px 0;
-    color: #64748b;
-    font-size: 13px;
-    font-weight: 600;
-}
-
-.user-email {
-    font-size: 12px;
-    color: #2563eb;
-}
-
-.logout-button {
-    border: none;
-    background: #fee2e2;
-    color: #991b1b;
-    padding: 10px 13px;
-    border-radius: 9px;
-    font-weight: 700;
-    cursor: pointer;
-}
-
-
-/* =========================================================
-   NAVIGATION
-========================================================= */
-
-.nav {
-    max-width: 1200px;
-    margin: auto;
-    padding: 0 10px 10px;
-    display: flex;
-    gap: 7px;
-}
-
-.nav button {
-    flex: 1;
-    border: none;
-    background: #f1f5f9;
-    padding: 9px;
-    border-radius: 9px;
-    cursor: pointer;
-    font-weight: 600;
-    color: #475569;
-}
-
-.nav button.active {
-    background: #2563eb;
-    color: white;
-}
-
-
-/* =========================================================
-   MAIN
-========================================================= */
-
-main {
-    max-width: 1200px;
-    margin: auto;
-    padding: 20px;
-}
-
-.page {
-    display: none;
-}
-
-.page.active {
-    display: block;
-}
-
-
-/* =========================================================
-   HERO
-========================================================= */
-
-.hero {
-    background: linear-gradient(
-        135deg,
-        #2563eb,
-        #4f46e5
-    );
-    color: white;
-    border-radius: 18px;
-    padding: 25px;
-    margin-bottom: 20px;
-}
-
-.hero h2 {
-    margin-top: 0;
-}
-
-
-/* =========================================================
-   CARDS
-========================================================= */
-
-.card {
-    background: white;
-    border-radius: 16px;
-    padding: 20px;
-    margin-bottom: 20px;
-    box-shadow: 0 4px 18px rgba(0,0,0,0.06);
-}
-
-.card-title {
-    font-size: 20px;
-    font-weight: 700;
-}
-
-.card-subtitle {
-    color: #64748b;
-    font-size: 14px;
-    margin-top: 5px;
-    margin-bottom: 18px;
-}
-
-
-/* =========================================================
-   DASHBOARD
-========================================================= */
-
-.dashboard-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 12px;
-    margin-top: 18px;
-}
-
-.stat {
-    background: #f1f5f9;
-    padding: 20px;
-    border-radius: 14px;
-    text-align: center;
-}
-
-.stat-number {
-    font-size: 32px;
-    font-weight: 800;
-}
-
-.stat-label {
-    font-size: 12px;
-    color: #64748b;
-    font-weight: 700;
-    margin-top: 5px;
-}
-
-.present-stat {
-    background: #dcfce7;
-}
-
-.present-stat .stat-number {
-    color: #15803d;
-}
-
-.absent-stat {
-    background: #fee2e2;
-}
-
-.absent-stat .stat-number {
-    color: #dc2626;
-}
-
-
-/* =========================================================
-   DEADLINE
-========================================================= */
-
-.deadline-box {
-    background: #fff7ed;
-    border: 1px solid #fed7aa;
-    color: #9a3412;
-    padding: 16px;
-    border-radius: 12px;
-    line-height: 1.6;
-}
-
-
-/* =========================================================
-   STUDENTS
-========================================================= */
-
-.student-card {
-    border: 1px solid #e2e8f0;
-    border-radius: 13px;
-    padding: 16px;
-    margin-top: 12px;
-}
-
-.student-name {
-    font-size: 18px;
-    font-weight: 700;
-}
-
-.student-id {
-    color: #2563eb;
-    font-size: 13px;
-    margin-top: 5px;
-}
-
-.student-info {
-    color: #475569;
-    margin-top: 12px;
-    line-height: 1.7;
-}
-
-.student-actions {
-    display: flex;
-    gap: 8px;
-    margin-top: 14px;
-}
-
-.student-actions .btn {
-    flex: 1;
-}
-
-.empty {
-    text-align: center;
-    padding: 30px;
-    color: #64748b;
-}
-
-
-/* =========================================================
-   SCANNER
-========================================================= */
-
-.video-container {
-    position: relative;
-    width: 100%;
-    max-width: 600px;
-    margin: 20px auto;
-    overflow: hidden;
-    border-radius: 15px;
-    background: black;
-}
-
-#video {
-    width: 100%;
-    display: block;
-}
-
-.scan-frame {
-    position: absolute;
-    width: 65%;
-    height: 65%;
-    left: 17.5%;
-    top: 17.5%;
-    border: 3px solid white;
-    border-radius: 15px;
-}
-
-.scan-line {
-    position: absolute;
-    width: 65%;
-    left: 17.5%;
-    top: 50%;
-    height: 2px;
-    background: red;
-    animation: scanMove 2s infinite;
-}
-
-@keyframes scanMove {
-    0% {
-        top: 20%;
-    }
-
-    50% {
-        top: 80%;
-    }
-
-    100% {
-        top: 20%;
-    }
-}
-
-.camera-buttons {
-    display: flex;
-    gap: 10px;
-    justify-content: center;
-    margin-top: 15px;
-}
-
-.status {
-    text-align: center;
-    padding: 12px;
-    color: #64748b;
-}
-
-
-/* =========================================================
-   SCAN RESULT
-========================================================= */
-
-.result {
-    background: white;
-    border-radius: 16px;
-    padding: 25px;
-    text-align: center;
-    margin-bottom: 20px;
-    box-shadow: 0 4px 18px rgba(0,0,0,0.06);
-}
-
-.result.success {
-    border: 2px solid #22c55e;
-}
-
-.warning-result {
-    background: #fff7ed;
-    border: 2px solid #f97316;
-}
-
-.result.error {
-    background: #fef2f2;
-    border: 2px solid #ef4444;
-}
-
-.result-icon {
-    font-size: 45px;
-}
-
-.result-name {
-    font-size: 23px;
-    font-weight: 800;
-    margin-top: 8px;
-}
-
-.result-info {
-    margin-top: 10px;
-    color: #475569;
-    line-height: 1.7;
-}
-
-
-/* =========================================================
-   REPORTS
-========================================================= */
-
-.report-row {
-    position: relative;
-}
-
-.report-name {
-    font-size: 18px;
-    font-weight: 800;
-}
-
-.report-date {
-    color: #64748b;
-    font-size: 13px;
-    margin-top: 5px;
-}
-
-.status-badge {
-    display: inline-block;
-    padding: 5px 9px;
-    border-radius: 20px;
-    font-size: 11px;
-    font-weight: 800;
-    margin-top: 10px;
-}
-
-.status-present {
-    background: #dcfce7;
-    color: #166534;
-}
-
-.status-absent {
-    background: #fee2e2;
-    color: #991b1b;
-}
-
-.status-left {
-    background: #e0f2fe;
-    color: #075985;
-}
-
-.time-row {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 10px;
-    margin-top: 15px;
-}
-
-.time-box {
-    background: #f8fafc;
-    border-radius: 10px;
-    padding: 12px;
-    text-align: center;
-}
-
-.time-label {
-    font-size: 11px;
-    color: #64748b;
-    font-weight: 700;
-}
-
-.time-value {
-    margin-top: 5px;
-    font-weight: 700;
-}
-
-
-/* =========================================================
-   HIDE CANVAS
-========================================================= */
-
-#canvas {
-    display: none;
-}
-
-
-/* =========================================================
-   MOBILE
-========================================================= */
-
-@media(max-width: 700px) {
-
-    .header-inner {
-        flex-wrap: wrap;
-    }
-
-    .logo img {
-        width: 50px;
-        height: 50px;
-    }
-
-    .school-title {
-        min-width: 0;
-    }
-
-    .school-title h1 {
-        font-size: 14px;
-    }
-
-    .school-title p {
-        font-size: 10px;
-    }
-
-    .logout-button {
-        width: 100%;
-    }
-
-    .dashboard-grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
-
-    .nav button {
-        font-size: 12px;
-    }
-
-    .student-actions {
-        flex-direction: column;
-    }
-
-    .time-row {
-        grid-template-columns: 1fr;
-    }
-
-    main {
-        padding: 12px;
-    }
-
-}
-
-</style>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        ST. THERESA'S GEMS - Attendance
+    </title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family:
+                Arial,
+                Helvetica,
+                sans-serif;
+            background: #f3f6fb;
+            color: #1f2937;
+        }
+
+        button,
+        input,
+        select {
+            font: inherit;
+        }
+
+        button {
+            cursor: pointer;
+        }
+
+        /* =====================================================
+           LOGIN
+        ===================================================== */
+
+        #loginPage {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            background:
+                linear-gradient(
+                    135deg,
+                    #e8f0ff,
+                    #f7f9fc
+                );
+        }
+
+        .login-card {
+            width: 100%;
+            max-width: 430px;
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow:
+                0 10px 35px rgba(0,0,0,0.10);
+        }
+
+        .login-logo {
+            text-align: center;
+            margin-bottom: 15px;
+        }
+
+        .login-logo img {
+            width: 95px;
+            height: 95px;
+            object-fit: contain;
+        }
+
+        .login-title {
+            text-align: center;
+            font-size: 22px;
+            font-weight: 800;
+            line-height: 1.3;
+        }
+
+        .login-subtitle {
+            text-align: center;
+            color: #64748b;
+            margin: 8px 0 25px;
+            font-size: 14px;
+        }
+
+        .login-card label {
+            display: block;
+            font-weight: 700;
+            margin-top: 15px;
+            margin-bottom: 7px;
+        }
+
+        .login-card input {
+            width: 100%;
+            padding: 13px;
+            border: 1px solid #d5dce7;
+            border-radius: 10px;
+            outline: none;
+        }
+
+        .login-card input:focus {
+            border-color: #2563eb;
+        }
+
+        #loginButton {
+            width: 100%;
+            margin-top: 22px;
+        }
+
+        .login-message {
+            display: none;
+            margin-top: 15px;
+            padding: 12px;
+            border-radius: 10px;
+            text-align: center;
+            font-size: 14px;
+        }
+
+        #loginError {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        #loginSuccess {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        #loginLoading {
+            text-align: center;
+            margin-top: 12px;
+            color: #64748b;
+            display: none;
+        }
+
+        /* =====================================================
+           APPLICATION
+        ===================================================== */
+
+        #app {
+            display: none;
+        }
+
+        header {
+            background: white;
+            box-shadow:
+                0 2px 10px rgba(0,0,0,0.07);
+            position: sticky;
+            top: 0;
+            z-index: 50;
+        }
+
+        .header-inner {
+            max-width: 1200px;
+            margin: auto;
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logo img {
+            width: 70px;
+            height: 70px;
+            object-fit: contain;
+        }
+
+        .school-title {
+            flex: 1;
+        }
+
+        .school-title h1 {
+            margin: 0;
+            font-size: 21px;
+            font-weight: 800;
+        }
+
+        .school-title p {
+            margin: 5px 0 0;
+            font-size: 13px;
+            color: #64748b;
+            font-weight: 600;
+        }
+
+        .user-email {
+            margin-top: 5px;
+            font-size: 12px;
+            color: #2563eb;
+        }
+
+        .logout-button {
+            border: none;
+            background: #fee2e2;
+            color: #991b1b;
+            padding: 10px 14px;
+            border-radius: 10px;
+            font-weight: 700;
+        }
+
+        .logout-button:hover {
+            background: #fecaca;
+        }
+
+        /* =====================================================
+           NAVIGATION
+        ===================================================== */
+
+        .nav {
+            max-width: 1200px;
+            margin: auto;
+            padding: 8px 15px;
+            display: flex;
+            gap: 6px;
+        }
+
+        .nav button {
+            flex: 1;
+            border: none;
+            background: transparent;
+            padding: 9px 5px;
+            border-radius: 10px;
+            color: #64748b;
+            font-weight: 700;
+            font-size: 13px;
+        }
+
+        .nav button.active {
+            background: #e8f0ff;
+            color: #2563eb;
+        }
+
+        /* =====================================================
+           MAIN
+        ===================================================== */
+
+        main {
+            max-width: 1200px;
+            margin: auto;
+            padding: 25px 18px 50px;
+        }
+
+        .page {
+            display: none;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        .hero {
+            background:
+                linear-gradient(
+                    135deg,
+                    #2563eb,
+                    #4f46e5
+                );
+            color: white;
+            border-radius: 18px;
+            padding: 25px;
+            margin-bottom: 18px;
+        }
+
+        .hero h2 {
+            margin: 0 0 8px;
+        }
+
+        .hero p {
+            margin: 0;
+            opacity: 0.9;
+        }
+
+        .card {
+            background: white;
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 18px;
+            box-shadow:
+                0 4px 18px rgba(0,0,0,0.05);
+        }
+
+        .card-title {
+            font-size: 19px;
+            font-weight: 800;
+            margin-bottom: 6px;
+        }
+
+        .card-subtitle {
+            color: #64748b;
+            font-size: 14px;
+            margin-bottom: 18px;
+        }
+
+        /* =====================================================
+           DASHBOARD
+        ===================================================== */
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns:
+                repeat(4, 1fr);
+            gap: 12px;
+        }
+
+        .stat {
+            background: #f8fafc;
+            border-radius: 14px;
+            padding: 18px;
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 30px;
+            font-weight: 900;
+        }
+
+        .stat-label {
+            margin-top: 5px;
+            font-size: 12px;
+            font-weight: 800;
+            color: #64748b;
+        }
+
+        .present-stat {
+            background: #ecfdf5;
+            color: #047857;
+        }
+
+        .absent-stat {
+            background: #fef2f2;
+            color: #dc2626;
+        }
+
+        .deadline-box {
+            background: #fff7ed;
+            border-left: 5px solid #f97316;
+            padding: 15px;
+            border-radius: 10px;
+            line-height: 1.5;
+        }
+
+        /* =====================================================
+           BUTTONS
+        ===================================================== */
+
+        .btn {
+            border: none;
+            border-radius: 10px;
+            padding: 12px 16px;
+            font-weight: 800;
+            transition: 0.15s;
+        }
+
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .primary {
+            background: #2563eb;
+            color: white;
+        }
+
+        .primary:hover {
+            background: #1d4ed8;
+        }
+
+        .secondary {
+            background: #e2e8f0;
+            color: #334155;
+        }
+
+        .danger {
+            background: #dc2626;
+            color: white;
+        }
+
+        .danger:hover {
+            background: #b91c1c;
+        }
+
+        .whatsapp {
+            background: #16a34a;
+            color: white;
+        }
+
+        .full {
+            width: 100%;
+        }
+
+        /* =====================================================
+           FORMS
+        ===================================================== */
+
+        input,
+        select {
+            width: 100%;
+            padding: 13px;
+            border: 1px solid #d5dce7;
+            border-radius: 10px;
+            margin-bottom: 12px;
+            outline: none;
+            background: white;
+        }
+
+        input:focus,
+        select:focus {
+            border-color: #2563eb;
+        }
+
+        label {
+            display: block;
+            font-weight: 700;
+            margin-bottom: 7px;
+        }
+
+        /* =====================================================
+           STUDENTS
+        ===================================================== */
+
+        .student-card {
+            border: 1px solid #e2e8f0;
+            border-radius: 14px;
+            padding: 16px;
+            margin-top: 12px;
+        }
+
+        .student-name {
+            font-size: 18px;
+            font-weight: 800;
+        }
+
+        .student-id {
+            color: #2563eb;
+            font-size: 13px;
+            margin: 5px 0 10px;
+            font-weight: 700;
+        }
+
+        .student-info {
+            color: #64748b;
+            line-height: 1.7;
+            font-size: 14px;
+        }
+
+        .student-actions {
+            display: flex;
+            gap: 8px;
+            margin-top: 14px;
+        }
+
+        .student-actions .btn {
+            flex: 1;
+        }
+
+        .empty {
+            padding: 25px;
+            text-align: center;
+            color: #64748b;
+        }
+
+        /* =====================================================
+           CAMERA
+        ===================================================== */
+
+        .video-container {
+            position: relative;
+            width: 100%;
+            max-width: 650px;
+            margin: 20px auto;
+            background: #111827;
+            border-radius: 16px;
+            overflow: hidden;
+            aspect-ratio: 4 / 3;
+        }
+
+        #video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .scan-frame {
+            position: absolute;
+            width: 60%;
+            height: 60%;
+            left: 20%;
+            top: 20%;
+            border: 3px solid white;
+            border-radius: 18px;
+            box-shadow:
+                0 0 0 9999px rgba(0,0,0,0.20);
+        }
+
+        .scan-line {
+            position: absolute;
+            left: 22%;
+            width: 56%;
+            height: 2px;
+            top: 50%;
+            background: #22c55e;
+            box-shadow:
+                0 0 8px #22c55e;
+            animation: scanLine 1.5s infinite;
+        }
+
+        @keyframes scanLine {
+            0% {
+                top: 25%;
+            }
+
+            50% {
+                top: 75%;
+            }
+
+            100% {
+                top: 25%;
+            }
+        }
+
+        .camera-buttons {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+        }
+
+        .status {
+            margin-top: 15px;
+            padding: 12px;
+            background: #f1f5f9;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        #canvas {
+            display: none;
+        }
+
+        /* =====================================================
+           SCAN RESULT
+        ===================================================== */
+
+        .result {
+            background: white;
+            border-radius: 16px;
+            padding: 22px;
+            margin-bottom: 18px;
+            text-align: center;
+            box-shadow:
+                0 4px 18px rgba(0,0,0,0.05);
+        }
+
+        .result.success {
+            border-top: 5px solid #16a34a;
+        }
+
+        .warning-result {
+            border-top: 5px solid #f59e0b;
+        }
+
+        .result.error {
+            border-top: 5px solid #dc2626;
+        }
+
+        .result-icon {
+            font-size: 42px;
+        }
+
+        .result-name {
+            font-size: 22px;
+            font-weight: 900;
+            margin: 8px 0;
+        }
+
+        .result-info {
+            color: #64748b;
+            line-height: 1.7;
+        }
+
+        /* =====================================================
+           REPORTS
+        ===================================================== */
+
+        .report-row {
+            position: relative;
+        }
+
+        .report-name {
+            font-size: 18px;
+            font-weight: 800;
+            margin-bottom: 5px;
+        }
+
+        .report-date {
+            color: #64748b;
+            font-size: 13px;
+            margin-bottom: 10px;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 6px 10px;
+            border-radius: 999px;
+            font-size: 11px;
+            font-weight: 900;
+            margin-bottom: 12px;
+        }
+
+        .status-present {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .status-absent {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .status-left {
+            background: #dbeafe;
+            color: #1e40af;
+        }
+
+        .time-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .time-box {
+            background: #f8fafc;
+            border-radius: 10px;
+            padding: 12px;
+            text-align: center;
+        }
+
+        .time-label {
+            font-size: 10px;
+            font-weight: 800;
+            color: #64748b;
+        }
+
+        .time-value {
+            margin-top: 4px;
+            font-weight: 800;
+        }
+
+        /* =====================================================
+           TEST MODE
+        ===================================================== */
+
+        .test-mode-banner {
+            display: none;
+            background: #fef3c7;
+            color: #92400e;
+            padding: 9px 15px;
+            text-align: center;
+            font-size: 13px;
+            font-weight: 900;
+        }
+
+        /* =====================================================
+           MOBILE
+        ===================================================== */
+
+        @media(max-width: 700px) {
+
+            .header-inner {
+                padding: 12px;
+            }
+
+            .logo img {
+                width: 55px;
+                height: 55px;
+            }
+
+            .school-title h1 {
+                font-size: 14px;
+            }
+
+            .school-title p {
+                font-size: 10px;
+            }
+
+            .user-email {
+                font-size: 10px;
+            }
+
+            .logout-button {
+                font-size: 11px;
+                padding: 8px;
+            }
+
+            .dashboard-grid {
+                grid-template-columns:
+                    repeat(2, 1fr);
+            }
+
+            .nav button {
+                font-size: 11px;
+            }
+
+            main {
+                padding: 15px 10px 40px;
+            }
+
+            .student-actions {
+                flex-direction: column;
+            }
+
+            .time-row {
+                grid-template-columns: 1fr;
+            }
+
+        }
+
+    </style>
 
 </head>
+
 
 <body>
 
@@ -733,11 +750,17 @@ main {
         </div>
 
         <div class="login-title">
+
             ST. THERESA'S GEMS
+            <br>
+            INTERNATIONAL PRESCHOOL
+
         </div>
 
         <div class="login-subtitle">
+
             Smart Attendance Management System
+
         </div>
 
 
@@ -749,7 +772,7 @@ main {
             id="loginEmail"
             type="email"
             placeholder="Enter your email"
-            autocomplete="email"
+            autocomplete="username"
         >
 
 
@@ -768,8 +791,7 @@ main {
         <button
             id="loginButton"
             type="button"
-            class="btn primary full"
-            style="margin-top:20px;"
+            class="btn primary"
         >
             🔐 LOGIN
         </button>
@@ -777,26 +799,26 @@ main {
 
         <div
             id="loginLoading"
-            class="login-loading"
         >
             Signing in...
         </div>
 
 
         <div
-            id="loginSuccess"
-            class="login-success"
+            id="loginError"
+            class="login-message"
         ></div>
 
 
         <div
-            id="loginError"
-            class="login-error"
+            id="loginSuccess"
+            class="login-message"
         ></div>
 
     </div>
 
 </div>
+
 
 
 <!-- =========================================================
@@ -805,76 +827,97 @@ main {
 
 <div id="app">
 
+
 <header>
 
-<div class="header-inner">
+    <div class="header-inner">
 
-    <div class="logo">
+        <div class="logo">
 
-        <img
-            src="school-logo.png"
-            alt="School Logo"
-        >
+            <img
+                src="school-logo.png"
+                alt="School Logo"
+            >
 
-    </div>
-
-    <div class="school-title">
-
-        <h1>
-            ST. THERESA'S GEMS INTERNATIONAL PRESCHOOL
-        </h1>
-
-        <p>
-            SMART ATTENDANCE MANAGEMENT SYSTEM
-        </p>
-
-        <div
-            id="currentUserEmail"
-            class="user-email">
         </div>
 
+
+        <div class="school-title">
+
+            <h1>
+                ST. THERESA'S GEMS INTERNATIONAL PRESCHOOL
+            </h1>
+
+            <p>
+                SMART ATTENDANCE MANAGEMENT SYSTEM
+            </p>
+
+            <div
+                id="currentUserEmail"
+                class="user-email"
+            ></div>
+
+        </div>
+
+
+        <button
+            id="logoutButton"
+            type="button"
+            class="logout-button"
+        >
+            🚪 Logout
+        </button>
+
     </div>
 
-    <button
-        id="logoutButton"
-        type="button"
-        class="logout-button">
-        🚪 Logout
-    </button>
 
-</div>
+    <div
+        id="testModeBanner"
+        class="test-mode-banner"
+    >
+        🧪 TEST MODE ACTIVE —
+        9:00 AM arrival deadline is temporarily bypassed.
+    </div>
 
 
-<nav class="nav">
+    <nav class="nav">
 
-    <button
-        type="button"
-        class="active"
-        data-page="dashboard">
-        🏠<br>Home
-    </button>
+        <button
+            type="button"
+            class="active"
+            data-page="dashboard"
+        >
+            🏠<br>Home
+        </button>
 
-    <button
-        type="button"
-        data-page="scanner">
-        📷<br>Scan
-    </button>
 
-    <button
-        type="button"
-        data-page="students">
-        👧<br>Students
-    </button>
+        <button
+            type="button"
+            data-page="scanner"
+        >
+            📷<br>Scan
+        </button>
 
-    <button
-        type="button"
-        data-page="reports">
-        📊<br>Reports
-    </button>
 
-</nav>
+        <button
+            type="button"
+            data-page="students"
+        >
+            👧<br>Students
+        </button>
+
+
+        <button
+            type="button"
+            data-page="reports"
+        >
+            📊<br>Reports
+        </button>
+
+    </nav>
 
 </header>
+
 
 
 <main>
@@ -884,444 +927,496 @@ main {
      DASHBOARD
 ========================================================= -->
 
-<section id="dashboard" class="page active">
+<section
+    id="dashboard"
+    class="page active"
+>
 
-<div class="hero">
+    <div class="hero">
 
-    <h2>
-        Good Day 👋
-    </h2>
+        <h2>
+            Good Day 👋
+        </h2>
 
-    <p>
-        Welcome to the St. Theresa's Gems attendance management system.
-    </p>
+        <p>
+            Welcome to the St. Theresa's Gems attendance
+            management system.
+        </p>
 
-</div>
-
-
-<div class="card">
-
-    <div class="card-title">
-        Today's Overview
-    </div>
-
-    <div class="card-subtitle">
-        Attendance statistics using Sri Lankan time.
     </div>
 
 
-    <div class="dashboard-grid">
+    <div class="card">
 
-        <div class="stat">
+        <div class="card-title">
+            Today's Overview
+        </div>
 
-            <div
-                id="totalStudents"
-                class="stat-number">
-                0
-            </div>
-
-            <div class="stat-label">
-                TOTAL
-            </div>
-
+        <div class="card-subtitle">
+            Attendance statistics using Sri Lankan time.
         </div>
 
 
-        <div class="stat present-stat">
+        <div class="dashboard-grid">
 
-            <div
-                id="arrivedToday"
-                class="stat-number">
-                0
+
+            <div class="stat">
+
+                <div
+                    id="totalStudents"
+                    class="stat-number"
+                >
+                    0
+                </div>
+
+                <div class="stat-label">
+                    TOTAL
+                </div>
+
             </div>
 
-            <div class="stat-label">
-                PRESENT
+
+            <div class="stat present-stat">
+
+                <div
+                    id="arrivedToday"
+                    class="stat-number"
+                >
+                    0
+                </div>
+
+                <div class="stat-label">
+                    PRESENT
+                </div>
+
             </div>
+
+
+            <div class="stat absent-stat">
+
+                <div
+                    id="absentToday"
+                    class="stat-number"
+                >
+                    0
+                </div>
+
+                <div class="stat-label">
+                    ABSENT
+                </div>
+
+            </div>
+
+
+            <div class="stat">
+
+                <div
+                    id="leftToday"
+                    class="stat-number"
+                >
+                    0
+                </div>
+
+                <div class="stat-label">
+                    LEFT
+                </div>
+
+            </div>
+
 
         </div>
 
+    </div>
 
-        <div class="stat absent-stat">
 
-            <div
-                id="absentToday"
-                class="stat-number">
-                0
-            </div>
 
-            <div class="stat-label">
-                ABSENT
-            </div>
+    <div class="card">
 
+        <div class="card-title">
+            Attendance Deadline
         </div>
 
+        <div class="deadline-box">
 
-        <div class="stat">
+            🇱🇰 <strong>Sri Lanka Time</strong>
 
-            <div
-                id="leftToday"
-                class="stat-number">
-                0
-            </div>
+            <br><br>
 
-            <div class="stat-label">
-                LEFT
-            </div>
+            QR arrival scanning is available until
+            <strong>9:00 AM</strong>.
+
+            <br><br>
+
+            After 9:00 AM, students who have not been
+            recorded as present are automatically marked
+            <strong>ABSENT</strong>.
 
         </div>
 
     </div>
 
-</div>
 
 
-<div class="card">
+    <div class="card">
 
-    <div class="card-title">
-        Attendance Deadline
-    </div>
+        <div class="card-title">
+            Quick Attendance
+        </div>
 
-    <div class="deadline-box">
+        <div class="card-subtitle">
+            Scan a student's QR code to record attendance.
+        </div>
 
-        🇱🇰 <strong>Sri Lanka Time</strong>
-
-        <br><br>
-
-        QR arrival scanning is available until
-        <strong>9:00 AM</strong>.
-
-        <br><br>
-
-        After 9:00 AM, students who have not been
-        recorded as present are automatically marked
-        <strong>ABSENT</strong>.
-
-        <br><br>
-
-        🔴 Leaving scans are allowed after 9:00 AM
-        for students who already arrived.
+        <button
+            id="quickScannerButton"
+            type="button"
+            class="btn primary full"
+        >
+            📷 START QR SCANNER
+        </button>
 
     </div>
 
-</div>
 
 
-<div class="card">
+    <div class="card">
 
-    <div class="card-title">
-        Quick Attendance
+        <div class="card-title">
+            Today's Attendance
+        </div>
+
+        <div id="todayPreview"></div>
+
     </div>
-
-    <div class="card-subtitle">
-        Scan a student's QR code to record attendance.
-    </div>
-
-    <button
-        id="quickScannerButton"
-        type="button"
-        class="btn primary full">
-        📷 START QR SCANNER
-    </button>
-
-</div>
-
-
-<div class="card">
-
-    <div class="card-title">
-        Today's Attendance
-    </div>
-
-    <div id="todayPreview"></div>
-
-</div>
 
 </section>
+
 
 
 <!-- =========================================================
      SCANNER
 ========================================================= -->
 
-<section id="scanner" class="page">
+<section
+    id="scanner"
+    class="page"
+>
 
-<div class="card">
+    <div class="card">
 
-    <div class="card-title">
-        📷 QR Attendance Scanner
+        <div class="card-title">
+            📷 QR Attendance Scanner
+        </div>
+
+        <div class="card-subtitle">
+            Place the student's QR code inside the scanning frame.
+        </div>
+
+
+        <div class="deadline-box">
+
+            🇱🇰 Arrival scanning deadline:
+            <strong>9:00 AM Sri Lanka time</strong>.
+
+            <br><br>
+
+            After the deadline, a student who has not arrived
+            will be recorded as <strong>ABSENT</strong>.
+
+            <br><br>
+
+            Leaving scans are allowed at any time.
+
+        </div>
+
+
+        <div class="video-container">
+
+            <video
+                id="video"
+                autoplay
+                muted
+                playsinline
+            ></video>
+
+            <div class="scan-frame"></div>
+
+            <div class="scan-line"></div>
+
+        </div>
+
+
+        <div class="camera-buttons">
+
+            <button
+                id="startButton"
+                type="button"
+                class="btn primary"
+            >
+                📷 Start Camera
+            </button>
+
+
+            <button
+                id="stopButton"
+                type="button"
+                class="btn danger"
+                style="display:none"
+            >
+                ⏹ Stop Camera
+            </button>
+
+        </div>
+
+
+        <div
+            id="status"
+            class="status"
+        >
+            Camera not started.
+        </div>
+
     </div>
 
-    <div class="card-subtitle">
-        Place the student's QR code inside the scanning frame.
-    </div>
-
-
-    <div class="deadline-box">
-
-        🇱🇰 Arrival scanning deadline:
-        <strong>9:00 AM Sri Lanka time</strong>.
-
-        <br><br>
-
-        After 9:00 AM, students who have not arrived
-        are recorded as <strong>ABSENT</strong>.
-
-        <br><br>
-
-        🔴 Leaving scans are allowed at any time
-        after an arrival has been recorded.
-
-    </div>
-
-
-    <div class="video-container">
-
-        <video
-            id="video"
-            autoplay
-            muted
-            playsinline>
-        </video>
-
-        <div class="scan-frame"></div>
-
-        <div class="scan-line"></div>
-
-    </div>
-
-
-    <div class="camera-buttons">
-
-        <button
-            id="startButton"
-            type="button"
-            class="btn primary">
-            📷 Start Camera
-        </button>
-
-        <button
-            id="stopButton"
-            type="button"
-            class="btn danger"
-            style="display:none">
-            ⏹ Stop Camera
-        </button>
-
-    </div>
 
 
     <div
-        id="status"
-        class="status">
-        Camera not started.
+        id="scanResult"
+        class="result"
+    >
+
+        <div class="result-icon">
+            📷
+        </div>
+
+        <div class="result-name">
+            Ready
+        </div>
+
+        <div class="result-info">
+            Start the camera to begin scanning.
+        </div>
+
     </div>
 
-</div>
 
-
-<div
-    id="scanResult"
-    class="result">
-
-    <div class="result-icon">
-        📷
-    </div>
-
-    <div class="result-name">
-        Ready
-    </div>
-
-    <div class="result-info">
-        Start the camera to begin scanning.
-    </div>
-
-</div>
-
-
-<canvas id="canvas"></canvas>
+    <canvas id="canvas"></canvas>
 
 </section>
+
 
 
 <!-- =========================================================
      STUDENTS
 ========================================================= -->
 
-<section id="students" class="page">
+<section
+    id="students"
+    class="page"
+>
 
-<div class="card">
+    <div class="card">
 
-    <div class="card-title">
-        👧 Student Management
+        <div class="card-title">
+            👧 Student Management
+        </div>
+
+        <div class="card-subtitle">
+            Add and manage student information.
+        </div>
+
+
+        <input
+            id="search"
+            placeholder="🔎 Search student or Student ID..."
+        >
+
+
+        <div id="studentList"></div>
+
     </div>
 
-    <div class="card-subtitle">
-        Add and manage student information.
+
+    <div class="card">
+
+        <button
+            id="addStudentButton"
+            type="button"
+            class="btn primary full"
+        >
+            ➕ ADD NEW STUDENT
+        </button>
+
     </div>
-
-
-    <input
-        id="search"
-        placeholder="🔎 Search student or Student ID..."
-    >
-
-
-    <div id="studentList"></div>
-
-</div>
-
-
-<div class="card">
-
-    <button
-        id="addStudentButton"
-        type="button"
-        class="btn primary full">
-        ➕ ADD NEW STUDENT
-    </button>
-
-</div>
 
 </section>
+
 
 
 <!-- =========================================================
      ADD / EDIT STUDENT
 ========================================================= -->
 
-<section id="addStudent" class="page">
+<section
+    id="addStudent"
+    class="page"
+>
 
-<div class="card">
+    <div class="card">
 
-    <div
-        id="formTitle"
-        class="card-title">
-        ➕ Add New Student
+        <div
+            id="formTitle"
+            class="card-title"
+        >
+            ➕ Add New Student
+        </div>
+
+
+        <div class="card-subtitle">
+            Enter the student's information.
+        </div>
+
+
+        <label for="studentName">
+            Student Name
+        </label>
+
+        <input
+            id="studentName"
+            placeholder="Example: Yonal"
+        >
+
+
+        <label for="studentClass">
+            Class
+        </label>
+
+        <select id="studentClass">
+
+            <option value="">
+                Select Class
+            </option>
+
+            <option value="Nursery">
+                Nursery
+            </option>
+
+            <option value="LKG">
+                LKG
+            </option>
+
+            <option value="UKG">
+                UKG
+            </option>
+
+        </select>
+
+
+        <label for="parentName">
+            Parent / Guardian Name
+        </label>
+
+        <input
+            id="parentName"
+            placeholder="Parent name"
+        >
+
+
+        <label for="parentPhone">
+            Parent WhatsApp Number
+        </label>
+
+        <input
+            id="parentPhone"
+            type="tel"
+            placeholder="+94764120923"
+        >
+
+
+        <div
+            style="
+                display:flex;
+                gap:8px;
+                margin-top:18px;
+            "
+        >
+
+            <button
+                id="saveStudentButton"
+                type="button"
+                class="btn primary"
+            >
+                💾 Save Student
+            </button>
+
+
+            <button
+                id="clearFormButton"
+                type="button"
+                class="btn secondary"
+            >
+                Clear
+            </button>
+
+        </div>
+
     </div>
-
-    <div class="card-subtitle">
-        Enter the student's information.
-    </div>
-
-
-    <label for="studentName">
-        Student Name
-    </label>
-
-    <input
-        id="studentName"
-        placeholder="Example: Yonal"
-    >
-
-
-    <label for="studentClass">
-        Class
-    </label>
-
-    <select id="studentClass">
-
-        <option value="">
-            Select Class
-        </option>
-
-        <option value="Nursery">
-            Nursery
-        </option>
-
-        <option value="LKG">
-            LKG
-        </option>
-
-        <option value="UKG">
-            UKG
-        </option>
-
-    </select>
-
-
-    <label for="parentName">
-        Parent / Guardian Name
-    </label>
-
-    <input
-        id="parentName"
-        placeholder="Parent name"
-    >
-
-
-    <label for="parentPhone">
-        Parent WhatsApp Number
-    </label>
-
-    <input
-        id="parentPhone"
-        type="tel"
-        placeholder="+94764120923"
-    >
-
-
-    <div style="display:flex;gap:8px;margin-top:18px;">
-
-        <button
-            id="saveStudentButton"
-            type="button"
-            class="btn primary">
-            💾 Save Student
-        </button>
-
-        <button
-            id="clearFormButton"
-            type="button"
-            class="btn secondary">
-            Clear
-        </button>
-
-    </div>
-
-</div>
 
 </section>
+
 
 
 <!-- =========================================================
      REPORTS
 ========================================================= -->
 
-<section id="reports" class="page">
+<section
+    id="reports"
+    class="page"
+>
 
-<div class="card">
+    <div class="card">
 
-    <div class="card-title">
-        📊 Attendance Reports
+        <div class="card-title">
+            📊 Attendance Reports
+        </div>
+
+        <div class="card-subtitle">
+            View attendance records from Firebase.
+        </div>
+
+
+        <label for="reportDate">
+            Attendance Date
+        </label>
+
+        <input
+            type="date"
+            id="reportDate"
+        >
+
     </div>
 
-    <div class="card-subtitle">
-        View attendance records from Firebase.
-    </div>
 
+    <div id="reportSummary"></div>
 
-    <label for="reportDate">
-        Attendance Date
-    </label>
-
-    <input
-        type="date"
-        id="reportDate"
-    >
-
-</div>
-
-
-<div id="reportSummary"></div>
-
-<div id="reportList"></div>
+    <div id="reportList"></div>
 
 </section>
+
 
 </main>
 
 </div>
+
+
+
+<!-- =========================================================
+     jsQR
+========================================================= -->
+
+<script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.js"></script>
+
 
 
 <!-- =========================================================
@@ -1330,9 +1425,11 @@ main {
 
 <script type="module">
 
+
 import {
     initializeApp
 } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-app.js";
+
 
 import {
     getAuth,
@@ -1342,6 +1439,7 @@ import {
     setPersistence,
     browserLocalPersistence
 } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-auth.js";
+
 
 import {
     getFirestore,
@@ -1353,6 +1451,29 @@ import {
     updateDoc,
     deleteDoc
 } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-firestore.js";
+
+
+
+/* =========================================================
+   TEST MODE
+========================================================= */
+
+/*
+   TRUE  = testing mode
+   FALSE = normal preschool mode
+
+   In TEST MODE:
+   - Arrival scanning works after 9:00 AM.
+   - Existing ABSENT record can be changed back to PRESENT
+     when its QR code is scanned.
+   - Automatic absent marking is disabled.
+
+   IMPORTANT:
+   Change this to false before real use.
+*/
+
+const TEST_MODE = true;
+
 
 
 /* =========================================================
@@ -1382,6 +1503,7 @@ const firebaseConfig = {
 };
 
 
+
 /* =========================================================
    INITIALIZE FIREBASE
 ========================================================= */
@@ -1389,11 +1511,14 @@ const firebaseConfig = {
 const firebaseApp =
     initializeApp(firebaseConfig);
 
+
 const auth =
     getAuth(firebaseApp);
 
+
 const db =
     getFirestore(firebaseApp);
+
 
 
 /* =========================================================
@@ -1418,28 +1543,71 @@ let lastScannedCode = "";
 
 let lastScanTime = 0;
 
+let processingScan = false;
+
+
+
+/* =========================================================
+   TEST MODE DISPLAY
+========================================================= */
+
+if (TEST_MODE) {
+
+    const banner =
+        document.getElementById(
+            "testModeBanner"
+        );
+
+    if (banner) {
+
+        banner.style.display =
+            "block";
+
+    }
+
+}
+
+
 
 /* =========================================================
    LOGIN ELEMENTS
 ========================================================= */
 
 const loginButton =
-    document.getElementById("loginButton");
+    document.getElementById(
+        "loginButton"
+    );
+
 
 const loginEmail =
-    document.getElementById("loginEmail");
+    document.getElementById(
+        "loginEmail"
+    );
+
 
 const loginPassword =
-    document.getElementById("loginPassword");
+    document.getElementById(
+        "loginPassword"
+    );
+
 
 const loginError =
-    document.getElementById("loginError");
+    document.getElementById(
+        "loginError"
+    );
+
 
 const loginSuccess =
-    document.getElementById("loginSuccess");
+    document.getElementById(
+        "loginSuccess"
+    );
+
 
 const loginLoading =
-    document.getElementById("loginLoading");
+    document.getElementById(
+        "loginLoading"
+    );
+
 
 
 /* =========================================================
@@ -1451,16 +1619,20 @@ async function loginUser() {
     const email =
         loginEmail.value.trim();
 
+
     const password =
         loginPassword.value;
 
 
-    loginError.style.display = "none";
+    loginError.style.display =
+        "none";
 
-    loginSuccess.style.display = "none";
+
+    loginSuccess.style.display =
+        "none";
 
 
-    if(!email || !password) {
+    if (!email || !password) {
 
         loginError.textContent =
             "Please enter your email and password.";
@@ -1469,11 +1641,13 @@ async function loginUser() {
             "block";
 
         return;
+
     }
 
 
     loginLoading.style.display =
         "block";
+
 
     loginButton.disabled =
         true;
@@ -1497,12 +1671,14 @@ async function loginUser() {
         loginSuccess.textContent =
             "🟢 LOGIN SUCCESSFUL";
 
+
         loginSuccess.style.display =
             "block";
 
     }
 
-    catch(error) {
+
+    catch (error) {
 
         console.error(
             "Firebase login error:",
@@ -1514,7 +1690,7 @@ async function loginUser() {
             "Unable to sign in.";
 
 
-        switch(error.code) {
+        switch (error.code) {
 
             case "auth/invalid-credential":
 
@@ -1580,15 +1756,18 @@ async function loginUser() {
         loginError.textContent =
             message;
 
+
         loginError.style.display =
             "block";
 
     }
 
+
     finally {
 
         loginLoading.style.display =
             "none";
+
 
         loginButton.disabled =
             false;
@@ -1598,34 +1777,42 @@ async function loginUser() {
 }
 
 
+
 loginButton.addEventListener(
     "click",
     loginUser
 );
 
 
+
 loginEmail.addEventListener(
     "keydown",
     event => {
 
-        if(event.key === "Enter") {
+        if (event.key === "Enter") {
+
             loginUser();
+
         }
 
     }
 );
+
 
 
 loginPassword.addEventListener(
     "keydown",
     event => {
 
-        if(event.key === "Enter") {
+        if (event.key === "Enter") {
+
             loginUser();
+
         }
 
     }
 );
+
 
 
 /* =========================================================
@@ -1636,7 +1823,7 @@ onAuthStateChanged(
     auth,
     async user => {
 
-        if(user) {
+        if (user) {
 
             currentUser =
                 user;
@@ -1666,12 +1853,14 @@ onAuthStateChanged(
 
             }
 
-            catch(error) {
+
+            catch (error) {
 
                 console.error(
                     "Initial data loading error:",
                     error
                 );
+
 
                 alert(
                     "You are signed in, but the student/attendance data could not be loaded.\n\n" +
@@ -1681,6 +1870,7 @@ onAuthStateChanged(
             }
 
         }
+
 
         else {
 
@@ -1705,6 +1895,7 @@ onAuthStateChanged(
 );
 
 
+
 /* =========================================================
    LOGOUT
 ========================================================= */
@@ -1717,18 +1908,21 @@ document.getElementById(
 
         stopCamera();
 
+
         try {
 
             await signOut(auth);
 
         }
 
-        catch(error) {
+
+        catch (error) {
 
             console.error(
                 "Logout error:",
                 error
             );
+
 
             alert(
                 "Could not log out."
@@ -1740,13 +1934,14 @@ document.getElementById(
 );
 
 
+
 /* =========================================================
-   REFRESH DATA
+   REFRESH ALL DATA
 ========================================================= */
 
 async function refreshAllData() {
 
-    if(!currentUser) {
+    if (!currentUser) {
         return;
     }
 
@@ -1766,6 +1961,7 @@ async function refreshAllData() {
     displayReports();
 
 }
+
 
 
 /* =========================================================
@@ -1802,6 +1998,7 @@ async function loadStudents() {
 }
 
 
+
 /* =========================================================
    LOAD ATTENDANCE
 ========================================================= */
@@ -1836,19 +2033,21 @@ async function loadAttendance() {
 }
 
 
+
 /* =========================================================
    SAVE STUDENT
 ========================================================= */
 
 async function saveStudent() {
 
-    if(!currentUser) {
+    if (!currentUser) {
 
         alert(
             "Please sign in first."
         );
 
         return;
+
     }
 
 
@@ -1876,7 +2075,7 @@ async function saveStudent() {
         ).value.trim();
 
 
-    if(
+    if (
         !name ||
         !studentClass ||
         !parent ||
@@ -1888,6 +2087,7 @@ async function saveStudent() {
         );
 
         return;
+
     }
 
 
@@ -1903,7 +2103,7 @@ async function saveStudent() {
 
     try {
 
-        if(editingId) {
+        if (editingId) {
 
             await updateDoc(
                 doc(
@@ -1929,6 +2129,7 @@ async function saveStudent() {
             );
 
         }
+
 
         else {
 
@@ -1967,13 +2168,19 @@ async function saveStudent() {
 
         await loadStudents();
 
+
         clearForm();
+
 
         updateDashboard();
 
+
         displayStudents();
 
-        showPage("students");
+
+        showPage(
+            "students"
+        );
 
 
         alert(
@@ -1982,12 +2189,14 @@ async function saveStudent() {
 
     }
 
-    catch(error) {
+
+    catch (error) {
 
         console.error(
             "Save student error:",
             error
         );
+
 
         alert(
             "Could not save student.\n\n" +
@@ -1995,6 +2204,7 @@ async function saveStudent() {
         );
 
     }
+
 
     finally {
 
@@ -2004,6 +2214,7 @@ async function saveStudent() {
     }
 
 }
+
 
 
 /* =========================================================
@@ -2016,12 +2227,12 @@ async function createStudentID() {
         1;
 
 
-    while(true) {
+    while (true) {
 
         const id =
             "STG-STU-" +
             String(number)
-                .padStart(4,"0");
+                .padStart(4, "0");
 
 
         const existing =
@@ -2034,7 +2245,7 @@ async function createStudentID() {
             );
 
 
-        if(!existing.exists()) {
+        if (!existing.exists()) {
 
             return id;
 
@@ -2046,6 +2257,7 @@ async function createStudentID() {
     }
 
 }
+
 
 
 /* =========================================================
@@ -2064,8 +2276,8 @@ function displayStudents() {
         document.getElementById(
             "search"
         ).value
-        .trim()
-        .toLowerCase();
+            .trim()
+            .toLowerCase();
 
 
     const filtered =
@@ -2075,20 +2287,20 @@ function displayStudents() {
                 String(
                     student.name || ""
                 )
-                .toLowerCase()
-                .includes(search)
+                    .toLowerCase()
+                    .includes(search)
 
                 ||
 
                 String(
                     student.id || ""
                 )
-                .toLowerCase()
-                .includes(search)
+                    .toLowerCase()
+                    .includes(search)
         );
 
 
-    if(filtered.length === 0) {
+    if (filtered.length === 0) {
 
         list.innerHTML =
             '<div class="empty">No students found.</div>';
@@ -2136,14 +2348,16 @@ function displayStudents() {
         <button
             type="button"
             class="btn primary edit-student"
-            data-id="${escapeHTML(student.id)}">
+            data-id="${escapeHTML(student.id)}"
+        >
             ✏️ Edit
         </button>
 
         <button
             type="button"
             class="btn danger delete-student"
-            data-id="${escapeHTML(student.id)}">
+            data-id="${escapeHTML(student.id)}"
+        >
             🗑 Delete
         </button>
 
@@ -2197,6 +2411,7 @@ function displayStudents() {
 }
 
 
+
 /* =========================================================
    EDIT STUDENT
 ========================================================= */
@@ -2211,7 +2426,7 @@ function editStudent(id) {
         );
 
 
-    if(!student) {
+    if (!student) {
         return;
     }
 
@@ -2257,6 +2472,7 @@ function editStudent(id) {
 }
 
 
+
 /* =========================================================
    DELETE STUDENT
 ========================================================= */
@@ -2271,7 +2487,7 @@ async function deleteStudent(id) {
         );
 
 
-    if(!student) {
+    if (!student) {
         return;
     }
 
@@ -2284,7 +2500,7 @@ async function deleteStudent(id) {
         );
 
 
-    if(!confirmed) {
+    if (!confirmed) {
         return;
     }
 
@@ -2302,7 +2518,9 @@ async function deleteStudent(id) {
 
         await loadStudents();
 
+
         displayStudents();
+
 
         updateDashboard();
 
@@ -2313,12 +2531,14 @@ async function deleteStudent(id) {
 
     }
 
-    catch(error) {
+
+    catch (error) {
 
         console.error(
             "Delete student error:",
             error
         );
+
 
         alert(
             "Could not delete student.\n\n" +
@@ -2328,6 +2548,7 @@ async function deleteStudent(id) {
     }
 
 }
+
 
 
 /* =========================================================
@@ -2372,6 +2593,7 @@ function clearForm() {
 }
 
 
+
 /* =========================================================
    NAVIGATION
 ========================================================= */
@@ -2400,7 +2622,7 @@ function showPage(
         );
 
 
-    if(target) {
+    if (target) {
 
         target.classList.add(
             "active"
@@ -2422,13 +2644,14 @@ function showPage(
         );
 
 
-    if(button) {
+    if (button) {
 
         button.classList.add(
             "active"
         );
 
     }
+
 
     else {
 
@@ -2438,7 +2661,7 @@ function showPage(
             );
 
 
-        if(matchingButton) {
+        if (matchingButton) {
 
             matchingButton.classList.add(
                 "active"
@@ -2449,20 +2672,21 @@ function showPage(
     }
 
 
-    if(pageId === "students") {
+    if (pageId === "students") {
 
         displayStudents();
 
     }
 
 
-    if(pageId === "reports") {
+    if (pageId === "reports") {
 
         displayReports();
 
     }
 
 }
+
 
 
 /* =========================================================
@@ -2478,6 +2702,16 @@ document
                 "click",
                 () => {
 
+                    if (
+                        button.dataset.page !==
+                        "scanner"
+                    ) {
+
+                        stopCamera();
+
+                    }
+
+
                     showPage(
                         button.dataset.page,
                         button
@@ -2488,6 +2722,7 @@ document
 
         }
     );
+
 
 
 /* =========================================================
@@ -2513,6 +2748,7 @@ function openScanner() {
 }
 
 
+
 /* =========================================================
    SRI LANKA CURRENT TIME
 ========================================================= */
@@ -2523,6 +2759,7 @@ function getSriLankaNow() {
         new Intl.DateTimeFormat(
             "en-US",
             {
+
                 timeZone:
                     "Asia/Colombo",
 
@@ -2546,6 +2783,7 @@ function getSriLankaNow() {
 
                 hour12:
                     false
+
             }
         ).formatToParts(
             new Date()
@@ -2558,7 +2796,7 @@ function getSriLankaNow() {
     parts.forEach(
         part => {
 
-            if(
+            if (
                 part.type !==
                 "literal"
             ) {
@@ -2573,15 +2811,23 @@ function getSriLankaNow() {
 
 
     return new Date(
+
         Number(values.year),
+
         Number(values.month) - 1,
+
         Number(values.day),
+
         Number(values.hour),
+
         Number(values.minute),
+
         Number(values.second)
+
     );
 
 }
+
 
 
 /* =========================================================
@@ -2600,17 +2846,18 @@ function getSriLankaDateString(
 
         String(
             date.getMonth() + 1
-        ).padStart(2,"0") +
+        ).padStart(2, "0") +
 
         "-" +
 
         String(
             date.getDate()
-        ).padStart(2,"0")
+        ).padStart(2, "0")
 
     );
 
 }
+
 
 
 /* =========================================================
@@ -2643,11 +2890,24 @@ function getSriLankaTimeString(
 }
 
 
+
 /* =========================================================
-   ARRIVAL DEADLINE
+   9:00 AM DEADLINE
 ========================================================= */
 
 function isAfterAttendanceDeadline() {
+
+    /*
+       TEST MODE bypasses ONLY the
+       arrival deadline.
+    */
+
+    if (TEST_MODE) {
+
+        return false;
+
+    }
+
 
     const now =
         getSriLankaNow();
@@ -2655,6 +2915,7 @@ function isAfterAttendanceDeadline() {
 
     const hours =
         now.getHours();
+
 
     const minutes =
         now.getMinutes();
@@ -2676,18 +2937,29 @@ function isAfterAttendanceDeadline() {
 }
 
 
+
 /* =========================================================
    MARK ABSENT STUDENTS
 ========================================================= */
 
 async function applyAbsentStatus() {
 
-    if(!currentUser) {
+    if (!currentUser) {
         return;
     }
 
 
-    if(!isAfterAttendanceDeadline()) {
+    /*
+       In TEST MODE we do not automatically
+       create ABSENT records.
+    */
+
+    if (TEST_MODE) {
+        return;
+    }
+
+
+    if (!isAfterAttendanceDeadline()) {
         return;
     }
 
@@ -2729,7 +3001,7 @@ async function applyAbsentStatus() {
         );
 
 
-    for(
+    for (
         const student
         of absentStudents
     ) {
@@ -2754,7 +3026,7 @@ async function applyAbsentStatus() {
             );
 
 
-        if(existing.exists()) {
+        if (existing.exists()) {
             continue;
         }
 
@@ -2810,26 +3082,16 @@ async function applyAbsentStatus() {
 }
 
 
+
 /* =========================================================
    RECORD ATTENDANCE
-
-   ORIGINAL BEHAVIOR:
-
-   FIRST SCAN BEFORE 9 AM = ARRIVAL
-
-   FIRST SCAN AFTER 9 AM = ABSENT
-
-   SECOND SCAN AFTER ARRIVAL = LEAVING
-
-   IMPORTANT:
-   LEAVING HAS NO 9 AM DEADLINE.
 ========================================================= */
 
 async function recordAttendance(
     student
 ) {
 
-    if(!currentUser) {
+    if (!currentUser) {
 
         alert(
             "Please sign in first."
@@ -2870,105 +3132,99 @@ async function recordAttendance(
         );
 
 
-    const existing =
+    let existing =
         await getDoc(
             attendanceRef
         );
 
 
     /* =====================================================
-       EXISTING RECORD
-       This is checked FIRST.
-
-       Therefore, if a student arrived before 9 AM,
-       they can scan again after 9 AM to leave.
+       TEST MODE
+       RESET AN EXISTING ABSENT RECORD
     ===================================================== */
 
-    if(existing.exists()) {
+    if (
+        TEST_MODE &&
+        existing.exists() &&
+        existing.data().status === "absent"
+    ) {
 
-        const record =
-            existing.data();
+        const record = {
 
+            studentId:
+                student.id,
 
-        /* ABSENT */
+            studentName:
+                student.name,
 
-        if(
-            record.status ===
-            "absent"
-        ) {
+            class:
+                student.class,
 
-            showAbsentScanResult(
-                student
-            );
+            parent:
+                student.parent,
 
-            beep();
+            phone:
+                student.phone,
 
-            return;
+            date:
+                date,
 
-        }
+            arrival:
+                time,
 
+            leaving:
+                null,
 
-        /* SECOND SCAN = LEAVING */
+            status:
+                "present",
 
-        if(!record.leaving) {
+            createdAt:
+                new Date().toISOString(),
 
-            await updateDoc(
-                attendanceRef,
-                {
+            testModeReset:
+                true
 
-                    leaving:
-                        time,
-
-                    status:
-                        "present"
-
-                }
-            );
-
-
-            await loadAttendance();
-
-
-            showLeaving(
-                student,
-                time
-            );
+        };
 
 
-            updateDashboard();
-
-            beep();
-
-            return;
-
-        }
-
-
-        /* BOTH SCANS COMPLETED */
-
-        showCompleted(
-            student,
+        await setDoc(
+            attendanceRef,
             record
         );
 
+
+        await loadAttendance();
+
+
+        showArrival(
+            student,
+            time
+        );
+
+
         beep();
+
+
+        updateDashboard();
+
 
         return;
 
     }
 
 
-    /* =====================================================
-       NO EXISTING RECORD
 
-       ONLY NOW DO WE CHECK THE 9 AM ARRIVAL DEADLINE.
+    /* =====================================================
+       AFTER 9 AM IN NORMAL MODE
     ===================================================== */
 
-    if(
+    if (
+        !existing.exists() &&
         isAfterAttendanceDeadline()
     ) {
 
         await applyAbsentStatus();
+
 
         await loadAttendance();
 
@@ -2980,72 +3236,172 @@ async function recordAttendance(
 
         beep();
 
+
         updateDashboard();
+
 
         return;
 
     }
 
 
+
     /* =====================================================
-       FIRST SCAN BEFORE 9 AM = ARRIVAL
+       FIRST SCAN = ARRIVAL
     ===================================================== */
 
-    const record = {
+    if (!existing.exists()) {
 
-        studentId:
-            student.id,
+        const record = {
 
-        studentName:
-            student.name,
+            studentId:
+                student.id,
 
-        class:
-            student.class,
+            studentName:
+                student.name,
 
-        parent:
-            student.parent,
+            class:
+                student.class,
 
-        phone:
-            student.phone,
+            parent:
+                student.parent,
 
-        date:
-            date,
+            phone:
+                student.phone,
 
-        arrival:
-            time,
+            date:
+                date,
 
-        leaving:
-            null,
+            arrival:
+                time,
 
-        status:
-            "present",
+            leaving:
+                null,
 
-        createdAt:
-            new Date().toISOString()
+            status:
+                "present",
 
-    };
+            createdAt:
+                new Date().toISOString()
+
+        };
 
 
-    await setDoc(
-        attendanceRef,
+        await setDoc(
+            attendanceRef,
+            record
+        );
+
+
+        await loadAttendance();
+
+
+        showArrival(
+            student,
+            time
+        );
+
+
+        updateDashboard();
+
+
+        beep();
+
+
+        return;
+
+    }
+
+
+
+    /* =====================================================
+       EXISTING RECORD
+    ===================================================== */
+
+    const record =
+        existing.data();
+
+
+
+    /* =====================================================
+       ABSENT STUDENT
+    ===================================================== */
+
+    if (
+        record.status ===
+        "absent"
+    ) {
+
+        showAbsentScanResult(
+            student
+        );
+
+
+        beep();
+
+
+        return;
+
+    }
+
+
+
+    /* =====================================================
+       SECOND SCAN = LEAVING
+       NO TIME LIMIT
+    ===================================================== */
+
+    if (!record.leaving) {
+
+        await updateDoc(
+            attendanceRef,
+            {
+
+                leaving:
+                    time,
+
+                status:
+                    "present"
+
+            }
+        );
+
+
+        await loadAttendance();
+
+
+        showLeaving(
+            student,
+            time
+        );
+
+
+        updateDashboard();
+
+
+        beep();
+
+
+        return;
+
+    }
+
+
+
+    /* =====================================================
+       BOTH SCANS COMPLETED
+    ===================================================== */
+
+    showCompleted(
+        student,
         record
     );
 
 
-    await loadAttendance();
-
-
-    showArrival(
-        student,
-        time
-    );
-
-
-    updateDashboard();
-
     beep();
 
 }
+
 
 
 /* =========================================================
@@ -3100,10 +3456,9 @@ function showArrival(
 <button
     type="button"
     id="arrivalWhatsAppButton"
-    class="btn whatsapp full">
-
+    class="btn whatsapp full"
+>
     📱 Send WhatsApp
-
 </button>
 
 `;
@@ -3128,6 +3483,7 @@ function showArrival(
         );
 
 }
+
 
 
 /* =========================================================
@@ -3182,10 +3538,9 @@ function showLeaving(
 <button
     type="button"
     id="leavingWhatsAppButton"
-    class="btn whatsapp full">
-
+    class="btn whatsapp full"
+>
     📱 Send WhatsApp
-
 </button>
 
 `;
@@ -3210,6 +3565,7 @@ function showLeaving(
         );
 
 }
+
 
 
 /* =========================================================
@@ -3266,6 +3622,7 @@ from ABSENT to PRESENT.
 }
 
 
+
 /* =========================================================
    SHOW COMPLETED
 ========================================================= */
@@ -3316,10 +3673,9 @@ ${escapeHTML(record.leaving || "—")}
 <button
     type="button"
     id="completedWhatsAppButton"
-    class="btn whatsapp full">
-
+    class="btn whatsapp full"
+>
     📱 Send WhatsApp Again
-
 </button>
 
 `;
@@ -3346,6 +3702,7 @@ ${escapeHTML(record.leaving || "—")}
 }
 
 
+
 /* =========================================================
    WHATSAPP
 ========================================================= */
@@ -3365,7 +3722,7 @@ function sendWhatsApp(
             );
 
 
-    if(!cleanPhone) {
+    if (!cleanPhone) {
 
         alert(
             "No valid WhatsApp number."
@@ -3398,7 +3755,7 @@ function sendWhatsApp(
     let message;
 
 
-    if(type === "arrival") {
+    if (type === "arrival") {
 
         message =
 `ST. THERESA'S GEMS INTERNATIONAL PRESCHOOL
@@ -3413,6 +3770,7 @@ Arrival Time: ${time}
 Thank you.`;
 
     }
+
 
     else {
 
@@ -3448,18 +3806,19 @@ Thank you.`;
 }
 
 
+
 /* =========================================================
    START CAMERA
 ========================================================= */
 
 async function startCamera() {
 
-    if(scanning) {
+    if (scanning) {
         return;
     }
 
 
-    if(
+    if (
         !navigator.mediaDevices ||
         !navigator.mediaDevices.getUserMedia
     ) {
@@ -3523,14 +3882,17 @@ async function startCamera() {
         document.getElementById(
             "status"
         ).textContent =
-            "Camera active. Point at a student QR code.";
+            TEST_MODE
+                ? "🧪 TEST MODE: Camera active. Point at a student QR code."
+                : "Camera active. Point at a student QR code.";
 
 
         scanQRCode();
 
     }
 
-    catch(error) {
+
+    catch (error) {
 
         console.error(
             "Camera error:",
@@ -3554,6 +3916,7 @@ async function startCamera() {
 }
 
 
+
 /* =========================================================
    STOP CAMERA
 ========================================================= */
@@ -3564,11 +3927,16 @@ function stopCamera() {
         false;
 
 
-    if(animationFrameId) {
+    processingScan =
+        false;
+
+
+    if (animationFrameId) {
 
         cancelAnimationFrame(
             animationFrameId
         );
+
 
         animationFrameId =
             null;
@@ -3576,7 +3944,7 @@ function stopCamera() {
     }
 
 
-    if(cameraStream) {
+    if (cameraStream) {
 
         cameraStream
             .getTracks()
@@ -3584,6 +3952,7 @@ function stopCamera() {
                 track =>
                     track.stop()
             );
+
 
         cameraStream =
             null;
@@ -3597,7 +3966,7 @@ function stopCamera() {
         );
 
 
-    if(video) {
+    if (video) {
 
         video.srcObject =
             null;
@@ -3617,7 +3986,7 @@ function stopCamera() {
         );
 
 
-    if(start) {
+    if (start) {
 
         start.style.display =
             "block";
@@ -3625,7 +3994,7 @@ function stopCamera() {
     }
 
 
-    if(stop) {
+    if (stop) {
 
         stop.style.display =
             "none";
@@ -3639,7 +4008,7 @@ function stopCamera() {
         );
 
 
-    if(status) {
+    if (status) {
 
         status.textContent =
             "Camera stopped.";
@@ -3649,13 +4018,14 @@ function stopCamera() {
 }
 
 
+
 /* =========================================================
    QR SCANNER LOOP
 ========================================================= */
 
 function scanQRCode() {
 
-    if(!scanning) {
+    if (!scanning) {
         return;
     }
 
@@ -3672,15 +4042,18 @@ function scanQRCode() {
         );
 
 
-    if(
+    if (
         video.readyState >=
         video.HAVE_ENOUGH_DATA &&
+
         video.videoWidth > 0 &&
+
         video.videoHeight > 0
     ) {
 
         canvas.width =
             video.videoWidth;
+
 
         canvas.height =
             video.videoHeight;
@@ -3714,7 +4087,10 @@ function scanQRCode() {
             );
 
 
-        if(typeof jsQR === "function") {
+        if (
+            typeof jsQR ===
+            "function"
+        ) {
 
             const code =
                 jsQR(
@@ -3728,7 +4104,10 @@ function scanQRCode() {
                 );
 
 
-            if(code && code.data) {
+            if (
+                code &&
+                code.data
+            ) {
 
                 handleQRCode(
                     code.data.trim()
@@ -3749,6 +4128,7 @@ function scanQRCode() {
 }
 
 
+
 /* =========================================================
    HANDLE QR CODE
 ========================================================= */
@@ -3757,13 +4137,22 @@ async function handleQRCode(
     qrValue
 ) {
 
+    if (processingScan) {
+        return;
+    }
+
+
     const now =
         Date.now();
 
 
-    if(
-        qrValue === lastScannedCode &&
-        now - lastScanTime < 2500
+    if (
+        qrValue ===
+            lastScannedCode &&
+
+        now -
+            lastScanTime <
+            2500
     ) {
 
         return;
@@ -3773,6 +4162,7 @@ async function handleQRCode(
 
     lastScannedCode =
         qrValue;
+
 
     lastScanTime =
         now;
@@ -3790,17 +4180,23 @@ async function handleQRCode(
         );
 
 
-    if(!student) {
+    if (!student) {
 
         showUnknownQR(
             qrValue
         );
 
+
         beep();
+
 
         return;
 
     }
+
+
+    processingScan =
+        true;
 
 
     try {
@@ -3811,7 +4207,8 @@ async function handleQRCode(
 
     }
 
-    catch(error) {
+
+    catch (error) {
 
         console.error(
             "Attendance error:",
@@ -3856,7 +4253,23 @@ ${escapeHTML(
 
     }
 
+
+    finally {
+
+        setTimeout(
+            () => {
+
+                processingScan =
+                    false;
+
+            },
+            1200
+        );
+
+    }
+
 }
+
 
 
 /* =========================================================
@@ -3911,6 +4324,7 @@ a registered student.
 }
 
 
+
 /* =========================================================
    BEEP
 ========================================================= */
@@ -3924,7 +4338,7 @@ function beep() {
             window.webkitAudioContext;
 
 
-        if(!AudioContext) {
+        if (!AudioContext) {
             return;
         }
 
@@ -3981,12 +4395,14 @@ function beep() {
 
 
         oscillator.stop(
-            audioContext.currentTime + 0.18
+            audioContext.currentTime +
+            0.18
         );
 
     }
 
-    catch(error) {
+
+    catch (error) {
 
         console.warn(
             "Beep could not be played:",
@@ -3996,6 +4412,7 @@ function beep() {
     }
 
 }
+
 
 
 /* =========================================================
@@ -4022,7 +4439,8 @@ function updateDashboard() {
     const present =
         todayRecords.filter(
             record =>
-                record.status === "present" &&
+                record.status ===
+                    "present" &&
                 record.arrival
         ).length;
 
@@ -4030,7 +4448,8 @@ function updateDashboard() {
     const absent =
         todayRecords.filter(
             record =>
-                record.status === "absent"
+                record.status ===
+                "absent"
         ).length;
 
 
@@ -4070,6 +4489,7 @@ function updateDashboard() {
 }
 
 
+
 /* =========================================================
    TODAY PREVIEW
 ========================================================= */
@@ -4093,15 +4513,13 @@ function displayTodayPreview() {
         );
 
 
-    if(records.length === 0) {
+    if (records.length === 0) {
 
         container.innerHTML = `
-
-<div class="empty">
-    No attendance recorded today.
-</div>
-
-`;
+            <div class="empty">
+                No attendance recorded today.
+            </div>
+        `;
 
         return;
 
@@ -4110,7 +4528,7 @@ function displayTodayPreview() {
 
     const sorted =
         [...records].sort(
-            (a,b) =>
+            (a, b) =>
                 String(
                     a.studentName || ""
                 ).localeCompare(
@@ -4128,55 +4546,52 @@ function displayTodayPreview() {
                 let badge;
 
 
-                if(
+                if (
                     record.status ===
                     "absent"
                 ) {
 
                     badge = `
-
-<span class="status-badge status-absent">
-    ABSENT
-</span>
-
-`;
+                        <span class="status-badge status-absent">
+                            ABSENT
+                        </span>
+                    `;
 
                 }
 
-                else if(
+
+                else if (
                     record.leaving
                 ) {
 
                     badge = `
-
-<span class="status-badge status-left">
-    LEFT
-</span>
-
-`;
+                        <span class="status-badge status-left">
+                            LEFT
+                        </span>
+                    `;
 
                 }
+
 
                 else {
 
                     badge = `
-
-<span class="status-badge status-present">
-    PRESENT
-</span>
-
-`;
+                        <span class="status-badge status-present">
+                            PRESENT
+                        </span>
+                    `;
 
                 }
 
 
                 return `
 
-<div class="card report-row">
+<div class="report-row card">
 
     <div class="report-name">
         ${escapeHTML(
-            record.studentName || "Unknown"
+            record.studentName ||
+            "Unknown"
         )}
     </div>
 
@@ -4198,7 +4613,8 @@ function displayTodayPreview() {
 
             <div class="time-value">
                 ${escapeHTML(
-                    record.arrival || "—"
+                    record.arrival ||
+                    "—"
                 )}
             </div>
 
@@ -4212,7 +4628,8 @@ function displayTodayPreview() {
 
             <div class="time-value">
                 ${escapeHTML(
-                    record.leaving || "—"
+                    record.leaving ||
+                    "—"
                 )}
             </div>
 
@@ -4230,6 +4647,7 @@ function displayTodayPreview() {
 }
 
 
+
 /* =========================================================
    REPORT DATE
 ========================================================= */
@@ -4242,7 +4660,7 @@ function setReportDate() {
         );
 
 
-    if(input) {
+    if (input) {
 
         input.value =
             getSriLankaDateString();
@@ -4252,11 +4670,13 @@ function setReportDate() {
 }
 
 
+
 /* =========================================================
    DISPLAY REPORTS
 ========================================================= */
 
-window.displayReports = function() {
+window.displayReports =
+function() {
 
     const dateInput =
         document.getElementById(
@@ -4276,7 +4696,7 @@ window.displayReports = function() {
         );
 
 
-    if(
+    if (
         !dateInput ||
         !summary ||
         !list
@@ -4295,21 +4715,24 @@ window.displayReports = function() {
     const records =
         attendance.filter(
             record =>
-                record.date === selectedDate
+                record.date ===
+                selectedDate
         );
 
 
     const present =
         records.filter(
             record =>
-                record.status === "present"
+                record.status ===
+                "present"
         ).length;
 
 
     const absent =
         records.filter(
             record =>
-                record.status === "absent"
+                record.status ===
+                "absent"
         ).length;
 
 
@@ -4318,6 +4741,7 @@ window.displayReports = function() {
             record =>
                 record.leaving
         ).length;
+
 
 
     summary.innerHTML = `
@@ -4346,6 +4770,7 @@ window.displayReports = function() {
 
         </div>
 
+
         <div class="stat absent-stat">
 
             <div class="stat-number">
@@ -4358,6 +4783,7 @@ window.displayReports = function() {
 
         </div>
 
+
         <div class="stat">
 
             <div class="stat-number">
@@ -4369,6 +4795,7 @@ window.displayReports = function() {
             </div>
 
         </div>
+
 
         <div class="stat">
 
@@ -4389,7 +4816,8 @@ window.displayReports = function() {
 `;
 
 
-    if(records.length === 0) {
+
+    if (records.length === 0) {
 
         list.innerHTML = `
 
@@ -4408,9 +4836,10 @@ window.displayReports = function() {
     }
 
 
+
     const sorted =
         [...records].sort(
-            (a,b) =>
+            (a, b) =>
                 String(
                     a.studentName || ""
                 ).localeCompare(
@@ -4421,6 +4850,7 @@ window.displayReports = function() {
         );
 
 
+
     list.innerHTML =
         sorted.map(
             record => {
@@ -4428,8 +4858,9 @@ window.displayReports = function() {
                 let statusHTML;
 
 
-                if(
-                    record.status === "absent"
+                if (
+                    record.status ===
+                    "absent"
                 ) {
 
                     statusHTML = `
@@ -4442,7 +4873,8 @@ window.displayReports = function() {
 
                 }
 
-                else if(
+
+                else if (
                     record.leaving
                 ) {
 
@@ -4455,6 +4887,7 @@ window.displayReports = function() {
 `;
 
                 }
+
 
                 else {
 
@@ -4469,31 +4902,38 @@ window.displayReports = function() {
                 }
 
 
+
                 return `
 
 <div class="card report-row">
 
     <div class="report-name">
         ${escapeHTML(
-            record.studentName || "Unknown"
+            record.studentName ||
+            "Unknown"
         )}
     </div>
+
 
     <div class="report-date">
 
         🆔 ${escapeHTML(
-            record.studentId || "—"
+            record.studentId ||
+            "—"
         )}
 
         <br>
 
         🏫 ${escapeHTML(
-            record.class || "—"
+            record.class ||
+            "—"
         )}
 
     </div>
 
+
     ${statusHTML}
+
 
     <div class="time-row">
 
@@ -4505,11 +4945,13 @@ window.displayReports = function() {
 
             <div class="time-value">
                 ${escapeHTML(
-                    record.arrival || "—"
+                    record.arrival ||
+                    "—"
                 )}
             </div>
 
         </div>
+
 
         <div class="time-box">
 
@@ -4519,7 +4961,8 @@ window.displayReports = function() {
 
             <div class="time-value">
                 ${escapeHTML(
-                    record.leaving || "—"
+                    record.leaving ||
+                    "—"
                 )}
             </div>
 
@@ -4533,7 +4976,8 @@ window.displayReports = function() {
         style="margin-top:12px;"
         onclick="deleteAttendance('${escapeJS(
             record.id
-        )}')">
+        )}')"
+    >
 
         🗑 Delete Attendance Record
 
@@ -4549,13 +4993,15 @@ window.displayReports = function() {
 };
 
 
+
 /* =========================================================
    DELETE ATTENDANCE
 ========================================================= */
 
-window.deleteAttendance = async function(id) {
+window.deleteAttendance =
+async function(id) {
 
-    if(!currentUser) {
+    if (!currentUser) {
 
         alert(
             "Please sign in first."
@@ -4566,7 +5012,7 @@ window.deleteAttendance = async function(id) {
     }
 
 
-    if(!id) {
+    if (!id) {
 
         alert(
             "Attendance record ID is missing."
@@ -4585,7 +5031,7 @@ window.deleteAttendance = async function(id) {
         );
 
 
-    if(!record) {
+    if (!record) {
 
         alert(
             "Attendance record could not be found."
@@ -4596,21 +5042,33 @@ window.deleteAttendance = async function(id) {
     }
 
 
+    const studentName =
+        record.studentName ||
+        "this student";
+
+
+    const recordDate =
+        record.date ||
+        "this date";
+
+
     const confirmed =
         confirm(
+
             "Delete attendance record?\n\n" +
 
             "Student: " +
-            (record.studentName || "Unknown") +
+            studentName +
 
             "\nDate: " +
-            (record.date || "Unknown") +
+            recordDate +
 
             "\n\nThis will permanently remove this attendance record from Firebase."
+
         );
 
 
-    if(!confirmed) {
+    if (!confirmed) {
         return;
     }
 
@@ -4628,7 +5086,9 @@ window.deleteAttendance = async function(id) {
 
         await loadAttendance();
 
+
         displayReports();
+
 
         updateDashboard();
 
@@ -4639,7 +5099,8 @@ window.deleteAttendance = async function(id) {
 
     }
 
-    catch(error) {
+
+    catch (error) {
 
         console.error(
             "Delete attendance error:",
@@ -4657,6 +5118,7 @@ window.deleteAttendance = async function(id) {
 };
 
 
+
 /* =========================================================
    ESCAPE HTML
 ========================================================= */
@@ -4666,28 +5128,34 @@ function escapeHTML(value) {
     return String(
         value ?? ""
     )
+
         .replace(
             /&/g,
             "&amp;"
         )
+
         .replace(
             /</g,
             "&lt;"
         )
+
         .replace(
             />/g,
             "&gt;"
         )
+
         .replace(
             /"/g,
             "&quot;"
         )
+
         .replace(
             /'/g,
             "&#039;"
         );
 
 }
+
 
 
 /* =========================================================
@@ -4699,28 +5167,34 @@ function escapeJS(value) {
     return String(
         value ?? ""
     )
+
         .replace(
             /\\/g,
             "\\\\"
         )
+
         .replace(
             /'/g,
             "\\'"
         )
+
         .replace(
             /"/g,
             '\\"'
         )
-        .replace(
-            /\n/g,
-            "\\n"
-        )
+
         .replace(
             /\r/g,
             "\\r"
+        )
+
+        .replace(
+            /\n/g,
+            "\\n"
         );
 
 }
+
 
 
 /* =========================================================
@@ -4735,6 +5209,7 @@ document.getElementById(
 );
 
 
+
 /* =========================================================
    REPORT DATE
 ========================================================= */
@@ -4745,6 +5220,7 @@ document.getElementById(
     "change",
     displayReports
 );
+
 
 
 /* =========================================================
@@ -4807,6 +5283,7 @@ document.getElementById(
 );
 
 
+
 /* =========================================================
    STOP CAMERA WHEN PAGE HIDDEN
 ========================================================= */
@@ -4815,7 +5292,7 @@ document.addEventListener(
     "visibilitychange",
     () => {
 
-        if(
+        if (
             document.hidden &&
             scanning
         ) {
@@ -4828,6 +5305,7 @@ document.addEventListener(
 );
 
 
+
 /* =========================================================
    AUTOMATIC ABSENT CHECK
 ========================================================= */
@@ -4835,7 +5313,12 @@ document.addEventListener(
 setInterval(
     async () => {
 
-        if(!currentUser) {
+        if (!currentUser) {
+            return;
+        }
+
+
+        if (TEST_MODE) {
             return;
         }
 
@@ -4844,11 +5327,13 @@ setInterval(
 
             await applyAbsentStatus();
 
+
             updateDashboard();
 
         }
 
-        catch(error) {
+
+        catch (error) {
 
             console.error(
                 "Automatic attendance check failed:",
@@ -4862,6 +5347,7 @@ setInterval(
 );
 
 
+
 /* =========================================================
    PAGE UNLOAD
 ========================================================= */
@@ -4870,7 +5356,7 @@ window.addEventListener(
     "beforeunload",
     () => {
 
-        if(cameraStream) {
+        if (cameraStream) {
 
             cameraStream
                 .getTracks()
@@ -4885,14 +5371,16 @@ window.addEventListener(
 );
 
 
+
 /* =========================================================
    INITIAL SETUP
 ========================================================= */
 
 setReportDate();
 
+
 </script>
+
 
 </body>
 </html>
-```
