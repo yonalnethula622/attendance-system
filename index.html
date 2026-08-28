@@ -3808,6 +3808,20 @@ Thank you.`;
 
 
 /* =========================================================
+   ULTRA FAST QR SCANNER
+========================================================= */
+
+let qrDetector = null;
+let qrCanvas = null;
+let qrContext = null;
+
+let lastSuccessfulQR = "";
+let lastSuccessfulQRTime = 0;
+
+let scannerBusy = false;
+
+
+/* =========================================================
    START CAMERA
 ========================================================= */
 
@@ -3816,7 +3830,6 @@ async function startCamera() {
     if (scanning) {
         return;
     }
-
 
     if (
         !navigator.mediaDevices ||
@@ -3828,11 +3841,21 @@ async function startCamera() {
         );
 
         return;
-
     }
 
-
     try {
+
+        const video =
+            document.getElementById("video");
+
+        /*
+         * Prefer the rear camera.
+         *
+         * High resolution helps small QR codes,
+         * but we don't request an unnecessarily huge
+         * resolution because that can actually slow
+         * decoding on weaker phones.
+         */
 
         cameraStream =
             await navigator.mediaDevices.getUserMedia({
@@ -3841,23 +3864,46 @@ async function startCamera() {
 
                     facingMode: {
                         ideal: "environment"
-                    }
+                    },
 
+                    width: {
+                        ideal: 1280
+                    },
+
+                    height: {
+                        ideal: 720
+                    },
+
+                    frameRate: {
+                        ideal: 30,
+                        max: 60
+                    }
                 },
 
                 audio: false
-
             });
-
-
-        const video =
-            document.getElementById(
-                "video"
-            );
 
 
         video.srcObject =
             cameraStream;
+
+
+        /*
+         * Remove unnecessary video processing.
+         */
+
+        video.setAttribute(
+            "playsinline",
+            ""
+        );
+
+        video.setAttribute(
+            "autoplay",
+            ""
+        );
+
+        video.muted =
+            true;
 
 
         await video.play();
@@ -3865,6 +3911,9 @@ async function startCamera() {
 
         scanning =
             true;
+
+        processingScan =
+            false;
 
 
         document.getElementById(
@@ -3883,14 +3932,81 @@ async function startCamera() {
             "status"
         ).textContent =
             TEST_MODE
-                ? "🧪 TEST MODE: Camera active. Point at a student QR code."
-                : "Camera active. Point at a student QR code.";
+                ? "🧪 TEST MODE: Ultra-fast QR scanner active."
+                : "⚡ Ultra-fast QR scanner active.";
 
 
-        scanQRCode();
+        /*
+         * Prepare canvas once.
+         * We DO NOT create a new canvas/context
+         * for every frame.
+         */
+
+        qrCanvas =
+            document.getElementById("canvas");
+
+
+        qrContext =
+            qrCanvas.getContext(
+                "2d",
+                {
+                    alpha: false,
+                    desynchronized: true,
+                    willReadFrequently: true
+                }
+            );
+
+
+        /*
+         * Use native BarcodeDetector when supported.
+         * It is generally much faster than running
+         * JavaScript QR decoding manually.
+         */
+
+        if (
+            "BarcodeDetector" in window
+        ) {
+
+            try {
+
+                const formats =
+                    await BarcodeDetector.getSupportedFormats();
+
+
+                if (
+                    formats.includes("qr_code")
+                ) {
+
+                    qrDetector =
+                        new BarcodeDetector({
+                            formats: ["qr_code"]
+                        });
+
+                }
+
+            }
+
+            catch (error) {
+
+                console.warn(
+                    "Native QR detector unavailable:",
+                    error
+                );
+
+                qrDetector =
+                    null;
+            }
+
+        }
+
+
+        /*
+         * Start scanner.
+         */
+
+        scanQRCodeFast();
 
     }
-
 
     catch (error) {
 
@@ -3898,6 +4014,10 @@ async function startCamera() {
             "Camera error:",
             error
         );
+
+
+        scanning =
+            false;
 
 
         document.getElementById(
@@ -3926,8 +4046,10 @@ function stopCamera() {
     scanning =
         false;
 
-
     processingScan =
+        false;
+
+    scannerBusy =
         false;
 
 
@@ -3936,7 +4058,6 @@ function stopCamera() {
         cancelAnimationFrame(
             animationFrameId
         );
-
 
         animationFrameId =
             null;
@@ -3949,8 +4070,11 @@ function stopCamera() {
         cameraStream
             .getTracks()
             .forEach(
-                track =>
-                    track.stop()
+                track => {
+
+                    track.stop();
+
+                }
             );
 
 
@@ -3967,6 +4091,8 @@ function stopCamera() {
 
 
     if (video) {
+
+        video.pause();
 
         video.srcObject =
             null;
@@ -4020,10 +4146,28 @@ function stopCamera() {
 
 
 /* =========================================================
-   QR SCANNER LOOP
+   ULTRA FAST SCAN LOOP
 ========================================================= */
 
-function scanQRCode() {
+let lastDecodeTime =
+    0;
+
+
+/*
+ * We don't need to decode at the camera's full
+ * 30/60 FPS.
+ *
+ * Around 20-25 decode attempts per second is already
+ * extremely responsive while leaving CPU available
+ * for the webpage.
+ */
+
+const QR_SCAN_INTERVAL =
+    40;
+
+
+
+async function scanQRCodeFast() {
 
     if (!scanning) {
         return;
@@ -4036,94 +4180,331 @@ function scanQRCode() {
         );
 
 
-    const canvas =
-        document.getElementById(
-            "canvas"
-        );
-
-
     if (
-        video.readyState >=
-        video.HAVE_ENOUGH_DATA &&
-
-        video.videoWidth > 0 &&
-
-        video.videoHeight > 0
+        !video ||
+        video.readyState <
+            video.HAVE_CURRENT_DATA ||
+        video.videoWidth <= 0 ||
+        video.videoHeight <= 0
     ) {
 
-        canvas.width =
-            video.videoWidth;
-
-
-        canvas.height =
-            video.videoHeight;
-
-
-        const context =
-            canvas.getContext(
-                "2d",
-                {
-                    willReadFrequently:
-                        true
-                }
+        animationFrameId =
+            requestAnimationFrame(
+                scanQRCodeFast
             );
 
+        return;
 
-        context.drawImage(
-            video,
-            0,
-            0,
-            canvas.width,
-            canvas.height
-        );
+    }
 
 
-        const imageData =
-            context.getImageData(
-                0,
-                0,
-                canvas.width,
-                canvas.height
+    const now =
+        performance.now();
+
+
+    /*
+     * Don't start another decode while the
+     * previous native detector operation is running.
+     */
+
+    if (
+        !scannerBusy &&
+        now - lastDecodeTime >=
+            QR_SCAN_INTERVAL
+    ) {
+
+        lastDecodeTime =
+            now;
+
+
+        scannerBusy =
+            true;
+
+
+        try {
+
+            await decodeQR(video);
+
+        }
+
+        catch (error) {
+
+            console.warn(
+                "QR decode error:",
+                error
             );
 
+        }
 
-        if (
-            typeof jsQR ===
-            "function"
-        ) {
+        finally {
 
-            const code =
-                jsQR(
-                    imageData.data,
-                    imageData.width,
-                    imageData.height,
-                    {
-                        inversionAttempts:
-                            "dontInvert"
-                    }
-                );
-
-
-            if (
-                code &&
-                code.data
-            ) {
-
-                handleQRCode(
-                    code.data.trim()
-                );
-
-            }
+            scannerBusy =
+                false;
 
         }
 
     }
 
 
-    animationFrameId =
-        requestAnimationFrame(
-            scanQRCode
+    if (scanning) {
+
+        animationFrameId =
+            requestAnimationFrame(
+                scanQRCodeFast
+            );
+
+    }
+
+}
+
+
+
+/* =========================================================
+   QR DECODER
+========================================================= */
+
+async function decodeQR(video) {
+
+    /*
+     * =====================================================
+     * METHOD 1
+     * Native browser BarcodeDetector
+     * =====================================================
+     */
+
+    if (qrDetector) {
+
+        try {
+
+            const detected =
+                await qrDetector.detect(
+                    video
+                );
+
+
+            if (
+                detected &&
+                detected.length > 0
+            ) {
+
+                for (
+                    const item
+                    of detected
+                ) {
+
+                    if (
+                        item.rawValue
+                    ) {
+
+                        processDetectedQR(
+                            item.rawValue
+                        );
+
+                        return;
+
+                    }
+
+                }
+
+            }
+
+        }
+
+        catch (error) {
+
+            /*
+             * If native detection fails,
+             * fall through to jsQR.
+             */
+
+        }
+
+    }
+
+
+    /*
+     * =====================================================
+     * METHOD 2
+     * jsQR fallback
+     * =====================================================
+     */
+
+    if (
+        typeof jsQR !==
+        "function"
+    ) {
+
+        return;
+
+    }
+
+
+    /*
+     * Don't process the full 1280x720 image.
+     *
+     * QR decoding becomes considerably faster
+     * when the image is reduced.
+     */
+
+    const maxWidth =
+        720;
+
+
+    const scale =
+        Math.min(
+            1,
+            maxWidth /
+                video.videoWidth
         );
+
+
+    const width =
+        Math.max(
+            320,
+            Math.floor(
+                video.videoWidth *
+                scale
+            )
+        );
+
+
+    const height =
+        Math.max(
+            240,
+            Math.floor(
+                video.videoHeight *
+                scale
+            )
+        );
+
+
+    /*
+     * Reuse the same canvas.
+     */
+
+    if (
+        qrCanvas.width !== width ||
+        qrCanvas.height !== height
+    ) {
+
+        qrCanvas.width =
+            width;
+
+        qrCanvas.height =
+            height;
+
+    }
+
+
+    qrContext.drawImage(
+        video,
+        0,
+        0,
+        width,
+        height
+    );
+
+
+    const imageData =
+        qrContext.getImageData(
+            0,
+            0,
+            width,
+            height
+        );
+
+
+    const code =
+        jsQR(
+            imageData.data,
+            width,
+            height,
+            {
+                inversionAttempts:
+                    "dontInvert"
+            }
+        );
+
+
+    if (
+        code &&
+        code.data
+    ) {
+
+        processDetectedQR(
+            code.data
+        );
+
+    }
+
+}
+
+
+
+/* =========================================================
+   PROCESS DETECTED QR
+========================================================= */
+
+function processDetectedQR(
+    qrValue
+) {
+
+    qrValue =
+        String(
+            qrValue || ""
+        ).trim();
+
+
+    if (!qrValue) {
+        return;
+    }
+
+
+    const now =
+        Date.now();
+
+
+    /*
+     * Ignore the exact same QR for a short time.
+     *
+     * This prevents:
+     *
+     * QR detected
+     * QR detected
+     * QR detected
+     * QR detected
+     *
+     * from firing multiple attendance actions.
+     */
+
+    if (
+        qrValue ===
+            lastSuccessfulQR &&
+        now -
+            lastSuccessfulQRTime <
+            3000
+    ) {
+
+        return;
+
+    }
+
+
+    lastSuccessfulQR =
+        qrValue;
+
+
+    lastSuccessfulQRTime =
+        now;
+
+
+    /*
+     * Immediately handle the scan.
+     */
+
+    handleQRCode(
+        qrValue
+    );
 
 }
 
@@ -4142,43 +4523,25 @@ async function handleQRCode(
     }
 
 
-    const now =
-        Date.now();
-
-
-    if (
-        qrValue ===
-            lastScannedCode &&
-
-        now -
-            lastScanTime <
-            2500
-    ) {
-
-        return;
-
-    }
-
-
-    lastScannedCode =
-        qrValue;
-
-
-    lastScanTime =
-        now;
-
-
     const student =
         students.find(
-            s =>
-                String(s.id)
+            student =>
+                String(
+                    student.id
+                )
                     .trim()
                     .toLowerCase() ===
-                String(qrValue)
+                String(
+                    qrValue
+                )
                     .trim()
                     .toLowerCase()
         );
 
+
+    /*
+     * Unknown QR.
+     */
 
     if (!student) {
 
@@ -4188,6 +4551,29 @@ async function handleQRCode(
 
 
         beep();
+
+
+        /*
+         * Allow the same physical QR to be
+         * scanned again after a short delay.
+         */
+
+        setTimeout(
+            () => {
+
+                if (
+                    lastSuccessfulQR ===
+                    qrValue
+                ) {
+
+                    lastSuccessfulQR =
+                        "";
+
+                }
+
+            },
+            1500
+        );
 
 
         return;
@@ -4206,7 +4592,6 @@ async function handleQRCode(
         );
 
     }
-
 
     catch (error) {
 
@@ -4256,6 +4641,14 @@ ${escapeHTML(
 
     finally {
 
+        /*
+         * Short lock only.
+         *
+         * The scanner itself continues running,
+         * so there is no need to stop/restart
+         * the camera after every scan.
+         */
+
         setTimeout(
             () => {
 
@@ -4263,7 +4656,7 @@ ${escapeHTML(
                     false;
 
             },
-            1200
+            350
         );
 
     }
@@ -4322,9 +4715,6 @@ a registered student.
 `;
 
 }
-
-
-
 /* =========================================================
    BEEP
 ========================================================= */
