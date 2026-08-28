@@ -68,7 +68,6 @@ body {
     from {
         transform: translate(0,0) scale(1);
     }
-
     to {
         transform: translate(50px,-40px) scale(1.15);
     }
@@ -151,10 +150,6 @@ body {
     text-align: center;
 }
 
-/* =========================
-   LOGIN LOADING / SEARCHING
-========================= */
-
 .login-loading {
     display: none;
     text-align: center;
@@ -168,7 +163,6 @@ body {
     font-weight: 800;
 }
 
-/* Small animated dots */
 .login-loading::after {
     content: "";
     display: inline-block;
@@ -178,26 +172,13 @@ body {
 }
 
 @keyframes loginDots {
-    0% {
-        content: "";
-    }
-
-    25% {
-        content: ".";
-    }
-
-    50% {
-        content: "..";
-    }
-
-    75% {
-        content: "...";
-    }
-
-    100% {
-        content: "";
-    }
+    0% { content: ""; }
+    25% { content: "."; }
+    50% { content: ".."; }
+    75% { content: "..."; }
+    100% { content: ""; }
 }
+
 /* =========================
    APP
 ========================= */
@@ -330,7 +311,6 @@ main {
         opacity: 0;
         transform: translateY(8px);
     }
-
     to {
         opacity: 1;
         transform: translateY(0);
@@ -504,7 +484,6 @@ video {
     0%,100% {
         top: 27%;
     }
-
     50% {
         top: 73%;
     }
@@ -1362,7 +1341,6 @@ import {
     deleteDoc
 } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-firestore.js";
 
-
 /* =========================================================
    FIREBASE CONFIGURATION
 ========================================================= */
@@ -1389,7 +1367,6 @@ const firebaseConfig = {
 
 };
 
-
 /* =========================================================
    INITIALIZE FIREBASE
 ========================================================= */
@@ -1403,68 +1380,61 @@ const auth =
 const db =
     getFirestore(firebaseApp);
 
-
 /* =========================================================
    GLOBAL VARIABLES
 ========================================================= */
 
 let students = [];
-
 let attendance = [];
-
 let editingId = null;
-
 let currentUser = null;
 
 let cameraStream = null;
-
 let scanning = false;
-
 let animationFrameId = null;
 
 let lastScannedCode = "";
-
 let lastScanTime = 0;
-
 
 /* =========================================================
    LOGIN ELEMENTS
 ========================================================= */
 
 const loginButton =
-    document.getElementById(
-        "loginButton"
-    );
+    document.getElementById("loginButton");
 
 const loginEmail =
-    document.getElementById(
-        "loginEmail"
-    );
+    document.getElementById("loginEmail");
 
 const loginPassword =
-    document.getElementById(
-        "loginPassword"
-    );
+    document.getElementById("loginPassword");
 
 const loginError =
-    document.getElementById(
-        "loginError"
-    );
+    document.getElementById("loginError");
 
 const loginSuccess =
-    document.getElementById(
-        "loginSuccess"
-    );
+    document.getElementById("loginSuccess");
 
 const loginLoading =
-    document.getElementById(
-        "loginLoading"
-    );
-
+    document.getElementById("loginLoading");
 
 /* =========================================================
-   LOGIN FUNCTION
-   FIXED: EVENT LISTENER INSTEAD OF INLINE ONCLICK
+   ESCAPE HTML
+========================================================= */
+
+function escapeHTML(value) {
+
+    return String(value ?? "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+
+}
+
+/* =========================================================
+   LOGIN
 ========================================================= */
 
 async function loginUser() {
@@ -1475,13 +1445,8 @@ async function loginUser() {
     const password =
         loginPassword.value;
 
-
-    loginError.style.display =
-        "none";
-
-    loginSuccess.style.display =
-        "none";
-
+    loginError.style.display = "none";
+    loginSuccess.style.display = "none";
 
     if (!email || !password) {
 
@@ -1494,13 +1459,11 @@ async function loginUser() {
         return;
     }
 
-
     loginLoading.style.display =
         "block";
 
     loginButton.disabled =
         true;
-
 
     try {
 
@@ -1509,13 +1472,11 @@ async function loginUser() {
             browserLocalPersistence
         );
 
-
         await signInWithEmailAndPassword(
             auth,
             email,
             password
         );
-
 
         loginSuccess.textContent =
             "🟢 LOGIN SUCCESSFUL";
@@ -1532,24 +1493,19 @@ async function loginUser() {
             error
         );
 
-
         let message =
             "Unable to sign in.";
-
 
         switch(error.code) {
 
             case "auth/invalid-credential":
-
             case "auth/wrong-password":
-
             case "auth/user-not-found":
 
                 message =
                     "Incorrect email or password.";
 
                 break;
-
 
             case "auth/invalid-email":
 
@@ -1558,14 +1514,12 @@ async function loginUser() {
 
                 break;
 
-
             case "auth/user-disabled":
 
                 message =
                     "This account has been disabled.";
 
                 break;
-
 
             case "auth/too-many-requests":
 
@@ -1574,14 +1528,12 @@ async function loginUser() {
 
                 break;
 
-
             case "auth/network-request-failed":
 
                 message =
                     "Network error. Please check your internet connection.";
 
                 break;
-
 
             case "auth/operation-not-allowed":
 
@@ -1590,7 +1542,6 @@ async function loginUser() {
 
                 break;
 
-
             default:
 
                 message =
@@ -1598,7 +1549,6 @@ async function loginUser() {
                     "Unable to sign in.";
 
         }
-
 
         loginError.textContent =
             message;
@@ -1620,44 +1570,32 @@ async function loginUser() {
 
 }
 
-
-/* ACTUAL LOGIN BUTTON EVENT */
-
 loginButton.addEventListener(
     "click",
     loginUser
 );
-
-
-/* PRESS ENTER TO LOGIN */
 
 loginEmail.addEventListener(
     "keydown",
     event => {
 
         if(event.key === "Enter") {
-
             loginUser();
-
         }
 
     }
 );
-
 
 loginPassword.addEventListener(
     "keydown",
     event => {
 
         if(event.key === "Enter") {
-
             loginUser();
-
         }
 
     }
 );
-
 
 /* =========================================================
    AUTHENTICATION STATE
@@ -1672,24 +1610,20 @@ onAuthStateChanged(
             currentUser =
                 user;
 
-
             document.getElementById(
                 "loginPage"
             ).style.display =
                 "none";
-
 
             document.getElementById(
                 "app"
             ).style.display =
                 "block";
 
-
             document.getElementById(
                 "currentUserEmail"
             ).textContent =
                 user.email || "";
-
 
             try {
 
@@ -1705,8 +1639,10 @@ onAuthStateChanged(
                 );
 
                 alert(
-                    "You are signed in, but the student/attendance data could not be loaded.\n\n" +
-                    "Please check your Firestore rules."
+                    "You are signed in, but Firebase data could not be loaded.\n\n" +
+                    "Firebase error:\n" +
+                    error.message +
+                    "\n\nPlease check your Firestore Security Rules."
                 );
 
             }
@@ -1718,12 +1654,10 @@ onAuthStateChanged(
             currentUser =
                 null;
 
-
             document.getElementById(
                 "loginPage"
             ).style.display =
                 "flex";
-
 
             document.getElementById(
                 "app"
@@ -1734,7 +1668,6 @@ onAuthStateChanged(
 
     }
 );
-
 
 /* =========================================================
    LOGOUT
@@ -1770,9 +1703,8 @@ document.getElementById(
     }
 );
 
-
 /* =========================================================
-   REFRESH ALL FIREBASE DATA
+   REFRESH ALL DATA
 ========================================================= */
 
 async function refreshAllData() {
@@ -1780,7 +1712,6 @@ async function refreshAllData() {
     if(!currentUser) {
         return;
     }
-
 
     await loadStudents();
 
@@ -1798,7 +1729,6 @@ async function refreshAllData() {
 
 }
 
-
 /* =========================================================
    LOAD STUDENTS
 ========================================================= */
@@ -1813,25 +1743,15 @@ async function loadStudents() {
             )
         );
 
-
     students =
         snapshot.docs.map(
-            item => {
-
-                return {
-
-                    id:
-                        item.id,
-
-                    ...item.data()
-
-                };
-
-            }
+            item => ({
+                id: item.id,
+                ...item.data()
+            })
         );
 
 }
-
 
 /* =========================================================
    LOAD ATTENDANCE
@@ -1847,25 +1767,15 @@ async function loadAttendance() {
             )
         );
 
-
     attendance =
         snapshot.docs.map(
-            item => {
-
-                return {
-
-                    id:
-                        item.id,
-
-                    ...item.data()
-
-                };
-
-            }
+            item => ({
+                id: item.id,
+                ...item.data()
+            })
         );
 
 }
-
 
 /* =========================================================
    SAVE STUDENT
@@ -1882,30 +1792,25 @@ async function saveStudent() {
         return;
     }
 
-
     const name =
         document.getElementById(
             "studentName"
         ).value.trim();
-
 
     const studentClass =
         document.getElementById(
             "studentClass"
         ).value.trim();
 
-
     const parent =
         document.getElementById(
             "parentName"
         ).value.trim();
 
-
     const phone =
         document.getElementById(
             "parentPhone"
         ).value.trim();
-
 
     if(
         !name ||
@@ -1921,16 +1826,13 @@ async function saveStudent() {
         return;
     }
 
-
     const saveButton =
         document.getElementById(
             "saveStudentButton"
         );
 
-
     saveButton.disabled =
         true;
-
 
     try {
 
@@ -1943,19 +1845,10 @@ async function saveStudent() {
                     editingId
                 ),
                 {
-
-                    name:
-                        name,
-
-                    class:
-                        studentClass,
-
-                    parent:
-                        parent,
-
-                    phone:
-                        phone
-
+                    name: name,
+                    class: studentClass,
+                    parent: parent,
+                    phone: phone
                 }
             );
 
@@ -1966,7 +1859,6 @@ async function saveStudent() {
             const id =
                 await createStudentID();
 
-
             await setDoc(
                 doc(
                     db,
@@ -1974,27 +1866,16 @@ async function saveStudent() {
                     id
                 ),
                 {
-
-                    name:
-                        name,
-
-                    class:
-                        studentClass,
-
-                    parent:
-                        parent,
-
-                    phone:
-                        phone,
-
+                    name: name,
+                    class: studentClass,
+                    parent: parent,
+                    phone: phone,
                     createdAt:
                         new Date().toISOString()
-
                 }
             );
 
         }
-
 
         await loadStudents();
 
@@ -2004,10 +1885,7 @@ async function saveStudent() {
 
         displayStudents();
 
-        showPage(
-            "students"
-        );
-
+        showPage("students");
 
         alert(
             "Student saved successfully."
@@ -2038,16 +1916,13 @@ async function saveStudent() {
 
 }
 
-
 /* =========================================================
    CREATE STUDENT ID
 ========================================================= */
 
 async function createStudentID() {
 
-    let number =
-        1;
-
+    let number = 1;
 
     while(true) {
 
@@ -2055,7 +1930,6 @@ async function createStudentID() {
             "STG-STU-" +
             String(number)
                 .padStart(4,"0");
-
 
         const existing =
             await getDoc(
@@ -2066,20 +1940,17 @@ async function createStudentID() {
                 )
             );
 
-
         if(!existing.exists()) {
 
             return id;
 
         }
 
-
         number++;
 
     }
 
 }
-
 
 /* =========================================================
    DISPLAY STUDENTS
@@ -2092,7 +1963,6 @@ function displayStudents() {
             "studentList"
         );
 
-
     const search =
         document.getElementById(
             "search"
@@ -2100,11 +1970,9 @@ function displayStudents() {
             .trim()
             .toLowerCase();
 
-
     const filtered =
         students.filter(
             student =>
-
                 String(
                     student.name || ""
                 )
@@ -2120,7 +1988,6 @@ function displayStudents() {
                     .includes(search)
         );
 
-
     if(filtered.length === 0) {
 
         list.innerHTML =
@@ -2129,7 +1996,6 @@ function displayStudents() {
         return;
 
     }
-
 
     list.innerHTML =
         filtered.map(
@@ -2187,7 +2053,6 @@ function displayStudents() {
 `
         ).join("");
 
-
     document
         .querySelectorAll(".edit-student")
         .forEach(
@@ -2206,7 +2071,6 @@ function displayStudents() {
 
             }
         );
-
 
     document
         .querySelectorAll(".delete-student")
@@ -2229,7 +2093,6 @@ function displayStudents() {
 
 }
 
-
 /* =========================================================
    EDIT STUDENT
 ========================================================= */
@@ -2243,52 +2106,43 @@ function editStudent(id) {
                 String(id)
         );
 
-
     if(!student) {
         return;
     }
 
-
     editingId =
         student.id;
-
 
     document.getElementById(
         "studentName"
     ).value =
         student.name || "";
 
-
     document.getElementById(
         "studentClass"
     ).value =
         student.class || "";
-
 
     document.getElementById(
         "parentName"
     ).value =
         student.parent || "";
 
-
     document.getElementById(
         "parentPhone"
     ).value =
         student.phone || "";
-
 
     document.getElementById(
         "formTitle"
     ).textContent =
         "✏️ Edit Student";
 
-
     showPage(
         "addStudent"
     );
 
 }
-
 
 /* =========================================================
    DELETE STUDENT
@@ -2303,11 +2157,9 @@ async function deleteStudent(id) {
                 String(id)
         );
 
-
     if(!student) {
         return;
     }
-
 
     const confirmed =
         confirm(
@@ -2316,11 +2168,9 @@ async function deleteStudent(id) {
             "?\n\nThis will remove the student from the student database."
         );
 
-
     if(!confirmed) {
         return;
     }
-
 
     try {
 
@@ -2332,13 +2182,11 @@ async function deleteStudent(id) {
             )
         );
 
-
         await loadStudents();
 
         displayStudents();
 
         updateDashboard();
-
 
         alert(
             "Student deleted."
@@ -2362,7 +2210,6 @@ async function deleteStudent(id) {
 
 }
 
-
 /* =========================================================
    CLEAR FORM
 ========================================================= */
@@ -2371,39 +2218,29 @@ function clearForm() {
 
     document.getElementById(
         "studentName"
-    ).value =
-        "";
-
+    ).value = "";
 
     document.getElementById(
         "studentClass"
-    ).value =
-        "";
-
+    ).value = "";
 
     document.getElementById(
         "parentName"
-    ).value =
-        "";
-
+    ).value = "";
 
     document.getElementById(
         "parentPhone"
-    ).value =
-        "";
-
+    ).value = "";
 
     document.getElementById(
         "formTitle"
     ).textContent =
         "➕ Add New Student";
 
-
     editingId =
         null;
 
 }
-
 
 /* =========================================================
    NAVIGATION
@@ -2426,12 +2263,10 @@ function showPage(
             }
         );
 
-
     const target =
         document.getElementById(
             pageId
         );
-
 
     if(target) {
 
@@ -2440,7 +2275,6 @@ function showPage(
         );
 
     }
-
 
     document
         .querySelectorAll(".nav button")
@@ -2453,7 +2287,6 @@ function showPage(
 
             }
         );
-
 
     if(button) {
 
@@ -2480,13 +2313,11 @@ function showPage(
 
     }
 
-
     if(pageId === "students") {
 
         displayStudents();
 
     }
-
 
     if(pageId === "reports") {
 
@@ -2495,7 +2326,6 @@ function showPage(
     }
 
 }
-
 
 /* =========================================================
    NAV BUTTON EVENTS
@@ -2510,6 +2340,10 @@ document
                 "click",
                 () => {
 
+                    if(button.dataset.page !== "scanner") {
+                        stopCamera();
+                    }
+
                     showPage(
                         button.dataset.page,
                         button
@@ -2521,7 +2355,6 @@ document
         }
     );
 
-
 /* =========================================================
    OPEN SCANNER
 ========================================================= */
@@ -2532,18 +2365,14 @@ function openScanner() {
         "scanner"
     );
 
-
     setTimeout(
         () => {
-
             startCamera();
-
         },
         150
     );
 
 }
-
 
 /* =========================================================
    SRI LANKA CURRENT TIME
@@ -2555,37 +2384,20 @@ function getSriLankaNow() {
         new Intl.DateTimeFormat(
             "en-US",
             {
-                timeZone:
-                    "Asia/Colombo",
-
-                year:
-                    "numeric",
-
-                month:
-                    "2-digit",
-
-                day:
-                    "2-digit",
-
-                hour:
-                    "2-digit",
-
-                minute:
-                    "2-digit",
-
-                second:
-                    "2-digit",
-
-                hour12:
-                    false
+                timeZone: "Asia/Colombo",
+                year: "numeric",
+                month: "2-digit",
+                day: "2-digit",
+                hour: "2-digit",
+                minute: "2-digit",
+                second: "2-digit",
+                hour12: false
             }
         ).formatToParts(
             new Date()
         );
 
-
     const values = {};
-
 
     parts.forEach(
         part => {
@@ -2603,7 +2415,6 @@ function getSriLankaNow() {
         }
     );
 
-
     return new Date(
         Number(values.year),
         Number(values.month) - 1,
@@ -2615,7 +2426,6 @@ function getSriLankaNow() {
 
 }
 
-
 /* =========================================================
    SRI LANKA DATE
 ========================================================= */
@@ -2625,25 +2435,18 @@ function getSriLankaDateString(
 ) {
 
     return (
-
         date.getFullYear() +
-
         "-" +
-
         String(
             date.getMonth() + 1
         ).padStart(2,"0") +
-
         "-" +
-
         String(
             date.getDate()
         ).padStart(2,"0")
-
     );
 
 }
-
 
 /* =========================================================
    SRI LANKA TIME
@@ -2656,22 +2459,14 @@ function getSriLankaTimeString(
     return date.toLocaleTimeString(
         "en-US",
         {
-            hour:
-                "2-digit",
-
-            minute:
-                "2-digit",
-
-            second:
-                "2-digit",
-
-            hour12:
-                true
+            hour: "2-digit",
+            minute: "2-digit",
+            second: "2-digit",
+            hour12: true
         }
     );
 
 }
-
 
 /* =========================================================
    9:00 AM DEADLINE
@@ -2682,29 +2477,21 @@ function isAfterAttendanceDeadline() {
     const now =
         getSriLankaNow();
 
-
     const hours =
         now.getHours();
 
     const minutes =
         now.getMinutes();
 
-
     return (
-
-        hours > 9
-
-        ||
-
+        hours > 9 ||
         (
             hours === 9 &&
             minutes >= 0
         )
-
     );
 
 }
-
 
 /* =========================================================
    MARK ABSENT STUDENTS
@@ -2716,15 +2503,12 @@ async function applyAbsentStatus() {
         return;
     }
 
-
     if(!isAfterAttendanceDeadline()) {
         return;
     }
 
-
     const today =
         getSriLankaDateString();
-
 
     const todayRecords =
         attendance.filter(
@@ -2732,15 +2516,12 @@ async function applyAbsentStatus() {
                 record.date === today
         );
 
-
     const presentIds =
         new Set(
             todayRecords
                 .filter(
                     record =>
-                        record.status ===
-                            "present"
-                        ||
+                        record.status === "present" ||
                         record.arrival
                 )
                 .map(
@@ -2749,7 +2530,6 @@ async function applyAbsentStatus() {
                 )
         );
 
-
     const absentStudents =
         students.filter(
             student =>
@@ -2757,7 +2537,6 @@ async function applyAbsentStatus() {
                     student.id
                 )
         );
-
 
     for(
         const student
@@ -2769,7 +2548,6 @@ async function applyAbsentStatus() {
             "_" +
             today;
 
-
         const attendanceRef =
             doc(
                 db,
@@ -2777,17 +2555,14 @@ async function applyAbsentStatus() {
                 attendanceId
             );
 
-
         const existing =
             await getDoc(
                 attendanceRef
             );
 
-
         if(existing.exists()) {
             continue;
         }
-
 
         const absentRecord = {
 
@@ -2826,7 +2601,6 @@ async function applyAbsentStatus() {
 
         };
 
-
         await setDoc(
             attendanceRef,
             absentRecord
@@ -2834,11 +2608,9 @@ async function applyAbsentStatus() {
 
     }
 
-
     await loadAttendance();
 
 }
-
 
 /* =========================================================
    RECORD ATTENDANCE
@@ -2858,28 +2630,23 @@ async function recordAttendance(
 
     }
 
-
     const now =
         getSriLankaNow();
-
 
     const date =
         getSriLankaDateString(
             now
         );
 
-
     const time =
         getSriLankaTimeString(
             now
         );
 
-
     const attendanceId =
         student.id +
         "_" +
         date;
-
 
     const attendanceRef =
         doc(
@@ -2888,18 +2655,15 @@ async function recordAttendance(
             attendanceId
         );
 
-
     const existing =
         await getDoc(
             attendanceRef
         );
 
-
     /* AFTER 9 AM */
 
     if(
-        !existing.exists()
-        &&
+        !existing.exists() &&
         isAfterAttendanceDeadline()
     ) {
 
@@ -2918,7 +2682,6 @@ async function recordAttendance(
         return;
 
     }
-
 
     /* FIRST SCAN = ARRIVAL */
 
@@ -2958,12 +2721,10 @@ async function recordAttendance(
 
         };
 
-
         await setDoc(
             attendanceRef,
             record
         );
-
 
         await loadAttendance();
 
@@ -2980,10 +2741,8 @@ async function recordAttendance(
 
     }
 
-
     const record =
         existing.data();
-
 
     /* ABSENT STUDENT */
 
@@ -3002,7 +2761,6 @@ async function recordAttendance(
 
     }
 
-
     /* SECOND SCAN = LEAVING */
 
     if(!record.leaving) {
@@ -3010,16 +2768,13 @@ async function recordAttendance(
         await updateDoc(
             attendanceRef,
             {
-
                 leaving:
                     time,
 
                 status:
                     "present"
-
             }
         );
-
 
         await loadAttendance();
 
@@ -3036,7 +2791,6 @@ async function recordAttendance(
 
     }
 
-
     /* BOTH SCANS COMPLETED */
 
     showCompleted(
@@ -3047,7 +2801,6 @@ async function recordAttendance(
     beep();
 
 }
-
 
 /* =========================================================
    SHOW ARRIVAL
@@ -3063,10 +2816,8 @@ function showArrival(
             "scanResult"
         );
 
-
     result.className =
         "result success";
-
 
     result.innerHTML = `
 
@@ -3109,7 +2860,6 @@ function showArrival(
 
 `;
 
-
     document
         .getElementById(
             "arrivalWhatsAppButton"
@@ -3130,7 +2880,6 @@ function showArrival(
 
 }
 
-
 /* =========================================================
    SHOW LEAVING
 ========================================================= */
@@ -3145,10 +2894,8 @@ function showLeaving(
             "scanResult"
         );
 
-
     result.className =
         "result success";
-
 
     result.innerHTML = `
 
@@ -3191,7 +2938,6 @@ function showLeaving(
 
 `;
 
-
     document
         .getElementById(
             "leavingWhatsAppButton"
@@ -3212,7 +2958,6 @@ function showLeaving(
 
 }
 
-
 /* =========================================================
    SHOW ABSENT
 ========================================================= */
@@ -3226,10 +2971,8 @@ function showAbsentScanResult(
             "scanResult"
         );
 
-
     result.className =
         "result warning-result";
-
 
     result.innerHTML = `
 
@@ -3266,7 +3009,6 @@ from ABSENT to PRESENT.
 
 }
 
-
 /* =========================================================
    SHOW COMPLETED
 ========================================================= */
@@ -3281,10 +3023,8 @@ function showCompleted(
             "scanResult"
         );
 
-
     result.className =
         "result";
-
 
     result.innerHTML = `
 
@@ -3325,7 +3065,6 @@ ${escapeHTML(record.leaving || "—")}
 
 `;
 
-
     document
         .getElementById(
             "completedWhatsAppButton"
@@ -3346,7 +3085,6 @@ ${escapeHTML(record.leaving || "—")}
 
 }
 
-
 /* =========================================================
    WHATSAPP
 ========================================================= */
@@ -3365,7 +3103,6 @@ function sendWhatsApp(
                 ""
             );
 
-
     if(!cleanPhone) {
 
         alert(
@@ -3376,26 +3113,18 @@ function sendWhatsApp(
 
     }
 
-
     const date =
         getSriLankaNow()
             .toLocaleDateString(
                 "en-GB",
                 {
-                    day:
-                        "2-digit",
-
-                    month:
-                        "long",
-
-                    year:
-                        "numeric"
+                    day: "2-digit",
+                    month: "long",
+                    year: "numeric"
                 }
             );
 
-
     let message;
-
 
     if(type === "arrival") {
 
@@ -3429,7 +3158,6 @@ Thank you.`;
 
     }
 
-
     const url =
         "https://wa.me/" +
         cleanPhone +
@@ -3438,14 +3166,12 @@ Thank you.`;
             message
         );
 
-
     window.open(
         url,
         "_blank"
     );
 
 }
-
 
 /* =========================================================
    START CAMERA
@@ -3456,7 +3182,6 @@ async function startCamera() {
     if(scanning) {
         return;
     }
-
 
     if(
         !navigator.mediaDevices ||
@@ -3470,7 +3195,6 @@ async function startCamera() {
         return;
 
     }
-
 
     try {
 
@@ -3487,41 +3211,33 @@ async function startCamera() {
 
             });
 
-
         const video =
             document.getElementById(
                 "video"
             );
 
-
         video.srcObject =
             cameraStream;
 
-
         await video.play();
-
 
         scanning =
             true;
-
 
         document.getElementById(
             "startButton"
         ).style.display =
             "none";
 
-
         document.getElementById(
             "stopButton"
         ).style.display =
             "block";
 
-
         document.getElementById(
             "status"
         ).textContent =
             "Camera active. Point at a student QR code.";
-
 
         scanQRCode();
 
@@ -3534,12 +3250,10 @@ async function startCamera() {
             error
         );
 
-
         document.getElementById(
             "status"
         ).textContent =
             "Camera could not be started.";
-
 
         alert(
             "Could not access the camera.\n\n" +
@@ -3550,7 +3264,6 @@ async function startCamera() {
 
 }
 
-
 /* =========================================================
    STOP CAMERA
 ========================================================= */
@@ -3559,7 +3272,6 @@ function stopCamera() {
 
     scanning =
         false;
-
 
     if(animationFrameId) {
 
@@ -3571,7 +3283,6 @@ function stopCamera() {
             null;
 
     }
-
 
     if(cameraStream) {
 
@@ -3587,12 +3298,10 @@ function stopCamera() {
 
     }
 
-
     const video =
         document.getElementById(
             "video"
         );
-
 
     if(video) {
 
@@ -3601,18 +3310,15 @@ function stopCamera() {
 
     }
 
-
     const start =
         document.getElementById(
             "startButton"
         );
 
-
     const stop =
         document.getElementById(
             "stopButton"
         );
-
 
     if(start) {
 
@@ -3621,7 +3327,6 @@ function stopCamera() {
 
     }
 
-
     if(stop) {
 
         stop.style.display =
@@ -3629,12 +3334,10 @@ function stopCamera() {
 
     }
 
-
     const status =
         document.getElementById(
             "status"
         );
-
 
     if(status) {
 
@@ -3644,7 +3347,6 @@ function stopCamera() {
     }
 
 }
-
 
 /* =========================================================
    QR SCANNER LOOP
@@ -3656,18 +3358,15 @@ function scanQRCode() {
         return;
     }
 
-
     const video =
         document.getElementById(
             "video"
         );
 
-
     const canvas =
         document.getElementById(
             "canvas"
         );
-
 
     if(
         video.readyState >=
@@ -3682,7 +3381,6 @@ function scanQRCode() {
         canvas.height =
             video.videoHeight;
 
-
         const context =
             canvas.getContext(
                 "2d",
@@ -3692,7 +3390,6 @@ function scanQRCode() {
                 }
             );
 
-
         context.drawImage(
             video,
             0,
@@ -3701,7 +3398,6 @@ function scanQRCode() {
             canvas.height
         );
 
-
         const imageData =
             context.getImageData(
                 0,
@@ -3709,7 +3405,6 @@ function scanQRCode() {
                 canvas.width,
                 canvas.height
             );
-
 
         if(typeof jsQR === "function") {
 
@@ -3724,7 +3419,6 @@ function scanQRCode() {
                     }
                 );
 
-
             if(code && code.data) {
 
                 handleQRCode(
@@ -3737,14 +3431,12 @@ function scanQRCode() {
 
     }
 
-
     animationFrameId =
         requestAnimationFrame(
             scanQRCode
         );
 
 }
-
 
 /* =========================================================
    HANDLE QR CODE
@@ -3757,7 +3449,6 @@ async function handleQRCode(
     const now =
         Date.now();
 
-
     if(
         qrValue === lastScannedCode &&
         now - lastScanTime < 2500
@@ -3767,13 +3458,11 @@ async function handleQRCode(
 
     }
 
-
     lastScannedCode =
         qrValue;
 
     lastScanTime =
         now;
-
 
     const student =
         students.find(
@@ -3786,7 +3475,6 @@ async function handleQRCode(
                     .toLowerCase()
         );
 
-
     if(!student) {
 
         showUnknownQR(
@@ -3798,7 +3486,6 @@ async function handleQRCode(
         return;
 
     }
-
 
     try {
 
@@ -3815,16 +3502,13 @@ async function handleQRCode(
             error
         );
 
-
         const result =
             document.getElementById(
                 "scanResult"
             );
 
-
         result.className =
             "result error";
-
 
         result.innerHTML = `
 
@@ -3854,7 +3538,6 @@ ${escapeHTML(
 
 }
 
-
 /* =========================================================
    UNKNOWN QR
 ========================================================= */
@@ -3868,10 +3551,8 @@ function showUnknownQR(
             "scanResult"
         );
 
-
     result.className =
         "result error";
-
 
     result.innerHTML = `
 
@@ -3905,7 +3586,6 @@ a registered student.
 
 }
 
-
 /* =========================================================
    BEEP
 ========================================================= */
@@ -3918,62 +3598,49 @@ function beep() {
             window.AudioContext ||
             window.webkitAudioContext;
 
-
         if(!AudioContext) {
             return;
         }
 
-
         const audioContext =
             new AudioContext();
-
 
         const oscillator =
             audioContext.createOscillator();
 
-
         const gain =
             audioContext.createGain();
-
 
         oscillator.type =
             "sine";
 
-
         oscillator.frequency.value =
             880;
-
 
         gain.gain.setValueAtTime(
             0.001,
             audioContext.currentTime
         );
 
-
         gain.gain.exponentialRampToValueAtTime(
             0.18,
             audioContext.currentTime + 0.01
         );
-
 
         gain.gain.exponentialRampToValueAtTime(
             0.001,
             audioContext.currentTime + 0.18
         );
 
-
         oscillator.connect(
             gain
         );
-
 
         gain.connect(
             audioContext.destination
         );
 
-
         oscillator.start();
-
 
         oscillator.stop(
             audioContext.currentTime + 0.18
@@ -3992,7 +3659,6 @@ function beep() {
 
 }
 
-
 /* =========================================================
    DASHBOARD
 ========================================================= */
@@ -4002,17 +3668,14 @@ function updateDashboard() {
     const today =
         getSriLankaDateString();
 
-
     const todayRecords =
         attendance.filter(
             record =>
                 record.date === today
         );
 
-
     const total =
         students.length;
-
 
     const present =
         todayRecords.filter(
@@ -4021,13 +3684,11 @@ function updateDashboard() {
                 record.arrival
         ).length;
 
-
     const absent =
         todayRecords.filter(
             record =>
                 record.status === "absent"
         ).length;
-
 
     const left =
         todayRecords.filter(
@@ -4035,35 +3696,29 @@ function updateDashboard() {
                 record.leaving
         ).length;
 
-
     document.getElementById(
         "totalStudents"
     ).textContent =
         total;
-
 
     document.getElementById(
         "arrivedToday"
     ).textContent =
         present;
 
-
     document.getElementById(
         "absentToday"
     ).textContent =
         absent;
-
 
     document.getElementById(
         "leftToday"
     ).textContent =
         left;
 
-
     displayTodayPreview();
 
 }
-
 
 /* =========================================================
    TODAY PREVIEW
@@ -4076,17 +3731,14 @@ function displayTodayPreview() {
             "todayPreview"
         );
 
-
     const today =
         getSriLankaDateString();
-
 
     const records =
         attendance.filter(
             record =>
                 record.date === today
         );
-
 
     if(records.length === 0) {
 
@@ -4100,7 +3752,6 @@ function displayTodayPreview() {
 
     }
 
-
     const sorted =
         [...records].sort(
             (a,b) =>
@@ -4113,13 +3764,11 @@ function displayTodayPreview() {
                 )
         );
 
-
     container.innerHTML =
         sorted.map(
             record => {
 
                 let badge;
-
 
                 if(
                     record.status ===
@@ -4155,7 +3804,6 @@ function displayTodayPreview() {
                     `;
 
                 }
-
 
                 return `
 
@@ -4216,7 +3864,6 @@ function displayTodayPreview() {
 
 }
 
-
 /* =========================================================
    REPORT DATE
 ========================================================= */
@@ -4228,7 +3875,6 @@ function setReportDate() {
             "reportDate"
         );
 
-
     if(input) {
 
         input.value =
@@ -4238,23 +3884,32 @@ function setReportDate() {
 
 }
 
-
 /* =========================================================
    DISPLAY REPORTS
 ========================================================= */
 
-window.displayReports = function() {
+function displayReports() {
 
     const dateInput =
-        document.getElementById("reportDate");
+        document.getElementById(
+            "reportDate"
+        );
 
     const summary =
-        document.getElementById("reportSummary");
+        document.getElementById(
+            "reportSummary"
+        );
 
     const list =
-        document.getElementById("reportList");
+        document.getElementById(
+            "reportList"
+        );
 
-    if (!dateInput || !summary || !list) {
+    if(
+        !dateInput ||
+        !summary ||
+        !list
+    ) {
         return;
     }
 
@@ -4286,11 +3941,6 @@ window.displayReports = function() {
                 record.leaving
         ).length;
 
-
-    /* =====================================================
-       SUMMARY
-    ===================================================== */
-
     summary.innerHTML = `
 
 <div class="card">
@@ -4317,7 +3967,6 @@ window.displayReports = function() {
 
         </div>
 
-
         <div class="stat absent-stat">
 
             <div class="stat-number">
@@ -4330,7 +3979,6 @@ window.displayReports = function() {
 
         </div>
 
-
         <div class="stat">
 
             <div class="stat-number">
@@ -4342,7 +3990,6 @@ window.displayReports = function() {
             </div>
 
         </div>
-
 
         <div class="stat">
 
@@ -4362,12 +4009,7 @@ window.displayReports = function() {
 
 `;
 
-
-    /* =====================================================
-       NO RECORDS
-    ===================================================== */
-
-    if (records.length === 0) {
+    if(records.length === 0) {
 
         list.innerHTML = `
 
@@ -4384,11 +4026,6 @@ window.displayReports = function() {
         return;
     }
 
-
-    /* =====================================================
-       SORT RECORDS
-    ===================================================== */
-
     const sorted =
         [...records].sort(
             (a, b) =>
@@ -4401,24 +4038,15 @@ window.displayReports = function() {
                 )
         );
 
-
-    /* =====================================================
-       DISPLAY RECORDS
-    ===================================================== */
-
     list.innerHTML =
         sorted.map(
             record => {
 
                 let statusHTML;
 
-
-                /* =========================
-                   STATUS
-                ========================= */
-
-                if (
-                    record.status === "absent"
+                if(
+                    record.status ===
+                    "absent"
                 ) {
 
                     statusHTML = `
@@ -4431,7 +4059,7 @@ window.displayReports = function() {
 
                 }
 
-                else if (
+                else if(
                     record.leaving
                 ) {
 
@@ -4457,11 +4085,6 @@ window.displayReports = function() {
 
                 }
 
-
-                /* =========================
-                   REPORT CARD
-                ========================= */
-
                 return `
 
 <div class="card report-row">
@@ -4471,7 +4094,6 @@ window.displayReports = function() {
             record.studentName || "Unknown"
         )}
     </div>
-
 
     <div class="report-date">
 
@@ -4487,9 +4109,7 @@ window.displayReports = function() {
 
     </div>
 
-
     ${statusHTML}
-
 
     <div class="time-row">
 
@@ -4507,7 +4127,6 @@ window.displayReports = function() {
 
         </div>
 
-
         <div class="time-box">
 
             <div class="time-label">
@@ -4524,15 +4143,11 @@ window.displayReports = function() {
 
     </div>
 
-
-    <!-- DELETE BUTTON -->
-
     <button
-        class="btn danger full"
+        type="button"
+        class="btn danger full delete-attendance"
         style="margin-top:12px;"
-        onclick="deleteAttendance('${escapeJS(
-            record.id
-        )}')">
+        data-id="${escapeHTML(record.id)}">
 
         🗑 Delete Attendance Record
 
@@ -4545,16 +4160,38 @@ window.displayReports = function() {
             }
         ).join("");
 
-};
+    /* =====================================================
+       DELETE ATTENDANCE BUTTON EVENTS
+    ===================================================== */
 
+    document
+        .querySelectorAll(".delete-attendance")
+        .forEach(
+            button => {
+
+                button.addEventListener(
+                    "click",
+                    () => {
+
+                        deleteAttendance(
+                            button.dataset.id
+                        );
+
+                    }
+                );
+
+            }
+        );
+
+}
 
 /* =========================================================
    DELETE ATTENDANCE RECORD
 ========================================================= */
 
-window.deleteAttendance = async function(id) {
+async function deleteAttendance(id) {
 
-    if (!currentUser) {
+    if(!currentUser) {
 
         alert(
             "Please sign in first."
@@ -4563,8 +4200,7 @@ window.deleteAttendance = async function(id) {
         return;
     }
 
-
-    if (!id) {
+    if(!id) {
 
         alert(
             "Attendance record ID is missing."
@@ -4573,7 +4209,6 @@ window.deleteAttendance = async function(id) {
         return;
     }
 
-
     const record =
         attendance.find(
             item =>
@@ -4581,8 +4216,7 @@ window.deleteAttendance = async function(id) {
                 String(id)
         );
 
-
-    if (!record) {
+    if(!record) {
 
         alert(
             "Attendance record could not be found."
@@ -4591,36 +4225,27 @@ window.deleteAttendance = async function(id) {
         return;
     }
 
-
     const studentName =
         record.studentName ||
         "this student";
-
 
     const recordDate =
         record.date ||
         "this date";
 
-
     const confirmed =
         confirm(
             "Delete attendance record?\n\n" +
-
             "Student: " +
             studentName +
-
             "\nDate: " +
             recordDate +
-
             "\n\nThis will permanently remove this attendance record from Firebase."
         );
 
-
-    if (!confirmed) {
-
+    if(!confirmed) {
         return;
     }
-
 
     try {
 
@@ -4632,27 +4257,11 @@ window.deleteAttendance = async function(id) {
             )
         );
 
-
-        /* =========================
-           REFRESH LOCAL DATA
-        ========================= */
-
         await loadAttendance();
-
-
-        /* =========================
-           REFRESH REPORT
-        ========================= */
 
         displayReports();
 
-
-        /* =========================
-           REFRESH DASHBOARD
-        ========================= */
-
         updateDashboard();
-
 
         alert(
             "Attendance record deleted successfully."
@@ -4667,7 +4276,6 @@ window.deleteAttendance = async function(id) {
             error
         );
 
-
         alert(
             "Could not delete the attendance record.\n\n" +
             error.message
@@ -4675,39 +4283,7 @@ window.deleteAttendance = async function(id) {
 
     }
 
-};
-/* =========================================================
-   ESCAPE HTML
-========================================================= */
-
-function escapeHTML(value) {
-
-    return String(
-        value ?? ""
-    )
-        .replace(
-            /&/g,
-            "&amp;"
-        )
-        .replace(
-            /</g,
-            "&lt;"
-        )
-        .replace(
-            />/g,
-            "&gt;"
-        )
-        .replace(
-            /"/g,
-            "&quot;"
-        )
-        .replace(
-            /'/g,
-            "&#039;"
-        );
-
 }
-
 
 /* =========================================================
    SEARCH
@@ -4720,7 +4296,6 @@ document.getElementById(
     displayStudents
 );
 
-
 /* =========================================================
    REPORT DATE
 ========================================================= */
@@ -4731,7 +4306,6 @@ document.getElementById(
     "change",
     displayReports
 );
-
 
 /* =========================================================
    BUTTON EVENTS
@@ -4744,7 +4318,6 @@ document.getElementById(
     openScanner
 );
 
-
 document.getElementById(
     "startButton"
 ).addEventListener(
@@ -4752,14 +4325,12 @@ document.getElementById(
     startCamera
 );
 
-
 document.getElementById(
     "stopButton"
 ).addEventListener(
     "click",
     stopCamera
 );
-
 
 document.getElementById(
     "addStudentButton"
@@ -4776,7 +4347,6 @@ document.getElementById(
     }
 );
 
-
 document.getElementById(
     "saveStudentButton"
 ).addEventListener(
@@ -4784,14 +4354,12 @@ document.getElementById(
     saveStudent
 );
 
-
 document.getElementById(
     "clearFormButton"
 ).addEventListener(
     "click",
     clearForm
 );
-
 
 /* =========================================================
    STOP CAMERA WHEN PAGE HIDDEN
@@ -4813,7 +4381,6 @@ document.addEventListener(
     }
 );
 
-
 /* =========================================================
    AUTOMATIC ABSENT CHECK
 ========================================================= */
@@ -4824,7 +4391,6 @@ setInterval(
         if(!currentUser) {
             return;
         }
-
 
         try {
 
@@ -4847,7 +4413,6 @@ setInterval(
     60000
 );
 
-
 /* =========================================================
    PAGE UNLOAD
 ========================================================= */
@@ -4869,7 +4434,6 @@ window.addEventListener(
 
     }
 );
-
 
 /* =========================================================
    INITIAL SETUP
