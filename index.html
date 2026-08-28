@@ -1,7 +1,7 @@
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -10,1254 +10,646 @@
 <script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.js"></script>
 
 <style>
+*{box-sizing:border-box}
 
-* {
-    box-sizing: border-box;
-}
-
-body {
-    margin: 0;
-    min-height: 100vh;
-    font-family: Arial, Helvetica, sans-serif;
-    color: #173042;
-
+body{
+    margin:0;
+    min-height:100vh;
+    font-family:Arial,Helvetica,sans-serif;
+    color:#173042;
     background:
-        radial-gradient(circle at 10% 10%, rgba(35,155,145,.18), transparent 30%),
-        radial-gradient(circle at 90% 20%, rgba(228,173,62,.18), transparent 30%),
+        radial-gradient(circle at 10% 10%,rgba(35,155,145,.18),transparent 30%),
+        radial-gradient(circle at 90% 20%,rgba(228,173,62,.18),transparent 30%),
         linear-gradient(135deg,#eef8f7,#faf7ef,#edf4fa);
 }
 
-.background {
-    position: fixed;
-    inset: 0;
-    overflow: hidden;
-    pointer-events: none;
-    z-index: -1;
+.background{
+    position:fixed;
+    inset:0;
+    overflow:hidden;
+    pointer-events:none;
+    z-index:-1;
 }
 
-.blob {
-    position: absolute;
-    width: 280px;
-    height: 280px;
-    border-radius: 50%;
-    filter: blur(60px);
-    opacity: .25;
-    animation: float 14s ease-in-out infinite alternate;
+.blob{
+    position:absolute;
+    width:280px;
+    height:280px;
+    border-radius:50%;
+    filter:blur(60px);
+    opacity:.25;
+    animation:float 14s ease-in-out infinite alternate;
 }
 
-.blob1 {
-    background: #54b8ad;
-    top: -100px;
-    left: -80px;
+.blob1{background:#54b8ad;top:-100px;left:-80px}
+.blob2{background:#e9bb59;right:-100px;top:35%;animation-delay:-5s}
+.blob3{background:#729bd0;bottom:-120px;left:35%;animation-delay:-8s}
+
+@keyframes float{
+    from{transform:translate(0,0) scale(1)}
+    to{transform:translate(50px,-40px) scale(1.15)}
 }
 
-.blob2 {
-    background: #e9bb59;
-    right: -100px;
-    top: 35%;
-    animation-delay: -5s;
+header{
+    position:sticky;
+    top:0;
+    z-index:100;
+    background:rgba(255,255,255,.9);
+    backdrop-filter:blur(18px);
+    border-bottom:1px solid rgba(30,50,70,.08);
+    box-shadow:0 4px 20px rgba(20,40,60,.08);
 }
 
-.blob3 {
-    background: #729bd0;
-    bottom: -120px;
-    left: 35%;
-    animation-delay: -8s;
+.header-inner{
+    max-width:1100px;
+    margin:auto;
+    min-height:78px;
+    padding:10px 16px;
+    display:flex;
+    align-items:center;
+    gap:13px;
 }
 
-@keyframes float {
+.logo{
+    width:58px;
+    height:58px;
+    flex-shrink:0;
+    border-radius:50%;
+    overflow:hidden;
+    background:linear-gradient(145deg,#176d73,#239b91);
+    border:4px solid white;
+    box-shadow:0 6px 20px rgba(24,110,110,.25);
+}
 
-    from {
-        transform: translate(0,0) scale(1);
+.logo img{
+    width:100%;
+    height:100%;
+    object-fit:contain;
+    display:block;
+}
+
+.school-title{
+    min-width:0;
+}
+
+.school-title h1{
+    margin:0;
+    font-size:clamp(15px,2.5vw,22px);
+    line-height:1.15;
+    font-weight:900;
+    color:#164e59;
+}
+
+.school-title p{
+    margin:4px 0 0;
+    color:#768394;
+    font-size:11px;
+    letter-spacing:.5px;
+    font-weight:700;
+}
+
+.nav{
+    max-width:1100px;
+    margin:auto;
+    padding:8px 12px;
+    display:flex;
+    gap:7px;
+    overflow-x:auto;
+}
+
+.nav button{
+    flex:1;
+    min-width:78px;
+    border:none;
+    background:rgba(255,255,255,.65);
+    color:#687586;
+    padding:10px 8px;
+    border-radius:12px;
+    font-size:11px;
+    font-weight:800;
+    cursor:pointer;
+}
+
+.nav button.active{
+    color:white;
+    background:linear-gradient(135deg,#176d73,#239b91);
+    box-shadow:0 5px 15px rgba(23,109,115,.22);
+}
+
+main{
+    max-width:1100px;
+    margin:auto;
+    padding:18px 14px 60px;
+}
+
+.page{display:none}
+.page.active{
+    display:block;
+    animation:pageIn .25s ease;
+}
+
+@keyframes pageIn{
+    from{opacity:0;transform:translateY(8px)}
+    to{opacity:1;transform:translateY(0)}
+}
+
+.card{
+    background:rgba(255,255,255,.88);
+    backdrop-filter:blur(16px);
+    border:1px solid rgba(255,255,255,.8);
+    border-radius:20px;
+    padding:20px;
+    margin-bottom:15px;
+    box-shadow:0 8px 30px rgba(35,55,75,.08);
+}
+
+.card-title{
+    font-size:20px;
+    font-weight:900;
+    color:#19354a;
+}
+
+.card-subtitle{
+    margin:4px 0 16px;
+    color:#778394;
+    font-size:13px;
+}
+
+.hero{
+    padding:25px 20px;
+    color:white;
+    border-radius:22px;
+    margin-bottom:15px;
+    background:linear-gradient(135deg,rgba(23,109,115,.96),rgba(35,155,145,.9));
+    box-shadow:0 12px 30px rgba(25,105,110,.22);
+}
+
+.hero h2{
+    margin:0;
+    font-size:clamp(22px,5vw,32px);
+}
+
+.hero p{
+    margin:7px 0 0;
+    opacity:.9;
+    font-size:13px;
+}
+
+.dashboard-grid{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:10px;
+}
+
+.stat{
+    padding:17px 8px;
+    border-radius:16px;
+    background:rgba(248,250,252,.9);
+    text-align:center;
+}
+
+.stat-number{
+    font-size:28px;
+    font-weight:950;
+    color:#176d73;
+}
+
+.stat-label{
+    margin-top:3px;
+    color:#788493;
+    font-size:11px;
+    font-weight:700;
+}
+
+.btn{
+    border:none;
+    border-radius:12px;
+    padding:13px 17px;
+    font-size:13px;
+    font-weight:850;
+    cursor:pointer;
+    transition:.15s;
+}
+
+.btn:hover{transform:translateY(-1px)}
+
+.primary{
+    color:white;
+    background:linear-gradient(135deg,#176d73,#239b91);
+}
+
+.secondary{
+    background:#edf1f5;
+    color:#566273;
+}
+
+.danger{
+    color:white;
+    background:linear-gradient(135deg,#c94545,#df5a5a);
+}
+
+.warning{
+    color:white;
+    background:linear-gradient(135deg,#d99a21,#e7b23e);
+}
+
+.success{
+    color:white;
+    background:linear-gradient(135deg,#269653,#43b96d);
+}
+
+.whatsapp{
+    color:white;
+    background:#25D366;
+}
+
+.full{width:100%}
+
+.video-container{
+    width:100%;
+    max-width:650px;
+    margin:auto;
+    aspect-ratio:4/3;
+    background:#101418;
+    border-radius:20px;
+    overflow:hidden;
+    position:relative;
+}
+
+video{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+}
+
+.scan-frame{
+    position:absolute;
+    width:62%;
+    aspect-ratio:1;
+    top:50%;
+    left:50%;
+    transform:translate(-50%,-50%);
+    border:3px solid white;
+    border-radius:17px;
+    box-shadow:0 0 0 9999px rgba(0,0,0,.25);
+}
+
+.scan-line{
+    position:absolute;
+    width:55%;
+    height:3px;
+    left:22.5%;
+    background:white;
+    animation:scanMove 1.5s ease-in-out infinite;
+}
+
+@keyframes scanMove{
+    0%,100%{top:27%}
+    50%{top:73%}
+}
+
+.camera-buttons{
+    display:flex;
+    gap:8px;
+    margin-top:12px;
+}
+
+.camera-buttons button{flex:1}
+
+.status{
+    text-align:center;
+    margin-top:10px;
+    color:#697587;
+    font-size:13px;
+}
+
+.result{
+    margin-top:14px;
+    padding:20px;
+    text-align:center;
+    border-radius:18px;
+    background:rgba(245,247,250,.92);
+}
+
+.result.success{background:rgba(231,248,238,.94)}
+.result.error{background:rgba(255,238,238,.94)}
+.result.warning-result{background:rgba(255,248,224,.94)}
+
+.result-icon{font-size:35px}
+
+.result-name{
+    margin-top:5px;
+    font-size:23px;
+    font-weight:950;
+}
+
+.result-info{
+    margin-top:5px;
+    color:#697587;
+    line-height:1.8;
+    font-size:13px;
+}
+
+label{
+    display:block;
+    margin-top:13px;
+    margin-bottom:6px;
+    font-size:12px;
+    font-weight:850;
+    color:#425166;
+}
+
+input,select{
+    width:100%;
+    padding:13px 14px;
+    border:1px solid #dbe1e8;
+    border-radius:11px;
+    background:white;
+    color:#25344a;
+    font-size:15px;
+    outline:none;
+}
+
+input:focus,select:focus{
+    border-color:#239b91;
+    box-shadow:0 0 0 3px rgba(35,155,145,.1);
+}
+
+.student-card,.report-row{
+    background:rgba(255,255,255,.9);
+    border:1px solid #e1e6ec;
+    border-radius:16px;
+    padding:15px;
+    margin-top:10px;
+}
+
+.student-name,.report-name{
+    font-size:18px;
+    font-weight:900;
+}
+
+.student-id{
+    display:inline-block;
+    margin-top:5px;
+    padding:4px 9px;
+    border-radius:7px;
+    background:#edf7f6;
+    color:#176d73;
+    font-size:11px;
+    font-weight:850;
+}
+
+.student-info{
+    margin-top:8px;
+    color:#697587;
+    font-size:13px;
+    line-height:1.8;
+}
+
+.student-actions{
+    display:flex;
+    gap:7px;
+    margin-top:10px;
+}
+
+.student-actions .btn{flex:1}
+
+.report-date{
+    margin-top:3px;
+    color:#7b8695;
+    font-size:11px;
+}
+
+.time-row{
+    display:flex;
+    gap:8px;
+    margin-top:10px;
+}
+
+.time-box{
+    flex:1;
+    padding:11px;
+    border-radius:10px;
+    background:#f4f6f9;
+    text-align:center;
+}
+
+.time-label{
+    color:#7a8492;
+    font-size:10px;
+    font-weight:750;
+}
+
+.time-value{
+    margin-top:4px;
+    font-size:14px;
+    font-weight:900;
+}
+
+.empty{
+    padding:28px 10px;
+    text-align:center;
+    color:#7b8695;
+}
+
+.absent-row{
+    border-left:5px solid #e0a52f;
+    background:#fffaf0;
+}
+
+.present-row{
+    border-left:5px solid #239b91;
+}
+
+.absent-badge{
+    display:inline-block;
+    margin-top:7px;
+    padding:5px 9px;
+    border-radius:8px;
+    background:#fff0c8;
+    color:#946b00;
+    font-size:11px;
+    font-weight:900;
+}
+
+.present-badge{
+    display:inline-block;
+    margin-top:7px;
+    padding:5px 9px;
+    border-radius:8px;
+    background:#e4f7ed;
+    color:#237b48;
+    font-size:11px;
+    font-weight:900;
+}
+
+.sync-status{
+    position:fixed;
+    right:12px;
+    bottom:12px;
+    z-index:200;
+    padding:9px 13px;
+    border-radius:20px;
+    background:rgba(255,255,255,.94);
+    box-shadow:0 5px 20px rgba(0,0,0,.12);
+    font-size:11px;
+    font-weight:800;
+    color:#667382;
+}
+
+canvas{display:none}
+
+@media(max-width:700px){
+    .dashboard-grid{
+        grid-template-columns:repeat(2,1fr);
+    }
+}
+
+@media(max-width:520px){
+    .header-inner{
+        min-height:70px;
+        padding:9px 12px;
     }
 
-    to {
-        transform: translate(50px,-40px) scale(1.15);
+    .logo{
+        width:50px;
+        height:50px;
+        border-width:3px;
     }
 
-}
+    .school-title h1{font-size:14px}
+    .school-title p{font-size:8px}
 
-header {
-    position: sticky;
-    top: 0;
-    z-index: 100;
-
-    background: rgba(255,255,255,.9);
-    backdrop-filter: blur(18px);
-
-    border-bottom: 1px solid rgba(30,50,70,.08);
-
-    box-shadow:
-        0 4px 20px rgba(20,40,60,.08);
-}
-
-.header-inner {
-    max-width: 1100px;
-    margin: auto;
-
-    min-height: 78px;
-    padding: 10px 16px;
-
-    display: flex;
-    align-items: center;
-    gap: 13px;
-}
-
-.logo {
-    width: 58px;
-    height: 58px;
-
-    flex-shrink: 0;
-
-    border-radius: 50%;
-    overflow: hidden;
-
-    background: linear-gradient(145deg,#176d73,#239b91);
-
-    border: 4px solid white;
-
-    box-shadow:
-        0 6px 20px rgba(24,110,110,.25);
-}
-
-.logo img {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-    display: block;
-}
-
-.school-title {
-    min-width: 0;
-}
-
-.school-title h1 {
-    margin: 0;
-
-    font-size: clamp(15px,2.5vw,22px);
-
-    line-height: 1.15;
-
-    font-weight: 900;
-
-    color: #164e59;
-}
-
-.school-title p {
-    margin: 4px 0 0;
-
-    color: #768394;
-
-    font-size: 11px;
-
-    letter-spacing: .5px;
-
-    font-weight: 700;
-}
-
-.user-bar {
-    max-width: 1100px;
-    margin: auto;
-
-    padding: 5px 14px 8px;
-
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-
-    gap: 10px;
-
-    font-size: 11px;
-}
-
-.user-status {
-    color: #687586;
-    font-weight: 700;
-}
-
-.logout-btn {
-    border: none;
-    border-radius: 8px;
-    padding: 7px 10px;
-
-    background: #edf1f5;
-    color: #566273;
-
-    font-size: 11px;
-    font-weight: 800;
-
-    cursor: pointer;
-}
-
-.nav {
-    max-width: 1100px;
-    margin: auto;
-
-    padding: 8px 12px;
-
-    display: flex;
-    gap: 7px;
-
-    overflow-x: auto;
-}
-
-.nav button {
-    flex: 1;
-
-    min-width: 78px;
-
-    border: none;
-
-    background: rgba(255,255,255,.65);
-
-    color: #687586;
-
-    padding: 10px 8px;
-
-    border-radius: 12px;
-
-    font-size: 11px;
-    font-weight: 800;
-
-    cursor: pointer;
-}
-
-.nav button.active {
-    color: white;
-
-    background:
-        linear-gradient(135deg,#176d73,#239b91);
-
-    box-shadow:
-        0 5px 15px rgba(23,109,115,.22);
-}
-
-main {
-    max-width: 1100px;
-
-    margin: auto;
-
-    padding: 18px 14px 60px;
-}
-
-.page {
-    display: none;
-}
-
-.page.active {
-    display: block;
-
-    animation:
-        pageIn .25s ease;
-}
-
-@keyframes pageIn {
-
-    from {
-        opacity: 0;
-        transform: translateY(8px);
+    main{
+        padding:12px 10px 40px;
     }
 
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+    .card{padding:15px}
 
-}
-
-.card {
-    background: rgba(255,255,255,.88);
-
-    backdrop-filter: blur(16px);
-
-    border: 1px solid rgba(255,255,255,.8);
-
-    border-radius: 20px;
-
-    padding: 20px;
-
-    margin-bottom: 15px;
-
-    box-shadow:
-        0 8px 30px rgba(35,55,75,.08);
-}
-
-.card-title {
-    font-size: 20px;
-    font-weight: 900;
-    color: #19354a;
-}
-
-.card-subtitle {
-    margin: 4px 0 16px;
-
-    color: #778394;
-
-    font-size: 13px;
-}
-
-.hero {
-    padding: 25px 20px;
-
-    color: white;
-
-    border-radius: 22px;
-
-    margin-bottom: 15px;
-
-    background:
-        linear-gradient(
-            135deg,
-            rgba(23,109,115,.96),
-            rgba(35,155,145,.9)
-        );
-
-    box-shadow:
-        0 12px 30px rgba(25,105,110,.22);
-}
-
-.hero h2 {
-    margin: 0;
-
-    font-size:
-        clamp(22px,5vw,32px);
-}
-
-.hero p {
-    margin: 7px 0 0;
-
-    opacity: .9;
-
-    font-size: 13px;
-}
-
-.dashboard-grid {
-    display: grid;
-
-    grid-template-columns:
-        repeat(4,1fr);
-
-    gap: 10px;
-}
-
-.stat {
-    padding: 17px 8px;
-
-    border-radius: 16px;
-
-    background: rgba(248,250,252,.9);
-
-    text-align: center;
-}
-
-.stat-number {
-    font-size: 28px;
-
-    font-weight: 950;
-
-    color: #176d73;
-}
-
-.stat-label {
-    margin-top: 3px;
-
-    color: #788493;
-
-    font-size: 11px;
-
-    font-weight: 700;
-}
-
-.btn {
-    border: none;
-
-    border-radius: 12px;
-
-    padding: 13px 17px;
-
-    font-size: 13px;
-
-    font-weight: 850;
-
-    cursor: pointer;
-
-    transition: .15s;
-}
-
-.btn:hover {
-    transform: translateY(-1px);
-}
-
-.primary {
-    color: white;
-
-    background:
-        linear-gradient(135deg,#176d73,#239b91);
-}
-
-.secondary {
-    background: #edf1f5;
-
-    color: #566273;
-}
-
-.danger {
-    color: white;
-
-    background:
-        linear-gradient(135deg,#c94545,#df5a5a);
-}
-
-.absent {
-    color: white;
-
-    background:
-        linear-gradient(135deg,#e09b28,#d27c20);
-}
-
-.whatsapp {
-    color: white;
-
-    background: #25D366;
-}
-
-.full {
-    width: 100%;
-}
-
-.video-container {
-    width: 100%;
-
-    max-width: 650px;
-
-    margin: auto;
-
-    aspect-ratio: 4 / 3;
-
-    background: #101418;
-
-    border-radius: 20px;
-
-    overflow: hidden;
-
-    position: relative;
-}
-
-video {
-    width: 100%;
-    height: 100%;
-
-    object-fit: cover;
-}
-
-.scan-frame {
-    position: absolute;
-
-    width: 62%;
-
-    aspect-ratio: 1;
-
-    top: 50%;
-    left: 50%;
-
-    transform:
-        translate(-50%,-50%);
-
-    border:
-        3px solid white;
-
-    border-radius: 17px;
-
-    box-shadow:
-        0 0 0 9999px rgba(0,0,0,.25);
-}
-
-.scan-line {
-    position: absolute;
-
-    width: 55%;
-
-    height: 3px;
-
-    left: 22.5%;
-
-    background: white;
-
-    animation:
-        scanMove 1.5s ease-in-out infinite;
-}
-
-@keyframes scanMove {
-
-    0%,100% {
-        top: 27%;
-    }
-
-    50% {
-        top: 73%;
-    }
-
-}
-
-.camera-buttons {
-    display: flex;
-
-    gap: 8px;
-
-    margin-top: 12px;
-}
-
-.camera-buttons button {
-    flex: 1;
-}
-
-.status {
-    text-align: center;
-
-    margin-top: 10px;
-
-    color: #697587;
-
-    font-size: 13px;
-}
-
-.result {
-    margin-top: 14px;
-
-    padding: 20px;
-
-    text-align: center;
-
-    border-radius: 18px;
-
-    background:
-        rgba(245,247,250,.92);
-}
-
-.result.success {
-    background:
-        rgba(231,248,238,.94);
-}
-
-.result.error {
-    background:
-        rgba(255,238,238,.94);
-}
-
-.result.absent-result {
-    background:
-        rgba(255,244,218,.95);
-}
-
-.result-icon {
-    font-size: 35px;
-}
-
-.result-name {
-    margin-top: 5px;
-
-    font-size: 23px;
-
-    font-weight: 950;
-}
-
-.result-info {
-    margin-top: 5px;
-
-    color: #697587;
-
-    line-height: 1.8;
-
-    font-size: 13px;
-}
-
-label {
-    display: block;
-
-    margin-top: 13px;
-    margin-bottom: 6px;
-
-    font-size: 12px;
-
-    font-weight: 850;
-
-    color: #425166;
-}
-
-input,
-select {
-    width: 100%;
-
-    padding: 13px 14px;
-
-    border:
-        1px solid #dbe1e8;
-
-    border-radius: 11px;
-
-    background: white;
-
-    color: #25344a;
-
-    font-size: 15px;
-
-    outline: none;
-}
-
-input:focus,
-select:focus {
-    border-color: #239b91;
-
-    box-shadow:
-        0 0 0 3px
-        rgba(35,155,145,.1);
-}
-
-.student-card,
-.report-row {
-    background:
-        rgba(255,255,255,.9);
-
-    border:
-        1px solid #e1e6ec;
-
-    border-radius: 16px;
-
-    padding: 15px;
-
-    margin-top: 10px;
-}
-
-.student-name,
-.report-name {
-    font-size: 18px;
-
-    font-weight: 900;
-}
-
-.student-id {
-    display: inline-block;
-
-    margin-top: 5px;
-
-    padding: 4px 9px;
-
-    border-radius: 7px;
-
-    background: #edf7f6;
-
-    color: #176d73;
-
-    font-size: 11px;
-
-    font-weight: 850;
-}
-
-.student-info {
-    margin-top: 8px;
-
-    color: #697587;
-
-    font-size: 13px;
-
-    line-height: 1.8;
-}
-
-.student-actions {
-    display: flex;
-
-    gap: 7px;
-
-    margin-top: 10px;
-}
-
-.student-actions .btn {
-    flex: 1;
-}
-
-.report-date {
-    margin-top: 3px;
-
-    color: #7b8695;
-
-    font-size: 11px;
-}
-
-.time-row {
-    display: flex;
-
-    gap: 8px;
-
-    margin-top: 10px;
-}
-
-.time-box {
-    flex: 1;
-
-    padding: 11px;
-
-    border-radius: 10px;
-
-    background: #f4f6f9;
-
-    text-align: center;
-}
-
-.time-label {
-    color: #7a8492;
-
-    font-size: 10px;
-
-    font-weight: 750;
-}
-
-.time-value {
-    margin-top: 4px;
-
-    font-size: 14px;
-
-    font-weight: 900;
-}
-
-.status-badge {
-    display: inline-block;
-
-    margin-top: 8px;
-
-    padding: 5px 9px;
-
-    border-radius: 8px;
-
-    font-size: 10px;
-
-    font-weight: 900;
-}
-
-.status-present {
-    background: #e4f6eb;
-    color: #23844b;
-}
-
-.status-absent {
-    background: #fff0d1;
-    color: #a56512;
-}
-
-.status-left {
-    background: #fce5e5;
-    color: #a13c3c;
-}
-
-.empty {
-    padding: 28px 10px;
-
-    text-align: center;
-
-    color: #7b8695;
-}
-
-.login-screen {
-    position: fixed;
-
-    inset: 0;
-
-    z-index: 9999;
-
-    display: flex;
-
-    align-items: center;
-
-    justify-content: center;
-
-    padding: 20px;
-
-    background:
-        linear-gradient(
-            135deg,
-            #eef8f7,
-            #faf7ef,
-            #edf4fa
-        );
-}
-
-.login-box {
-    width: 100%;
-    max-width: 420px;
-
-    background: rgba(255,255,255,.95);
-
-    border-radius: 22px;
-
-    padding: 28px;
-
-    box-shadow:
-        0 15px 50px
-        rgba(30,60,80,.15);
-}
-
-.login-logo {
-    width: 75px;
-    height: 75px;
-
-    margin: 0 auto 15px;
-
-    border-radius: 50%;
-
-    overflow: hidden;
-
-    border: 4px solid white;
-
-    box-shadow:
-        0 5px 20px
-        rgba(24,110,110,.2);
-}
-
-.login-logo img {
-    width: 100%;
-    height: 100%;
-
-    object-fit: contain;
-}
-
-.login-title {
-    text-align: center;
-
-    color: #164e59;
-
-    font-size: 20px;
-
-    font-weight: 950;
-}
-
-.login-subtitle {
-    text-align: center;
-
-    color: #778394;
-
-    font-size: 12px;
-
-    margin-top: 5px;
-
-    margin-bottom: 20px;
-}
-
-.login-error {
-    margin-top: 12px;
-
-    padding: 10px;
-
-    border-radius: 10px;
-
-    background: #fff0f0;
-
-    color: #b53d3d;
-
-    font-size: 12px;
-
-    text-align: center;
-
-    display: none;
-}
-
-.loading-screen {
-    position: fixed;
-
-    inset: 0;
-
-    z-index: 10000;
-
-    background: white;
-
-    display: flex;
-
-    align-items: center;
-
-    justify-content: center;
-
-    flex-direction: column;
-
-    gap: 12px;
-
-    color: #176d73;
-
-    font-weight: 800;
-}
-
-canvas {
-    display: none;
-}
-
-@media(max-width:650px) {
-
-    .dashboard-grid {
-        grid-template-columns:
-            repeat(2,1fr);
-    }
-
-}
-
-@media(max-width:520px) {
-
-    .header-inner {
-        min-height: 70px;
-
-        padding: 9px 12px;
-    }
-
-    .logo {
-        width: 50px;
-        height: 50px;
-
-        border-width: 3px;
-    }
-
-    .school-title h1 {
-        font-size: 14px;
-    }
-
-    .school-title p {
-        font-size: 8px;
-    }
-
-    main {
-        padding: 12px 10px 40px;
-    }
-
-    .card {
-        padding: 15px;
-    }
-
-    .stat {
-        padding: 13px 4px;
-    }
-
-    .stat-number {
-        font-size: 23px;
-    }
+    .stat{padding:13px 4px}
+    .stat-number{font-size:23px}
 
     .time-row,
     .camera-buttons,
-    .student-actions {
-        flex-direction: column;
+    .student-actions{
+        flex-direction:column;
     }
-
 }
-
 </style>
 </head>
 
 <body>
 
-<!-- =====================================================
-     LOADING
-===================================================== -->
-
-<div id="loadingScreen" class="loading-screen">
-
-<div style="font-size:35px;">☁️</div>
-
-<div>Connecting to STG Attendance...</div>
-
-</div>
-
-
-<!-- =====================================================
-     LOGIN
-===================================================== -->
-
-<div id="loginScreen" class="login-screen" style="display:none;">
-
-<div class="login-box">
-
-<div class="login-logo">
-
-<img
-    src="school-logo.png"
-    alt="School Logo"
->
-
-</div>
-
-<div class="login-title">
-ST. THERESA'S GEMS
-</div>
-
-<div class="login-subtitle">
-SMART ATTENDANCE MANAGEMENT SYSTEM
-</div>
-
-<label>Email</label>
-
-<input
-    id="loginEmail"
-    type="email"
-    placeholder="Enter your Firebase email"
->
-
-<label>Password</label>
-
-<input
-    id="loginPassword"
-    type="password"
-    placeholder="Enter your password"
->
-
-<button
-    class="btn primary full"
-    style="margin-top:18px"
-    onclick="loginUser()"
->
-
-🔐 SIGN IN
-
-</button>
-
-<div
-    id="loginError"
-    class="login-error"
-></div>
-
-</div>
-
-</div>
-
-
-<!-- =====================================================
-     MAIN APP
-===================================================== -->
-
-<div id="app" style="display:none;">
-
 <div class="background">
-
-<div class="blob blob1"></div>
-<div class="blob blob2"></div>
-<div class="blob blob3"></div>
-
+    <div class="blob blob1"></div>
+    <div class="blob blob2"></div>
+    <div class="blob blob3"></div>
 </div>
-
 
 <header>
 
 <div class="header-inner">
 
 <div class="logo">
-
-<img
-    src="school-logo.png"
-    alt="School Logo"
->
-
+    <img src="school-logo.png" alt="School Logo">
 </div>
 
 <div class="school-title">
-
-<h1>
-ST. THERESA'S GEMS INTERNATIONAL PRESCHOOL
-</h1>
-
-<p>
-SMART ATTENDANCE MANAGEMENT SYSTEM
-</p>
-
+    <h1>ST. THERESA'S GEMS INTERNATIONAL PRESCHOOL</h1>
+    <p>SMART ATTENDANCE MANAGEMENT SYSTEM</p>
 </div>
 
 </div>
-
-
-<div class="user-bar">
-
-<div class="user-status">
-
-☁️ <span id="userEmail">Connected</span>
-
-</div>
-
-<button
-    class="logout-btn"
-    onclick="logoutUser()"
->
-
-Sign Out
-
-</button>
-
-</div>
-
 
 <nav class="nav">
 
-<button
-    class="active"
-    onclick="showPage('dashboard',this)"
->
-
+<button class="active" onclick="showPage('dashboard',this)">
 🏠<br>Home
-
 </button>
 
-<button
-    onclick="showPage('scanner',this)"
->
-
+<button onclick="showPage('scanner',this)">
 📷<br>Scan
-
 </button>
 
-<button
-    onclick="showPage('students',this)"
->
-
+<button onclick="showPage('students',this)">
 👧<br>Students
-
 </button>
 
-<button
-    onclick="showPage('reports',this)"
->
-
+<button onclick="showPage('reports',this)">
 📊<br>Reports
-
 </button>
 
 </nav>
 
 </header>
 
-
 <main>
 
+<!-- DASHBOARD -->
 
-<!-- =====================================================
-     DASHBOARD
-===================================================== -->
-
-<section
-    id="dashboard"
-    class="page active"
->
+<section id="dashboard" class="page active">
 
 <div class="hero">
-
-<h2>
-Good Day 👋
-</h2>
-
-<p>
-Welcome to the St. Theresa's Gems attendance management system.
-</p>
-
+<h2>Good Day 👋</h2>
+<p>Welcome to the St. Theresa's Gems attendance management system.</p>
 </div>
-
 
 <div class="card">
 
-<div class="card-title">
-Today's Overview
-</div>
+<div class="card-title">Today's Overview</div>
 
 <div class="card-subtitle">
-Live attendance statistics.
+Attendance statistics for today.
 </div>
-
 
 <div class="dashboard-grid">
 
 <div class="stat">
-
-<div
-    id="totalStudents"
-    class="stat-number"
->
-0
+<div id="totalStudents" class="stat-number">0</div>
+<div class="stat-label">TOTAL STUDENTS</div>
 </div>
-
-<div class="stat-label">
-TOTAL STUDENTS
-</div>
-
-</div>
-
 
 <div class="stat">
-
-<div
-    id="arrivedToday"
-    class="stat-number"
->
-0
+<div id="arrivedToday" class="stat-number">0</div>
+<div class="stat-label">ARRIVED</div>
 </div>
-
-<div class="stat-label">
-ARRIVED
-</div>
-
-</div>
-
 
 <div class="stat">
-
-<div
-    id="leftToday"
-    class="stat-number"
->
-0
+<div id="leftToday" class="stat-number">0</div>
+<div class="stat-label">LEFT</div>
 </div>
-
-<div class="stat-label">
-LEFT
-</div>
-
-</div>
-
 
 <div class="stat">
-
-<div
-    id="absentToday"
-    class="stat-number"
->
-0
-</div>
-
-<div class="stat-label">
-ABSENT
+<div id="absentToday" class="stat-number">0</div>
+<div class="stat-label">ABSENT</div>
 </div>
 
 </div>
-
 </div>
-
-</div>
-
 
 <div class="card">
 
-<div class="card-title">
-Quick Attendance
-</div>
+<div class="card-title">Quick Attendance</div>
 
 <div class="card-subtitle">
-Scan a student's QR code to record attendance.
+Scan a student's QR code or mark students absent.
 </div>
 
-<button
-    class="btn primary full"
-    onclick="openScanner()"
->
-
+<button class="btn primary full" onclick="openScanner()">
 📷 START QR SCANNER
+</button>
 
+<br><br>
+
+<button class="btn warning full" onclick="openAbsentPage()">
+🚫 MARK ABSENT STUDENTS
 </button>
 
 </div>
 
-
 <div class="card">
 
-<div class="card-title">
-Today's Attendance
-</div>
+<div class="card-title">Today's Attendance</div>
 
 <div id="todayPreview"></div>
 
@@ -1266,93 +658,50 @@ Today's Attendance
 </section>
 
 
-<!-- =====================================================
-     SCANNER
-===================================================== -->
+<!-- SCANNER -->
 
-<section
-    id="scanner"
-    class="page"
->
+<section id="scanner" class="page">
 
 <div class="card">
 
-<div class="card-title">
-📷 QR Attendance Scanner
-</div>
+<div class="card-title">📷 QR Attendance Scanner</div>
 
 <div class="card-subtitle">
 Place the student's QR code inside the scanning frame.
 </div>
 
-
 <div class="video-container">
 
-<video
-    id="video"
-    autoplay
-    muted
-    playsinline
-></video>
+<video id="video" autoplay muted playsinline></video>
 
 <div class="scan-frame"></div>
-
 <div class="scan-line"></div>
 
 </div>
 
-
 <div class="camera-buttons">
 
-<button
-    id="startButton"
-    class="btn primary"
-    onclick="startCamera()"
->
-
+<button id="startButton" class="btn primary" onclick="startCamera()">
 📷 Start Camera
-
 </button>
 
-
-<button
-    id="stopButton"
-    class="btn danger"
-    onclick="stopCamera()"
-    style="display:none"
->
-
+<button id="stopButton" class="btn danger" onclick="stopCamera()" style="display:none">
 ⏹ Stop Camera
-
 </button>
 
 </div>
 
-
-<div
-    id="status"
-    class="status"
->
-
+<div id="status" class="status">
 Camera not started.
-
 </div>
 
 </div>
 
+<div id="scanResult" class="result">
 
-<div
-    id="scanResult"
-    class="result"
->
+<div class="result-icon">📷</div>
 
-<div class="result-icon">
-📷
-</div>
-
-<div class="result-name">
-Ready
-</div>
+<div class="result-name">Ready</div>
 
 <div class="result-info">
 Start the camera to begin scanning.
@@ -1360,53 +709,35 @@ Start the camera to begin scanning.
 
 </div>
 
-
 <canvas id="canvas"></canvas>
 
 </section>
 
 
-<!-- =====================================================
-     STUDENTS
-===================================================== -->
+<!-- STUDENTS -->
 
-<section
-    id="students"
-    class="page"
->
+<section id="students" class="page">
 
 <div class="card">
 
-<div class="card-title">
-👧 Student Management
-</div>
+<div class="card-title">👧 Student Management</div>
 
 <div class="card-subtitle">
-Shared student database.
+Add and manage student information.
 </div>
 
-
-<input
-    id="search"
-    placeholder="🔎 Search student or Student ID..."
-    oninput="displayStudents()"
->
-
+<input id="search"
+placeholder="🔎 Search student or Student ID..."
+oninput="displayStudents()">
 
 <div id="studentList"></div>
 
 </div>
 
-
 <div class="card">
 
-<button
-    class="btn primary full"
-    onclick="openAddStudent()"
->
-
+<button class="btn primary full" onclick="openAddStudent()">
 ➕ ADD NEW STUDENT
-
 </button>
 
 </div>
@@ -1414,51 +745,29 @@ Shared student database.
 </section>
 
 
-<!-- =====================================================
-     ADD STUDENT
-===================================================== -->
+<!-- ADD STUDENT -->
 
-<section
-    id="addStudent"
-    class="page"
->
+<section id="addStudent" class="page">
 
 <div class="card">
 
-<div
-    id="formTitle"
-    class="card-title"
->
-
+<div id="formTitle" class="card-title">
 ➕ Add New Student
-
 </div>
-
 
 <div class="card-subtitle">
 Enter the student's information.
 </div>
 
+<label>Student Name</label>
 
-<label>
-Student Name
-</label>
+<input id="studentName" placeholder="Example: Yonal">
 
-<input
-    id="studentName"
-    placeholder="Example: Yonal"
->
-
-
-<label>
-Class
-</label>
+<label>Class</label>
 
 <select id="studentClass">
 
-<option value="">
-Select Class
-</option>
+<option value="">Select Class</option>
 
 <option>Nursery</option>
 <option>LKG</option>
@@ -1466,53 +775,22 @@ Select Class
 
 </select>
 
+<label>Parent / Guardian Name</label>
 
-<label>
-Parent / Guardian Name
-</label>
+<input id="parentName" placeholder="Parent name">
 
-<input
-    id="parentName"
-    placeholder="Parent name"
->
+<label>Parent WhatsApp Number</label>
 
+<input id="parentPhone" type="tel" placeholder="+94764120923">
 
-<label>
-Parent WhatsApp Number
-</label>
+<div style="display:flex;gap:8px;margin-top:18px;">
 
-<input
-    id="parentPhone"
-    type="tel"
-    placeholder="+94764120923"
->
-
-
-<div
-    style="
-        display:flex;
-        gap:8px;
-        margin-top:18px;
-    "
->
-
-<button
-    class="btn primary"
-    onclick="saveStudent()"
->
-
+<button class="btn primary" onclick="saveStudent()">
 💾 Save Student
-
 </button>
 
-
-<button
-    class="btn secondary"
-    onclick="clearForm()"
->
-
+<button class="btn secondary" onclick="clearForm()">
 Clear
-
 </button>
 
 </div>
@@ -1522,388 +800,262 @@ Clear
 </section>
 
 
-<!-- =====================================================
-     REPORTS
-===================================================== -->
+<!-- ABSENT -->
 
-<section
-    id="reports"
-    class="page"
->
+<section id="absent" class="page">
 
 <div class="card">
 
-<div class="card-title">
-📊 Attendance Reports
-</div>
+<div class="card-title">🚫 Mark Absent Students</div>
 
 <div class="card-subtitle">
-View shared attendance records.
-</div>
-
-
-<label>
-Attendance Date
-</label>
-
-<input
-    type="date"
-    id="reportDate"
-    onchange="displayReports()"
->
-
-</div>
-
-
-<div
-    class="card"
->
-
-<div class="card-title">
-🚫 Mark Absent Students
-</div>
-
-<div class="card-subtitle">
-Students who did not scan can be marked absent manually.
+Select students who did not attend today.
 </div>
 
 <div id="absentStudentList"></div>
 
 </div>
 
+</section>
+
+
+<!-- REPORTS -->
+
+<section id="reports" class="page">
+
+<div class="card">
+
+<div class="card-title">📊 Attendance Reports</div>
+
+<div class="card-subtitle">
+View attendance records for all devices.
+</div>
+
+<label>Attendance Date</label>
+
+<input type="date" id="reportDate" onchange="displayReports()">
+
+</div>
 
 <div id="reportList"></div>
 
 </section>
 
-
 </main>
 
+<div id="syncStatus" class="sync-status">
+🔄 Connecting...
 </div>
 
 
-<!-- =====================================================
-     FIREBASE
-===================================================== -->
-
 <script type="module">
 
-import {
-    initializeApp
-} from
-"https://www.gstatic.com/firebasejs/12.18.0/firebase-app.js";
+/* =========================================================
+   FIREBASE
+========================================================= */
 
-
-import {
-    getAuth,
-    signInWithEmailAndPassword,
-    onAuthStateChanged,
-    signOut
-} from
-"https://www.gstatic.com/firebasejs/12.18.0/firebase-auth.js";
-
+import { initializeApp }
+from "https://www.gstatic.com/firebasejs/12.18.0/firebase-app.js";
 
 import {
     getFirestore,
     collection,
     doc,
-    addDoc,
     setDoc,
-    updateDoc,
     deleteDoc,
     onSnapshot,
+    getDocs,
     query,
-    orderBy
-} from
-"https://www.gstatic.com/firebasejs/12.18.0/firebase-firestore.js";
+    where
+}
+from "https://www.gstatic.com/firebasejs/12.18.0/firebase-firestore.js";
 
+import {
+    getAuth,
+    signInAnonymously,
+    onAuthStateChanged
+}
+from "https://www.gstatic.com/firebasejs/12.18.0/firebase-auth.js";
 
-/* =====================================================
-   FIREBASE CONFIG
-===================================================== */
 
 const firebaseConfig = {
 
-    apiKey:
-        "AIzaSyAu8iTPyoCjcwmmkHVcjPhB35OSVslzwIo",
+    apiKey: "AIzaSyAu8iTPyoCjcwmmkHVcjPhB35OSVslzwIo",
 
-    authDomain:
-        "stg-attendance-system.firebaseapp.com",
+    authDomain: "stg-attendance-system.firebaseapp.com",
 
-    projectId:
-        "stg-attendance-system",
+    projectId: "stg-attendance-system",
 
-    storageBucket:
-        "stg-attendance-system.firebasestorage.app",
+    storageBucket: "stg-attendance-system.firebasestorage.app",
 
-    messagingSenderId:
-        "1066181213971",
+    messagingSenderId: "1066181213971",
 
-    appId:
-        "1:1066181213971:web:79855fedf66c38872164e6"
+    appId: "1:1066181213971:web:79855fedf66c38872164e6"
 
 };
 
 
-/* =====================================================
-   FIREBASE INITIALIZATION
-===================================================== */
+const app = initializeApp(firebaseConfig);
 
-const app =
-    initializeApp(firebaseConfig);
+const db = getFirestore(app);
 
-
-const auth =
-    getAuth(app);
+const auth = getAuth(app);
 
 
-const db =
-    getFirestore(app);
-
-
-/* =====================================================
-   GLOBAL DATA
-===================================================== */
+/* =========================================================
+   DATA
+========================================================= */
 
 let students = [];
 let attendance = [];
 
 let editingId = null;
 
+let firebaseReady = false;
+
 let unsubscribeStudents = null;
 let unsubscribeAttendance = null;
 
 
-/* =====================================================
-   LOGIN
-===================================================== */
+/* =========================================================
+   AUTHENTICATION
+========================================================= */
 
-window.loginUser = async function() {
+async function startFirebase(){
 
-    const email =
-        document
-            .getElementById("loginEmail")
-            .value
-            .trim();
+    setSyncStatus("🔄 Connecting...");
 
-    const password =
-        document
-            .getElementById("loginPassword")
-            .value;
+    try{
 
+        await signInAnonymously(auth);
 
-    const errorBox =
-        document.getElementById("loginError");
+    }catch(error){
 
+        console.error(error);
 
-    errorBox.style.display = "none";
+        setSyncStatus("❌ Firebase login failed");
 
-
-    if(!email || !password) {
-
-        errorBox.textContent =
-            "Please enter your email and password.";
-
-        errorBox.style.display = "block";
-
-        return;
-
-    }
-
-
-    try {
-
-        await signInWithEmailAndPassword(
-            auth,
-            email,
-            password
+        alert(
+            "Firebase connection failed.\n\n" +
+            "Make sure Anonymous Authentication is enabled."
         );
 
-    } catch(error) {
-
-        console.error(error);
-
-        errorBox.textContent =
-            "Login failed. Please check your email and password.";
-
-        errorBox.style.display = "block";
-
     }
 
-};
+}
 
 
-/* =====================================================
-   LOGOUT
-===================================================== */
+onAuthStateChanged(auth,user=>{
 
-window.logoutUser = async function() {
+    if(!user) return;
 
-    try {
+    firebaseReady = true;
 
-        await signOut(auth);
+    setSyncStatus("🟢 Firebase connected");
 
-    } catch(error) {
+    startRealtimeListeners();
 
-        console.error(error);
-
-    }
-
-};
+});
 
 
-/* =====================================================
-   AUTH STATE
-===================================================== */
+/* =========================================================
+   REAL-TIME FIRESTORE
+========================================================= */
 
-onAuthStateChanged(
-    auth,
-    user => {
+function startRealtimeListeners(){
 
-        const loading =
-            document.getElementById(
-                "loadingScreen"
-            );
-
-        const login =
-            document.getElementById(
-                "loginScreen"
-            );
-
-        const appElement =
-            document.getElementById(
-                "app"
-            );
-
-
-        loading.style.display =
-            "none";
-
-
-        if(user) {
-
-            login.style.display =
-                "none";
-
-            appElement.style.display =
-                "block";
-
-
-            document.getElementById(
-                "userEmail"
-            ).textContent =
-                user.email || "Signed in";
-
-
-            startFirebaseListeners();
-
-
-        } else {
-
-            appElement.style.display =
-                "none";
-
-            login.style.display =
-                "flex";
-
-        }
-
-    }
-);
-
-
-/* =====================================================
-   FIRESTORE LISTENERS
-===================================================== */
-
-function startFirebaseListeners() {
-
-    if(unsubscribeStudents) {
+    if(unsubscribeStudents)
         unsubscribeStudents();
-    }
 
-    if(unsubscribeAttendance) {
+    if(unsubscribeAttendance)
         unsubscribeAttendance();
-    }
-
-
-    const studentsQuery =
-        query(
-            collection(db,"students"),
-            orderBy("name")
-        );
 
 
     unsubscribeStudents =
         onSnapshot(
-            studentsQuery,
-            snapshot => {
+            collection(db,"students"),
+
+            snapshot=>{
 
                 students =
                     snapshot.docs.map(
-                        document => ({
-                            id: document.id,
-                            ...document.data()
+                        d=>({
+                            id:d.id,
+                            ...d.data()
                         })
                     );
 
+                students.sort(
+                    (a,b)=>
+                        String(a.id)
+                        .localeCompare(String(b.id))
+                );
 
                 updateDashboard();
-
                 displayStudents();
 
-                displayReports();
+                if(
+                    document.getElementById("absent")
+                    .classList.contains("active")
+                ){
+                    displayAbsentStudents();
+                }
 
-                displayAbsentStudents();
+                setSyncStatus("🟢 Synced");
 
             },
 
-            error => {
+            error=>{
 
-                console.error(
-                    "Students listener:",
-                    error
-                );
+                console.error(error);
+
+                setSyncStatus("❌ Student sync error");
 
             }
-        );
-
-
-    const attendanceQuery =
-        query(
-            collection(db,"attendance"),
-            orderBy("date")
         );
 
 
     unsubscribeAttendance =
         onSnapshot(
-            attendanceQuery,
-            snapshot => {
+            collection(db,"attendance"),
+
+            snapshot=>{
 
                 attendance =
                     snapshot.docs.map(
-                        document => ({
-                            id: document.id,
-                            ...document.data()
+                        d=>({
+                            firestoreId:d.id,
+                            ...d.data()
                         })
                     );
 
-
                 updateDashboard();
 
-                displayReports();
+                displayTodayPreview();
 
-                displayAbsentStudents();
+                if(
+                    document.getElementById("reports")
+                    .classList.contains("active")
+                ){
+                    displayReports();
+                }
+
+                if(
+                    document.getElementById("absent")
+                    .classList.contains("active")
+                ){
+                    displayAbsentStudents();
+                }
+
+                setSyncStatus("🟢 Synced");
 
             },
 
-            error => {
+            error=>{
 
-                console.error(
-                    "Attendance listener:",
-                    error
-                );
+                console.error(error);
+
+                setSyncStatus("❌ Attendance sync error");
 
             }
         );
@@ -1911,247 +1063,45 @@ function startFirebaseListeners() {
 }
 
 
-/* =====================================================
-   NAVIGATION
-===================================================== */
+/* =========================================================
+   SYNC STATUS
+========================================================= */
 
-window.showPage = function(
-    pageId,
-    button = null
-) {
+function setSyncStatus(text){
 
-    document
-        .querySelectorAll(".page")
-        .forEach(
-            page =>
-                page.classList.remove("active")
-        );
+    const element =
+        document.getElementById("syncStatus");
 
-
-    const page =
-        document.getElementById(pageId);
-
-
-    if(page) {
-
-        page.classList.add("active");
-
-    }
-
-
-    document
-        .querySelectorAll(".nav button")
-        .forEach(
-            btn =>
-                btn.classList.remove("active")
-        );
-
-
-    if(button) {
-
-        button.classList.add("active");
-
-    }
-
-
-    if(pageId === "dashboard") {
-
-        updateDashboard();
-
-    }
-
-
-    if(pageId === "students") {
-
-        displayStudents();
-
-    }
-
-
-    if(pageId === "reports") {
-
-        setReportDate();
-
-        displayReports();
-
-        displayAbsentStudents();
-
-    }
-
-};
-
-
-window.openScanner = function() {
-
-    const scanButton =
-        document.querySelectorAll(
-            ".nav button"
-        )[1];
-
-
-    showPage(
-        "scanner",
-        scanButton
-    );
-
-
-    startCamera();
-
-};
-
-
-/* =====================================================
-   STUDENT ID
-===================================================== */
-
-function createStudentID() {
-
-    let number = 1;
-
-    let id;
-
-
-    do {
-
-        id =
-            "STG-STU-" +
-            String(number)
-                .padStart(4,"0");
-
-        number++;
-
-    } while(
-        students.some(
-            student =>
-                String(student.id)
-                    .toUpperCase()
-                    === id
-        )
-    );
-
-
-    return id;
+    if(element)
+        element.textContent = text;
 
 }
 
 
-/* =====================================================
-   ADD STUDENT
-===================================================== */
+/* =========================================================
+   SAVE STUDENT
+========================================================= */
 
-window.openAddStudent = function() {
+async function saveStudentToFirebase(student){
 
-    clearForm();
+    if(!firebaseReady){
 
-    showPage("addStudent");
+        alert("Firebase is still connecting. Please wait.");
 
-};
-
-
-window.saveStudent = async function() {
-
-    const name =
-        document
-            .getElementById("studentName")
-            .value
-            .trim();
-
-
-    const studentClass =
-        document
-            .getElementById("studentClass")
-            .value
-            .trim();
-
-
-    const parent =
-        document
-            .getElementById("parentName")
-            .value
-            .trim();
-
-
-    const phone =
-        document
-            .getElementById("parentPhone")
-            .value
-            .trim();
-
-
-    if(
-        !name ||
-        !studentClass ||
-        !parent ||
-        !phone
-    ) {
-
-        alert(
-            "Please fill in all fields."
-        );
-
-        return;
+        return false;
 
     }
 
+    try{
 
-    try {
-
-        if(editingId) {
-
-            await updateDoc(
-                doc(
-                    db,
-                    "students",
-                    editingId
-                ),
-                {
-
-                    name,
-                    class: studentClass,
-                    parent,
-                    phone
-
-                }
-            );
-
-        } else {
-
-            const id =
-                createStudentID();
-
-
-            await setDoc(
-                doc(
-                    db,
-                    "students",
-                    id
-                ),
-                {
-
-                    name,
-                    class: studentClass,
-                    parent,
-                    phone,
-                    createdAt:
-                        Date.now()
-
-                }
-            );
-
-        }
-
-
-        clearForm();
-
-        alert(
-            "Student saved successfully."
+        await setDoc(
+            doc(db,"students",student.id),
+            student
         );
 
+        return true;
 
-        showPage("students");
-
-
-    } catch(error) {
+    }catch(error){
 
         console.error(error);
 
@@ -2160,49 +1110,324 @@ window.saveStudent = async function() {
             error.message
         );
 
+        return false;
+
     }
+
+}
+
+
+/* =========================================================
+   SAVE ATTENDANCE
+========================================================= */
+
+async function saveAttendanceToFirebase(record){
+
+    if(!firebaseReady){
+
+        alert("Firebase is still connecting. Please wait.");
+
+        return false;
+
+    }
+
+    try{
+
+        const documentId =
+            record.date + "_" + record.studentId;
+
+        await setDoc(
+            doc(db,"attendance",documentId),
+            record
+        );
+
+        return true;
+
+    }catch(error){
+
+        console.error(error);
+
+        alert(
+            "Could not save attendance.\n\n" +
+            error.message
+        );
+
+        return false;
+
+    }
+
+}
+
+
+/* =========================================================
+   DELETE ATTENDANCE
+========================================================= */
+
+async function deleteAttendanceFromFirebase(record){
+
+    if(!firebaseReady) return false;
+
+    try{
+
+        const documentId =
+            record.date + "_" + record.studentId;
+
+        await deleteDoc(
+            doc(db,"attendance",documentId)
+        );
+
+        return true;
+
+    }catch(error){
+
+        console.error(error);
+
+        alert(
+            "Could not delete attendance.\n\n" +
+            error.message
+        );
+
+        return false;
+
+    }
+
+}
+
+
+/* =========================================================
+   NAVIGATION
+========================================================= */
+
+window.showPage = function(pageId,button=null){
+
+    document
+        .querySelectorAll(".page")
+        .forEach(page =>
+            page.classList.remove("active")
+        );
+
+    const page =
+        document.getElementById(pageId);
+
+    if(page)
+        page.classList.add("active");
+
+
+    document
+        .querySelectorAll(".nav button")
+        .forEach(btn =>
+            btn.classList.remove("active")
+        );
+
+    if(button)
+        button.classList.add("active");
+
+
+    if(pageId === "dashboard")
+        updateDashboard();
+
+    if(pageId === "students")
+        displayStudents();
+
+    if(pageId === "reports"){
+
+        setReportDate();
+
+        displayReports();
+
+    }
+
+    if(pageId === "absent")
+        displayAbsentStudents();
 
 };
 
 
-/* =====================================================
-   DISPLAY STUDENTS
-===================================================== */
+window.openScanner = function(){
 
-window.displayStudents = function() {
+    const scanButton =
+        document.querySelectorAll(".nav button")[1];
+
+    showPage("scanner",scanButton);
+
+    startCamera();
+
+};
+
+
+window.openAbsentPage = function(){
+
+    showPage("absent");
+
+    displayAbsentStudents();
+
+};
+
+
+/* =========================================================
+   STUDENT ID
+========================================================= */
+
+function createStudentID(){
+
+    let number = 1;
+
+    let id;
+
+    do{
+
+        id =
+            "STG-STU-" +
+            String(number).padStart(4,"0");
+
+        number++;
+
+    }while(
+        students.some(
+            student =>
+                String(student.id).toUpperCase()
+                === id
+        )
+    );
+
+    return id;
+
+}
+
+
+/* =========================================================
+   STUDENTS
+========================================================= */
+
+window.openAddStudent = function(){
+
+    clearForm();
+
+    showPage("addStudent");
+
+};
+
+
+window.saveStudent = async function(){
+
+    const name =
+        document.getElementById("studentName")
+        .value.trim();
+
+    const studentClass =
+        document.getElementById("studentClass")
+        .value.trim();
+
+    const parent =
+        document.getElementById("parentName")
+        .value.trim();
+
+    const phone =
+        document.getElementById("parentPhone")
+        .value.trim();
+
+
+    if(
+        !name ||
+        !studentClass ||
+        !parent ||
+        !phone
+    ){
+
+        alert("Please fill in all fields.");
+
+        return;
+
+    }
+
+
+    if(editingId){
+
+        const student =
+            students.find(
+                s =>
+                    String(s.id)
+                    === String(editingId)
+            );
+
+        if(student){
+
+            student.name = name;
+            student.class = studentClass;
+            student.parent = parent;
+            student.phone = phone;
+
+            const success =
+                await saveStudentToFirebase(student);
+
+            if(!success) return;
+
+        }
+
+    }else{
+
+        const student = {
+
+            id:createStudentID(),
+
+            name:name,
+
+            class:studentClass,
+
+            parent:parent,
+
+            phone:phone
+
+        };
+
+        const success =
+            await saveStudentToFirebase(student);
+
+        if(!success) return;
+
+    }
+
+
+    clearForm();
+
+    alert("Student saved successfully.");
+
+    showPage("students");
+
+};
+
+
+window.displayStudents = function(){
 
     const list =
-        document.getElementById(
-            "studentList"
-        );
+        document.getElementById("studentList");
+
+    if(!list) return;
 
 
     const search =
-        document
-            .getElementById("search")
-            .value
-            .trim()
-            .toLowerCase();
+        document.getElementById("search")
+        .value.trim()
+        .toLowerCase();
 
 
     const filtered =
-        students.filter(
-            student =>
+        students.filter(student =>
 
-                String(student.name)
-                    .toLowerCase()
-                    .includes(search)
+            String(student.name)
+                .toLowerCase()
+                .includes(search)
 
-                ||
+            ||
 
-                String(student.id)
-                    .toLowerCase()
-                    .includes(search)
+            String(student.id)
+                .toLowerCase()
+                .includes(search)
 
         );
 
 
-    if(filtered.length === 0) {
+    if(filtered.length === 0){
 
         list.innerHTML =
             '<div class="empty">No students found.</div>';
@@ -2213,34 +1438,22 @@ window.displayStudents = function() {
 
 
     list.innerHTML =
-        filtered
-            .map(
-                student => `
+        filtered.map(student=>`
 
 <div class="student-card">
 
 <div class="student-name">
-
-👧
-${escapeHTML(student.name)}
-
+👧 ${escapeHTML(student.name)}
 </div>
-
 
 <div class="student-id">
-
-🆔
-${escapeHTML(student.id)}
-
+🆔 ${escapeHTML(student.id)}
 </div>
-
 
 <div class="student-info">
 
 🏫 Class:
-<strong>
-${escapeHTML(student.class)}
-</strong>
+<strong>${escapeHTML(student.class)}</strong>
 
 <br>
 
@@ -2254,44 +1467,28 @@ ${escapeHTML(student.phone)}
 
 </div>
 
-
 <div class="student-actions">
 
-<button
-    class="btn primary"
-    onclick="editStudent('${escapeJS(student.id)}')"
->
-
+<button class="btn primary"
+onclick="editStudent('${escapeJS(student.id)}')">
 ✏️ Edit
-
 </button>
 
-
-<button
-    class="btn danger"
-    onclick="deleteStudent('${escapeJS(student.id)}')"
->
-
+<button class="btn danger"
+onclick="deleteStudent('${escapeJS(student.id)}')">
 🗑 Delete
-
 </button>
 
 </div>
 
 </div>
 
-`
-            )
-            .join("");
+`).join("");
 
 };
 
 
-/* =====================================================
-   EDIT STUDENT
-===================================================== */
-
-window.editStudent = function(id) {
+window.editStudent = function(id){
 
     const student =
         students.find(
@@ -2300,42 +1497,28 @@ window.editStudent = function(id) {
                 === String(id)
         );
 
-
     if(!student) return;
 
 
-    editingId =
-        student.id;
+    editingId = student.id;
 
 
-    document.getElementById(
-        "studentName"
-    ).value =
+    document.getElementById("studentName").value =
         student.name;
 
-
-    document.getElementById(
-        "studentClass"
-    ).value =
+    document.getElementById("studentClass").value =
         student.class;
 
-
-    document.getElementById(
-        "parentName"
-    ).value =
+    document.getElementById("parentName").value =
         student.parent;
 
-
-    document.getElementById(
-        "parentPhone"
-    ).value =
+    document.getElementById("parentPhone").value =
         student.phone;
 
 
-    document.getElementById(
-        "formTitle"
-    ).textContent =
-        "✏️ Edit Student";
+    document.getElementById("formTitle")
+        .textContent =
+            "✏️ Edit Student";
 
 
     showPage("addStudent");
@@ -2343,11 +1526,7 @@ window.editStudent = function(id) {
 };
 
 
-/* =====================================================
-   DELETE STUDENT
-===================================================== */
-
-window.deleteStudent = async function(id) {
+window.deleteStudent = async function(id){
 
     const student =
         students.find(
@@ -2356,40 +1535,26 @@ window.deleteStudent = async function(id) {
                 === String(id)
         );
 
-
     if(!student) return;
 
 
-    if(
-        !confirm(
-            "Delete " +
-            student.name +
-            "?\n\nThis will delete the student from the shared database."
-        )
-    ) {
-
+    if(!confirm(
+        "Delete " +
+        student.name +
+        "?\n\n" +
+        "This will delete the student."
+    )){
         return;
-
     }
 
 
-    try {
+    try{
 
         await deleteDoc(
-            doc(
-                db,
-                "students",
-                id
-            )
+            doc(db,"students",student.id)
         );
 
-
-        alert(
-            "Student deleted."
-        );
-
-
-    } catch(error) {
+    }catch(error){
 
         console.error(error);
 
@@ -2403,101 +1568,69 @@ window.deleteStudent = async function(id) {
 };
 
 
-/* =====================================================
-   CLEAR FORM
-===================================================== */
+window.clearForm = function(){
 
-function clearForm() {
+    document.getElementById("studentName").value = "";
 
-    document.getElementById(
-        "studentName"
-    ).value = "";
+    document.getElementById("studentClass").value = "";
 
+    document.getElementById("parentName").value = "";
 
-    document.getElementById(
-        "studentClass"
-    ).value = "";
+    document.getElementById("parentPhone").value = "";
 
 
-    document.getElementById(
-        "parentName"
-    ).value = "";
-
-
-    document.getElementById(
-        "parentPhone"
-    ).value = "";
-
-
-    document.getElementById(
-        "formTitle"
-    ).textContent =
-        "➕ Add New Student";
+    document.getElementById("formTitle")
+        .textContent =
+            "➕ Add New Student";
 
 
     editingId = null;
 
-}
+};
 
 
-/* =====================================================
+/* =========================================================
    CAMERA
-===================================================== */
+========================================================= */
 
 const video =
     document.getElementById("video");
 
-
 const canvas =
     document.getElementById("canvas");
-
 
 const ctx =
     canvas.getContext(
         "2d",
-        {
-            willReadFrequently:true
-        }
+        {willReadFrequently:true}
     );
 
 
 let stream = null;
-
 let scanning = false;
-
 let detector = null;
-
 let nativeDetectorAvailable = false;
-
 let detectorBusy = false;
-
 let fallbackBusy = false;
-
 let lastCode = "";
-
 let lastScanTime = 0;
 
 
-/* =====================================================
+/* =========================================================
    BARCODE DETECTOR
-===================================================== */
+========================================================= */
 
-async function setupBarcodeDetector() {
+async function setupBarcodeDetector(){
 
     nativeDetectorAvailable = false;
 
     detector = null;
 
 
-    try {
+    try{
 
-        if(
-            !("BarcodeDetector" in window)
-        ) {
-
+        if(!("BarcodeDetector" in window))
             return false;
-
-        }
 
 
         const formats =
@@ -2505,13 +1638,8 @@ async function setupBarcodeDetector() {
                 .getSupportedFormats();
 
 
-        if(
-            !formats.includes("qr_code")
-        ) {
-
+        if(!formats.includes("qr_code"))
             return false;
-
-        }
 
 
         detector =
@@ -2520,14 +1648,11 @@ async function setupBarcodeDetector() {
             });
 
 
-        nativeDetectorAvailable =
-            true;
-
+        nativeDetectorAvailable = true;
 
         return true;
 
-
-    } catch(error) {
+    }catch(error){
 
         return false;
 
@@ -2536,43 +1661,39 @@ async function setupBarcodeDetector() {
 }
 
 
-/* =====================================================
+/* =========================================================
    START CAMERA
-===================================================== */
+========================================================= */
 
-window.startCamera = async function() {
+window.startCamera = async function(){
 
     if(scanning) return;
 
 
-    try {
+    try{
 
         if(
             !navigator.mediaDevices ||
-            !navigator.mediaDevices
-                .getUserMedia
-        ) {
+            !navigator.mediaDevices.getUserMedia
+        ){
 
             throw new Error(
-                "Camera unavailable. Use HTTPS GitHub Pages."
+                "Camera is unavailable. Use HTTPS."
             );
 
         }
 
 
-        document.getElementById(
-            "status"
-        ).textContent =
-            "Starting camera...";
+        document.getElementById("status")
+            .textContent =
+                "Starting camera...";
 
 
         stream =
-            await navigator
-                .mediaDevices
+            await navigator.mediaDevices
                 .getUserMedia({
 
-                    video: {
-
+                    video:{
                         facingMode:{
                             ideal:"environment"
                         },
@@ -2589,7 +1710,6 @@ window.startCamera = async function() {
                             ideal:30,
                             max:30
                         }
-
                     },
 
                     audio:false
@@ -2597,12 +1717,9 @@ window.startCamera = async function() {
                 });
 
 
-        video.srcObject =
-            stream;
-
+        video.srcObject = stream;
 
         await video.play();
-
 
         await setupBarcodeDetector();
 
@@ -2610,41 +1727,30 @@ window.startCamera = async function() {
         scanning = true;
 
 
-        document.getElementById(
-            "startButton"
-        ).style.display =
-            "none";
+        document.getElementById("startButton")
+            .style.display = "none";
+
+        document.getElementById("stopButton")
+            .style.display = "block";
 
 
-        document.getElementById(
-            "stopButton"
-        ).style.display =
-            "block";
-
-
-        document.getElementById(
-            "status"
-        ).textContent =
-
-            nativeDetectorAvailable
-
-            ? "🟢 Fast QR scanner ready"
-
-            : "🟢 QR scanner ready";
+        document.getElementById("status")
+            .textContent =
+                nativeDetectorAvailable
+                ? "🟢 Fast QR scanner ready"
+                : "🟢 QR scanner ready";
 
 
         scanLoop();
 
 
-    } catch(error) {
+    }catch(error){
 
         console.error(error);
 
-
-        document.getElementById(
-            "status"
-        ).textContent =
-            "❌ " + error.message;
+        document.getElementById("status")
+            .textContent =
+                "❌ " + error.message;
 
 
         alert(
@@ -2657,22 +1763,21 @@ window.startCamera = async function() {
 };
 
 
-/* =====================================================
+/* =========================================================
    STOP CAMERA
-===================================================== */
+========================================================= */
 
-window.stopCamera = function() {
+window.stopCamera = function(){
 
     scanning = false;
 
 
-    if(stream) {
+    if(stream){
 
         stream
             .getTracks()
-            .forEach(
-                track =>
-                    track.stop()
+            .forEach(track =>
+                track.stop()
             );
 
     }
@@ -2680,107 +1785,82 @@ window.stopCamera = function() {
 
     stream = null;
 
-
     video.srcObject = null;
 
 
-    document.getElementById(
-        "startButton"
-    ).style.display =
-        "block";
+    document.getElementById("startButton")
+        .style.display = "block";
+
+    document.getElementById("stopButton")
+        .style.display = "none";
 
 
-    document.getElementById(
-        "stopButton"
-    ).style.display =
-        "none";
-
-
-    document.getElementById(
-        "status"
-    ).textContent =
-        "Camera stopped.";
+    document.getElementById("status")
+        .textContent =
+            "Camera stopped.";
 
 };
 
 
-/* =====================================================
+/* =========================================================
    SCAN LOOP
-===================================================== */
+========================================================= */
 
-function scanLoop() {
+function scanLoop(){
 
     if(!scanning) return;
 
 
-    if(nativeDetectorAvailable) {
-
+    if(nativeDetectorAvailable)
         nativeScan();
-
-    } else {
-
+    else
         fallbackScan();
 
-    }
 
-
-    requestAnimationFrame(
-        scanLoop
-    );
+    requestAnimationFrame(scanLoop);
 
 }
 
 
-/* =====================================================
+/* =========================================================
    NATIVE SCAN
-===================================================== */
+========================================================= */
 
-async function nativeScan() {
+async function nativeScan(){
 
     if(
         detectorBusy ||
         !detector ||
         video.readyState < 2
-    ) {
-
+    ){
         return;
-
     }
 
 
     detectorBusy = true;
 
 
-    try {
+    try{
 
         const codes =
             await detector.detect(video);
 
 
-        if(
-            codes &&
-            codes.length
-        ) {
+        if(codes && codes.length){
 
             const value =
                 codes[0].rawValue;
 
-
-            if(value) {
-
+            if(value)
                 handleQR(value);
-
-            }
 
         }
 
-
-    } catch(error) {
+    }catch(error){
 
         console.log(error);
 
-
-    } finally {
+    }finally{
 
         detectorBusy = false;
 
@@ -2789,42 +1869,34 @@ async function nativeScan() {
 }
 
 
-/* =====================================================
+/* =========================================================
    FALLBACK SCAN
-===================================================== */
+========================================================= */
 
-function fallbackScan() {
+function fallbackScan(){
 
     if(
         fallbackBusy ||
         video.readyState < 2 ||
         !video.videoWidth
-    ) {
-
+    ){
         return;
-
     }
 
 
     fallbackBusy = true;
 
 
-    try {
+    try{
 
-        const width =
-            video.videoWidth;
+        const width = video.videoWidth;
 
-
-        const height =
-            video.videoHeight;
+        const height = video.videoHeight;
 
 
         const size =
             Math.floor(
-                Math.min(
-                    width,
-                    height
-                ) * .7
+                Math.min(width,height)*.7
             );
 
 
@@ -2843,11 +1915,8 @@ function fallbackScan() {
         const output = 480;
 
 
-        canvas.width =
-            output;
-
-        canvas.height =
-            output;
+        canvas.width = output;
+        canvas.height = output;
 
 
         ctx.drawImage(
@@ -2884,21 +1953,15 @@ function fallbackScan() {
             );
 
 
-        if(code) {
-
-            handleQR(
-                code.data
-            );
-
-        }
+        if(code)
+            handleQR(code.data);
 
 
-    } catch(error) {
+    }catch(error){
 
         console.log(error);
 
-
-    } finally {
+    }finally{
 
         fallbackBusy = false;
 
@@ -2907,29 +1970,26 @@ function fallbackScan() {
 }
 
 
-/* =====================================================
+/* =========================================================
    QR RESULT
-===================================================== */
+========================================================= */
 
-function handleQR(data) {
+function handleQR(data){
 
     const id =
         String(data)
-            .trim()
-            .toUpperCase();
+        .trim()
+        .toUpperCase();
 
 
-    const now =
-        Date.now();
+    const now = Date.now();
 
 
     if(
         id === lastCode &&
         now-lastScanTime < 2500
-    ) {
-
+    ){
         return;
-
     }
 
 
@@ -2942,13 +2002,13 @@ function handleQR(data) {
         students.find(
             s =>
                 String(s.id)
-                    .trim()
-                    .toUpperCase()
-                    === id
+                .trim()
+                .toUpperCase()
+                === id
         );
 
 
-    if(!student) {
+    if(!student){
 
         showScanError(id);
 
@@ -2959,210 +2019,254 @@ function handleQR(data) {
     }
 
 
-    recordAttendance(
-        student
-    );
+    recordAttendance(student);
 
 }
 
 
-/* =====================================================
-   RECORD ATTENDANCE
-===================================================== */
+/* =========================================================
+   ATTENDANCE
+========================================================= */
 
-async function recordAttendance(
-    student
-) {
+async function recordAttendance(student){
 
-    const now =
-        new Date();
-
+    const now = new Date();
 
     const date =
         getDateString(now);
-
 
     const time =
         getTimeString(now);
 
 
-    const record =
+    let record =
         attendance.find(
             item =>
-                item.studentId
-                    === student.id
-                &&
-                item.date
-                    === date
+                item.studentId === student.id &&
+                item.date === date
         );
 
 
-    try {
+    if(!record){
 
-        if(!record) {
+        record = {
 
-            const attendanceId =
-                student.id +
-                "_" +
-                date;
+            studentId:student.id,
 
+            studentName:student.name,
 
-            await setDoc(
-                doc(
-                    db,
-                    "attendance",
-                    attendanceId
-                ),
-                {
+            class:student.class,
 
-                    studentId:
-                        student.id,
+            parent:student.parent,
 
-                    studentName:
-                        student.name,
+            phone:student.phone,
 
-                    class:
-                        student.class,
+            date:date,
 
-                    parent:
-                        student.parent,
+            arrival:time,
 
-                    phone:
-                        student.phone,
+            leaving:null,
 
-                    date:
-                        date,
+            status:"present"
 
-                    arrival:
-                        time,
-
-                    leaving:
-                        null,
-
-                    status:
-                        "present",
-
-                    createdAt:
-                        Date.now()
-
-                }
-            );
+        };
 
 
-            showArrival(
-                student,
-                time
-            );
+        const success =
+            await saveAttendanceToFirebase(record);
 
 
-            beep();
-
-            return;
-
-        }
+        if(!success) return;
 
 
-        if(
-            record.status === "absent"
-        ) {
+        showArrival(student,time);
 
-            await updateDoc(
-                doc(
-                    db,
-                    "attendance",
-                    record.id
-                ),
-                {
-
-                    status:
-                        "present",
-
-                    arrival:
-                        time,
-
-                    leaving:
-                        null
-
-                }
-            );
-
-
-            showArrival(
-                student,
-                time
-            );
-
-
-            beep();
-
-            return;
-
-        }
-
-
-        if(!record.leaving) {
-
-            await updateDoc(
-                doc(
-                    db,
-                    "attendance",
-                    record.id
-                ),
-                {
-
-                    leaving:
-                        time,
-
-                    status:
-                        "left"
-
-                }
-            );
-
-
-            showLeaving(
-                student,
-                time
-            );
-
-
-            beep();
-
-            return;
-
-        }
-
-
-        showCompleted(
-            student,
-            record
-        );
-
+        updateDashboard();
 
         beep();
 
-
-    } catch(error) {
-
-        console.error(error);
-
-        alert(
-            "Could not record attendance.\n\n" +
-            error.message
-        );
+        return;
 
     }
+
+
+    if(record.status === "absent"){
+
+        record.status = "present";
+
+        record.arrival = time;
+
+        record.leaving = null;
+
+
+        const success =
+            await saveAttendanceToFirebase(record);
+
+
+        if(!success) return;
+
+
+        showArrival(student,time);
+
+        updateDashboard();
+
+        beep();
+
+        return;
+
+    }
+
+
+    if(!record.leaving){
+
+        record.leaving = time;
+
+        record.status = "present";
+
+
+        const success =
+            await saveAttendanceToFirebase(record);
+
+
+        if(!success) return;
+
+
+        showLeaving(student,time);
+
+        updateDashboard();
+
+        beep();
+
+        return;
+
+    }
+
+
+    showCompleted(student,record);
+
+    beep();
 
 }
 
 
-/* =====================================================
-   MARK ABSENT
-===================================================== */
+/* =========================================================
+   ABSENT STUDENTS
+========================================================= */
 
-window.markAbsent = async function(
-    studentId
-) {
+window.displayAbsentStudents = function(){
+
+    const container =
+        document.getElementById(
+            "absentStudentList"
+        );
+
+
+    if(!students.length){
+
+        container.innerHTML =
+            '<div class="empty">No students added yet.</div>';
+
+        return;
+
+    }
+
+
+    const today =
+        getDateString(new Date());
+
+
+    container.innerHTML =
+        students.map(student=>{
+
+            const record =
+                attendance.find(
+                    r =>
+                        r.studentId === student.id &&
+                        r.date === today
+                );
+
+
+            const isAbsent =
+                record &&
+                record.status === "absent";
+
+
+            const isPresent =
+                record &&
+                record.status === "present";
+
+
+            if(isPresent){
+
+                return `
+
+<div class="student-card present-row">
+
+<div class="student-name">
+👧 ${escapeHTML(student.name)}
+</div>
+
+<div class="student-id">
+${escapeHTML(student.id)}
+</div>
+
+<div class="present-badge">
+🟢 PRESENT
+</div>
+
+<div style="margin-top:10px">
+
+Arrival:
+<strong>
+${escapeHTML(record.arrival || "—")}
+</strong>
+
+</div>
+
+</div>
+
+`;
+
+            }
+
+
+            return `
+
+<div class="student-card">
+
+<div class="student-name">
+👧 ${escapeHTML(student.name)}
+</div>
+
+<div class="student-id">
+${escapeHTML(student.id)}
+</div>
+
+<div class="student-info">
+🏫 ${escapeHTML(student.class)}
+</div>
+
+<button
+class="btn ${isAbsent ? "secondary" : "warning"} full"
+style="margin-top:10px"
+onclick="toggleAbsent('${escapeJS(student.id)}')">
+
+${isAbsent
+    ? "↩️ Mark Present"
+    : "🚫 Mark Absent"}
+
+</button>
+
+</div>
+
+`;
+
+        }).join("");
+
+};
+
+
+window.toggleAbsent = async function(studentId){
 
     const student =
         students.find(
@@ -3176,162 +2280,77 @@ window.markAbsent = async function(
 
 
     const date =
-        getDateString(
-            new Date()
-        );
+        getDateString(new Date());
 
 
     const existing =
         attendance.find(
-            record =>
-                record.studentId
-                    === student.id
-                &&
-                record.date
-                    === date
+            r =>
+                r.studentId === student.id &&
+                r.date === date
         );
 
 
-    if(existing) {
+    if(existing){
 
-        alert(
-            student.name +
-            " already has an attendance record today."
-        );
+        if(existing.status === "absent"){
+
+            await deleteAttendanceFromFirebase(existing);
+
+        }
+
+        displayAbsentStudents();
 
         return;
 
     }
 
 
-    if(
-        !confirm(
-            "Mark " +
-            student.name +
-            " as ABSENT today?"
-        )
-    ) {
+    const record = {
 
-        return;
+        studentId:student.id,
 
-    }
+        studentName:student.name,
 
+        class:student.class,
 
-    try {
+        parent:student.parent,
 
-        const attendanceId =
-            student.id +
-            "_" +
-            date;
+        phone:student.phone,
 
+        date:date,
 
-        await setDoc(
-            doc(
-                db,
-                "attendance",
-                attendanceId
-            ),
-            {
+        arrival:null,
 
-                studentId:
-                    student.id,
+        leaving:null,
 
-                studentName:
-                    student.name,
+        status:"absent"
 
-                class:
-                    student.class,
-
-                parent:
-                    student.parent,
-
-                phone:
-                    student.phone,
-
-                date:
-                    date,
-
-                arrival:
-                    null,
-
-                leaving:
-                    null,
-
-                status:
-                    "absent",
-
-                createdAt:
-                    Date.now()
-
-            }
-        );
+    };
 
 
-        alert(
-            student.name +
-            " marked absent."
-        );
+    const success =
+        await saveAttendanceToFirebase(record);
 
 
-    } catch(error) {
+    if(!success) return;
 
-        console.error(error);
 
-        alert(
-            "Could not mark absent.\n\n" +
-            error.message
-        );
+    displayAbsentStudents();
 
-    }
+    updateDashboard();
 
 };
 
 
-/* =====================================================
-   REMOVE ABSENT
-===================================================== */
-
-window.removeAbsent = async function(
-    recordId
-) {
-
-    try {
-
-        await deleteDoc(
-            doc(
-                db,
-                "attendance",
-                recordId
-            )
-        );
-
-
-    } catch(error) {
-
-        console.error(error);
-
-        alert(
-            "Could not remove absent record."
-        );
-
-    }
-
-};
-
-
-/* =====================================================
+/* =========================================================
    ARRIVAL RESULT
-===================================================== */
+========================================================= */
 
-function showArrival(
-    student,
-    time
-) {
+function showArrival(student,time){
 
     const result =
-        document.getElementById(
-            "scanResult"
-        );
+        document.getElementById("scanResult");
 
 
     result.className =
@@ -3340,9 +2359,7 @@ function showArrival(
 
     result.innerHTML = `
 
-<div class="result-icon">
-🟢
-</div>
+<div class="result-icon">🟢</div>
 
 <div class="result-name">
 ${escapeHTML(student.name)}
@@ -3350,9 +2367,7 @@ ${escapeHTML(student.name)}
 
 <div class="result-info">
 
-<strong>
-ARRIVAL RECORDED
-</strong>
+<strong>ARRIVAL RECORDED</strong>
 
 <br>
 
@@ -3370,15 +2385,13 @@ ARRIVAL RECORDED
 
 <br>
 
-<button
-    class="btn whatsapp full"
-    onclick="sendWhatsApp(
-        '${escapeJS(student.phone)}',
-        '${escapeJS(student.name)}',
-        'arrival',
-        '${escapeJS(time)}'
-    )"
->
+<button class="btn whatsapp full"
+onclick="sendWhatsApp(
+'${escapeJS(student.phone)}',
+'${escapeJS(student.name)}',
+'arrival',
+'${escapeJS(time)}'
+)">
 
 📱 Send WhatsApp
 
@@ -3389,19 +2402,14 @@ ARRIVAL RECORDED
 }
 
 
-/* =====================================================
+/* =========================================================
    LEAVING RESULT
-===================================================== */
+========================================================= */
 
-function showLeaving(
-    student,
-    time
-) {
+function showLeaving(student,time){
 
     const result =
-        document.getElementById(
-            "scanResult"
-        );
+        document.getElementById("scanResult");
 
 
     result.className =
@@ -3410,9 +2418,7 @@ function showLeaving(
 
     result.innerHTML = `
 
-<div class="result-icon">
-🔴
-</div>
+<div class="result-icon">🔴</div>
 
 <div class="result-name">
 ${escapeHTML(student.name)}
@@ -3420,9 +2426,7 @@ ${escapeHTML(student.name)}
 
 <div class="result-info">
 
-<strong>
-LEAVING RECORDED
-</strong>
+<strong>LEAVING RECORDED</strong>
 
 <br>
 
@@ -3440,15 +2444,13 @@ LEAVING RECORDED
 
 <br>
 
-<button
-    class="btn whatsapp full"
-    onclick="sendWhatsApp(
-        '${escapeJS(student.phone)}',
-        '${escapeJS(student.name)}',
-        'leaving',
-        '${escapeJS(time)}'
-    )"
->
+<button class="btn whatsapp full"
+onclick="sendWhatsApp(
+'${escapeJS(student.phone)}',
+'${escapeJS(student.name)}',
+'leaving',
+'${escapeJS(time)}'
+)">
 
 📱 Send WhatsApp
 
@@ -3459,23 +2461,23 @@ LEAVING RECORDED
 }
 
 
-/* =====================================================
+/* =========================================================
    WHATSAPP
-===================================================== */
+========================================================= */
 
 window.sendWhatsApp = function(
     phone,
     studentName,
     type,
     time
-) {
+){
 
     const cleanPhone =
         String(phone)
-            .replace(/\D/g,"");
+        .replace(/\D/g,"");
 
 
-    if(!cleanPhone) {
+    if(!cleanPhone){
 
         alert(
             "No valid WhatsApp number."
@@ -3487,21 +2489,20 @@ window.sendWhatsApp = function(
 
 
     const date =
-        new Date()
-            .toLocaleDateString(
-                "en-GB",
-                {
-                    day:"2-digit",
-                    month:"long",
-                    year:"numeric"
-                }
-            );
+        new Date().toLocaleDateString(
+            "en-GB",
+            {
+                day:"2-digit",
+                month:"long",
+                year:"numeric"
+            }
+        );
 
 
     let message;
 
 
-    if(type === "arrival") {
+    if(type === "arrival"){
 
         message =
 `ST.THERESA'S GEMS INTERNATIONAL PRESCHOOL
@@ -3515,7 +2516,7 @@ Arrival Time: ${time}
 
 Thank you.`;
 
-    } else {
+    }else{
 
         message =
 `ST.THERESA'S GEMS INTERNATIONAL PRESCHOOL
@@ -3536,9 +2537,7 @@ Thank you.`;
         "https://wa.me/" +
         cleanPhone +
         "?text=" +
-        encodeURIComponent(
-            message
-        );
+        encodeURIComponent(message);
 
 
     window.open(
@@ -3549,16 +2548,14 @@ Thank you.`;
 };
 
 
-/* =====================================================
-   SCAN ERROR
-===================================================== */
+/* =========================================================
+   ERROR
+========================================================= */
 
-function showScanError(id) {
+function showScanError(id){
 
     const result =
-        document.getElementById(
-            "scanResult"
-        );
+        document.getElementById("scanResult");
 
 
     result.className =
@@ -3567,9 +2564,7 @@ function showScanError(id) {
 
     result.innerHTML = `
 
-<div class="result-icon">
-❌
-</div>
+<div class="result-icon">❌</div>
 
 <div class="result-name">
 Student Not Found
@@ -3596,19 +2591,14 @@ Add this Student ID to the student database first.
 }
 
 
-/* =====================================================
+/* =========================================================
    COMPLETED
-===================================================== */
+========================================================= */
 
-function showCompleted(
-    student,
-    record
-) {
+function showCompleted(student,record){
 
     const result =
-        document.getElementById(
-            "scanResult"
-        );
+        document.getElementById("scanResult");
 
 
     result.className =
@@ -3617,9 +2607,7 @@ function showCompleted(
 
     result.innerHTML = `
 
-<div class="result-icon">
-✅
-</div>
+<div class="result-icon">✅</div>
 
 <div class="result-name">
 ${escapeHTML(student.name)}
@@ -3632,26 +2620,24 @@ Attendance already completed.
 <br><br>
 
 🟢 Arrival:
-${escapeHTML(record.arrival)}
+${escapeHTML(record.arrival || "—")}
 
 <br>
 
 🔴 Leaving:
-${escapeHTML(record.leaving)}
+${escapeHTML(record.leaving || "—")}
 
 </div>
 
 <br>
 
-<button
-    class="btn whatsapp full"
-    onclick="sendWhatsApp(
-        '${escapeJS(student.phone)}',
-        '${escapeJS(student.name)}',
-        'leaving',
-        '${escapeJS(record.leaving)}'
-    )"
->
+<button class="btn whatsapp full"
+onclick="sendWhatsApp(
+'${escapeJS(student.phone)}',
+'${escapeJS(student.name)}',
+'leaving',
+'${escapeJS(record.leaving || "")}'
+)">
 
 📱 Send WhatsApp Again
 
@@ -3662,22 +2648,19 @@ ${escapeHTML(record.leaving)}
 }
 
 
-/* =====================================================
+/* =========================================================
    DASHBOARD
-===================================================== */
+========================================================= */
 
-function updateDashboard() {
+function updateDashboard(){
 
     const today =
-        getDateString(
-            new Date()
-        );
+        getDateString(new Date());
 
 
     const records =
         attendance.filter(
-            r =>
-                r.date === today
+            r => r.date === today
         );
 
 
@@ -3692,8 +2675,8 @@ function updateDashboard() {
     ).textContent =
         records.filter(
             r =>
-                r.status === "present" ||
-                r.status === "left"
+                r.status === "present" &&
+                r.arrival
         ).length;
 
 
@@ -3701,8 +2684,7 @@ function updateDashboard() {
         "leftToday"
     ).textContent =
         records.filter(
-            r =>
-                r.status === "left"
+            r => r.leaving
         ).length;
 
 
@@ -3720,11 +2702,7 @@ function updateDashboard() {
 }
 
 
-/* =====================================================
-   TODAY PREVIEW
-===================================================== */
-
-function displayTodayPreview() {
+function displayTodayPreview(){
 
     const container =
         document.getElementById(
@@ -3733,19 +2711,16 @@ function displayTodayPreview() {
 
 
     const today =
-        getDateString(
-            new Date()
-        );
+        getDateString(new Date());
 
 
     const records =
         attendance.filter(
-            r =>
-                r.date === today
+            r => r.date === today
         );
 
 
-    if(records.length === 0) {
+    if(records.length === 0){
 
         container.innerHTML =
             '<div class="empty">No attendance recorded yet.</div>';
@@ -3757,54 +2732,34 @@ function displayTodayPreview() {
 
     container.innerHTML =
         records
-            .slice()
-            .reverse()
-            .slice(0,8)
-            .map(
-                record => {
+        .slice()
+        .reverse()
+        .slice(0,8)
+        .map(record=>{
 
-                    let badge = "";
-
-                    if(
-                        record.status ===
-                        "absent"
-                    ) {
-
-                        badge =
-                            `<span class="status-badge status-absent">
-                                🚫 ABSENT
-                            </span>`;
-
-                    } else if(
-                        record.status ===
-                        "left"
-                    ) {
-
-                        badge =
-                            `<span class="status-badge status-left">
-                                🔴 LEFT
-                            </span>`;
-
-                    } else {
-
-                        badge =
-                            `<span class="status-badge status-present">
-                                🟢 PRESENT
-                            </span>`;
-
-                    }
+            const absent =
+                record.status === "absent";
 
 
-                    return `
+            return `
 
-<div class="report-row">
+<div class="report-row ${absent ? "absent-row" : "present-row"}">
 
 <div class="report-name">
 👧 ${escapeHTML(record.studentName)}
 </div>
 
-${badge}
+<div class="report-date">
+🆔 ${escapeHTML(record.studentId)}
+</div>
 
+${absent
+
+? `<div class="absent-badge">
+🚫 ABSENT
+</div>`
+
+: `
 
 <div class="time-row">
 
@@ -3815,17 +2770,10 @@ ${badge}
 </div>
 
 <div class="time-value">
-
-${
-    record.arrival
-        ? escapeHTML(record.arrival)
-        : "—"
-}
-
+${escapeHTML(record.arrival || "—")}
 </div>
 
 </div>
-
 
 <div class="time-box">
 
@@ -3834,35 +2782,29 @@ ${
 </div>
 
 <div class="time-value">
-
-${
-    record.leaving
-        ? escapeHTML(record.leaving)
-        : "—"
-}
-
+${escapeHTML(record.leaving || "—")}
 </div>
 
 </div>
 
 </div>
+
+`}
 
 </div>
 
 `;
 
-                }
-            )
-            .join("");
+        }).join("");
 
 }
 
 
-/* =====================================================
-   REPORT DATE
-===================================================== */
+/* =========================================================
+   REPORTS
+========================================================= */
 
-function setReportDate() {
+function setReportDate(){
 
     const input =
         document.getElementById(
@@ -3870,132 +2812,17 @@ function setReportDate() {
         );
 
 
-    if(!input.value) {
+    if(!input.value){
 
         input.value =
-            getDateString(
-                new Date()
-            );
+            getDateString(new Date());
 
     }
 
 }
 
 
-/* =====================================================
-   DISPLAY ABSENT STUDENTS
-===================================================== */
-
-function displayAbsentStudents() {
-
-    const container =
-        document.getElementById(
-            "absentStudentList"
-        );
-
-
-    if(!container) return;
-
-
-    const date =
-        document.getElementById(
-            "reportDate"
-        ).value ||
-        getDateString(
-            new Date()
-        );
-
-
-    const records =
-        attendance.filter(
-            r =>
-                r.date === date
-        );
-
-
-    const markedIds =
-        new Set(
-            records.map(
-                r =>
-                    r.studentId
-            )
-        );
-
-
-    const unmarked =
-        students.filter(
-            student =>
-                !markedIds.has(
-                    student.id
-                )
-        );
-
-
-    if(unmarked.length === 0) {
-
-        container.innerHTML =
-            `<div class="empty">
-                All students have an attendance status for this date.
-            </div>`;
-
-        return;
-
-    }
-
-
-    container.innerHTML =
-        unmarked
-            .map(
-                student => `
-
-<div class="student-card">
-
-<div class="student-name">
-
-👧
-${escapeHTML(student.name)}
-
-</div>
-
-<div class="student-id">
-
-🆔
-${escapeHTML(student.id)}
-
-</div>
-
-<div class="student-info">
-
-🏫
-${escapeHTML(student.class)}
-
-</div>
-
-
-<button
-    class="btn absent full"
-    style="margin-top:10px"
-    onclick="markAbsent('${escapeJS(student.id)}')"
->
-
-🚫 Mark Absent
-
-</button>
-
-</div>
-
-`
-            )
-            .join("");
-
-}
-
-
-/* =====================================================
-   REPORTS
-===================================================== */
-
-window.displayReports = function() {
+window.displayReports = function(){
 
     const date =
         document.getElementById(
@@ -4009,25 +2836,318 @@ window.displayReports = function() {
         );
 
 
-    displayAbsentStudents();
-
-
     const records =
         attendance
-            .map(
-                record => ({
-                    record
-                })
-            )
-            .filter(
-                item =>
-                    item.record.date
-                    === date
-            );
+        .filter(
+            record =>
+                record.date === date
+        );
 
 
-    if(records.length === 0) {
+    if(records.length === 0){
 
         container.innerHTML = `
 
 <div class="card">
+
+<div class="empty">
+No attendance records for this date.
+</div>
+
+</div>
+
+`;
+
+        return;
+
+    }
+
+
+    container.innerHTML =
+        records
+        .slice()
+        .reverse()
+        .map(record=>{
+
+            const absent =
+                record.status === "absent";
+
+
+            return `
+
+<div class="report-row ${absent ? "absent-row" : "present-row"}">
+
+<div class="report-name">
+👧 ${escapeHTML(record.studentName)}
+</div>
+
+<div class="report-date">
+
+🆔 ${escapeHTML(record.studentId)}
+
+&nbsp; • &nbsp;
+
+📅 ${escapeHTML(record.date)}
+
+</div>
+
+
+${absent
+
+? `
+
+<div class="absent-badge">
+🚫 ABSENT
+</div>
+
+<div style="margin-top:12px;color:#946b00;font-size:13px">
+Student was marked absent.
+</div>
+
+`
+
+: `
+
+<div class="present-badge">
+🟢 PRESENT
+</div>
+
+<div class="time-row">
+
+<div class="time-box">
+
+<div class="time-label">
+🟢 ARRIVAL
+</div>
+
+<div class="time-value">
+${escapeHTML(record.arrival || "—")}
+</div>
+
+</div>
+
+<div class="time-box">
+
+<div class="time-label">
+🔴 LEAVING
+</div>
+
+<div class="time-value">
+${record.leaving
+    ? escapeHTML(record.leaving)
+    : "Not yet"}
+</div>
+
+</div>
+
+</div>
+
+`}
+
+<button
+class="btn danger full"
+style="margin-top:11px"
+onclick="deleteAttendanceRecord(
+'${escapeJS(record.studentId)}',
+'${escapeJS(record.date)}'
+)">
+
+🗑 Delete This Attendance Record
+
+</button>
+
+</div>
+
+`;
+
+        }).join("");
+
+};
+
+
+/* =========================================================
+   DELETE REPORT
+========================================================= */
+
+window.deleteAttendanceRecord = async function(
+    studentId,
+    date
+){
+
+    const record =
+        attendance.find(
+            r =>
+                r.studentId === studentId &&
+                r.date === date
+        );
+
+
+    if(!record) return;
+
+
+    if(!confirm(
+        "Delete attendance record?\n\n" +
+        record.studentName +
+        "\n" +
+        record.date +
+        "\n\n" +
+        "This will NOT delete the student."
+    )){
+
+        return;
+
+    }
+
+
+    const success =
+        await deleteAttendanceFromFirebase(record);
+
+
+    if(success){
+
+        alert(
+            "Attendance record deleted."
+        );
+
+    }
+
+};
+
+
+/* =========================================================
+   DATE & TIME
+========================================================= */
+
+function getDateString(date){
+
+    return (
+
+        date.getFullYear() +
+
+        "-" +
+
+        String(
+            date.getMonth()+1
+        ).padStart(2,"0") +
+
+        "-" +
+
+        String(
+            date.getDate()
+        ).padStart(2,"0")
+
+    );
+
+}
+
+
+function getTimeString(date){
+
+    return date.toLocaleTimeString(
+        [],
+        {
+            hour:"2-digit",
+            minute:"2-digit",
+            second:"2-digit"
+        }
+    );
+
+}
+
+
+/* =========================================================
+   BEEP
+========================================================= */
+
+function beep(){
+
+    try{
+
+        const AudioContext =
+            window.AudioContext ||
+            window.webkitAudioContext;
+
+
+        if(!AudioContext) return;
+
+
+        const audio =
+            new AudioContext();
+
+
+        const oscillator =
+            audio.createOscillator();
+
+
+        const gain =
+            audio.createGain();
+
+
+        oscillator.frequency.value =
+            1000;
+
+        gain.gain.value =
+            .08;
+
+
+        oscillator.connect(gain);
+
+        gain.connect(
+            audio.destination
+        );
+
+
+        oscillator.start();
+
+        oscillator.stop(
+            audio.currentTime+.08
+        );
+
+    }catch(error){
+
+        console.log(error);
+
+    }
+
+}
+
+
+/* =========================================================
+   SECURITY / TEXT
+========================================================= */
+
+function escapeHTML(text){
+
+    const div =
+        document.createElement("div");
+
+    div.textContent =
+        text ?? "";
+
+    return div.innerHTML;
+
+}
+
+
+function escapeJS(text){
+
+    return String(text ?? "")
+        .replace(/\\/g,"\\\\")
+        .replace(/'/g,"\\'");
+
+}
+
+
+/* =========================================================
+   START
+========================================================= */
+
+setReportDate();
+
+startFirebase();
+
+</script>
+
+</body>
+</html>
+```
