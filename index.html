@@ -1,24 +1,1892 @@
-```javascript
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>St. Theresa's Gems International Preschool</title>
+
+<script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.js"></script>
+
+<style>
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    font-family: Arial, Helvetica, sans-serif;
+    color: #173042;
+    background:
+        radial-gradient(circle at 10% 10%, rgba(35,155,145,.18), transparent 30%),
+        radial-gradient(circle at 90% 20%, rgba(228,173,62,.18), transparent 30%),
+        linear-gradient(135deg, #eef8f7, #faf7ef, #edf4fa);
+}
+
+.background {
+    position: fixed;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+    z-index: -1;
+}
+
+.blob {
+    position: absolute;
+    width: 280px;
+    height: 280px;
+    border-radius: 50%;
+    filter: blur(60px);
+    opacity: .25;
+    animation: float 14s ease-in-out infinite alternate;
+}
+
+.blob1 {
+    background: #54b8ad;
+    top: -100px;
+    left: -80px;
+}
+
+.blob2 {
+    background: #e9bb59;
+    right: -100px;
+    top: 35%;
+    animation-delay: -5s;
+}
+
+.blob3 {
+    background: #729bd0;
+    bottom: -120px;
+    left: 35%;
+    animation-delay: -8s;
+}
+
+@keyframes float {
+    from {
+        transform: translate(0,0) scale(1);
+    }
+    to {
+        transform: translate(50px,-40px) scale(1.15);
+    }
+}
+
+header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(255,255,255,.9);
+    backdrop-filter: blur(18px);
+    border-bottom: 1px solid rgba(30,50,70,.08);
+    box-shadow: 0 4px 20px rgba(20,40,60,.08);
+}
+
+.header-inner {
+    max-width: 1100px;
+    margin: auto;
+    min-height: 78px;
+    padding: 10px 16px;
+    display: flex;
+    align-items: center;
+    gap: 13px;
+}
+
+.logo {
+    width: 58px;
+    height: 58px;
+    flex-shrink: 0;
+    border-radius: 50%;
+    overflow: hidden;
+    background: linear-gradient(145deg,#176d73,#239b91);
+    border: 4px solid white;
+    box-shadow: 0 6px 20px rgba(24,110,110,.25);
+}
+
+.logo img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
+}
+
+.school-title {
+    min-width: 0;
+}
+
+.school-title h1 {
+    margin: 0;
+    font-size: clamp(15px,2.5vw,22px);
+    line-height: 1.15;
+    font-weight: 900;
+    color: #164e59;
+}
+
+.school-title p {
+    margin: 4px 0 0;
+    color: #768394;
+    font-size: 11px;
+    letter-spacing: .5px;
+    font-weight: 700;
+}
+
+.nav {
+    max-width: 1100px;
+    margin: auto;
+    padding: 8px 12px;
+    display: flex;
+    gap: 7px;
+    overflow-x: auto;
+}
+
+.nav button {
+    flex: 1;
+    min-width: 78px;
+    border: none;
+    background: rgba(255,255,255,.65);
+    color: #687586;
+    padding: 10px 8px;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: 800;
+    cursor: pointer;
+}
+
+.nav button.active {
+    color: white;
+    background: linear-gradient(135deg,#176d73,#239b91);
+    box-shadow: 0 5px 15px rgba(23,109,115,.22);
+}
+
+main {
+    max-width: 1100px;
+    margin: auto;
+    padding: 18px 14px 60px;
+}
+
+.page {
+    display: none;
+}
+
+.page.active {
+    display: block;
+    animation: pageIn .25s ease;
+}
+
+@keyframes pageIn {
+    from {
+        opacity: 0;
+        transform: translateY(8px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.card {
+    background: rgba(255,255,255,.88);
+    backdrop-filter: blur(16px);
+    border: 1px solid rgba(255,255,255,.8);
+    border-radius: 20px;
+    padding: 20px;
+    margin-bottom: 15px;
+    box-shadow: 0 8px 30px rgba(35,55,75,.08);
+}
+
+.card-title {
+    font-size: 20px;
+    font-weight: 900;
+    color: #19354a;
+}
+
+.card-subtitle {
+    margin: 4px 0 16px;
+    color: #778394;
+    font-size: 13px;
+}
+
+.hero {
+    padding: 25px 20px;
+    color: white;
+    border-radius: 22px;
+    margin-bottom: 15px;
+    background: linear-gradient(135deg,rgba(23,109,115,.96),rgba(35,155,145,.9));
+    box-shadow: 0 12px 30px rgba(25,105,110,.22);
+}
+
+.hero h2 {
+    margin: 0;
+    font-size: clamp(22px,5vw,32px);
+}
+
+.hero p {
+    margin: 7px 0 0;
+    opacity: .9;
+    font-size: 13px;
+}
+
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: repeat(3,1fr);
+    gap: 10px;
+}
+
+.stat {
+    padding: 17px 8px;
+    border-radius: 16px;
+    background: rgba(248,250,252,.9);
+    text-align: center;
+}
+
+.stat-number {
+    font-size: 28px;
+    font-weight: 950;
+    color: #176d73;
+}
+
+.stat-label {
+    margin-top: 3px;
+    color: #788493;
+    font-size: 11px;
+    font-weight: 700;
+}
+
+.btn {
+    border: none;
+    border-radius: 12px;
+    padding: 13px 17px;
+    font-size: 13px;
+    font-weight: 850;
+    cursor: pointer;
+    transition: .15s;
+}
+
+.btn:hover {
+    transform: translateY(-1px);
+}
+
+.primary {
+    color: white;
+    background: linear-gradient(135deg,#176d73,#239b91);
+}
+
+.secondary {
+    background: #edf1f5;
+    color: #566273;
+}
+
+.danger {
+    color: white;
+    background: linear-gradient(135deg,#c94545,#df5a5a);
+}
+
+.whatsapp {
+    color: white;
+    background: #25D366;
+}
+
+.full {
+    width: 100%;
+}
+
+.video-container {
+    width: 100%;
+    max-width: 650px;
+    margin: auto;
+    aspect-ratio: 4 / 3;
+    background: #101418;
+    border-radius: 20px;
+    overflow: hidden;
+    position: relative;
+}
+
+video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.scan-frame {
+    position: absolute;
+    width: 62%;
+    aspect-ratio: 1;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    border: 3px solid white;
+    border-radius: 17px;
+    box-shadow: 0 0 0 9999px rgba(0,0,0,.25);
+}
+
+.scan-line {
+    position: absolute;
+    width: 55%;
+    height: 3px;
+    left: 22.5%;
+    background: white;
+    animation: scanMove 1.5s ease-in-out infinite;
+}
+
+@keyframes scanMove {
+    0%,100% { top: 27%; }
+    50% { top: 73%; }
+}
+
+.camera-buttons {
+    display: flex;
+    gap: 8px;
+    margin-top: 12px;
+}
+
+.camera-buttons button {
+    flex: 1;
+}
+
+.status {
+    text-align: center;
+    margin-top: 10px;
+    color: #697587;
+    font-size: 13px;
+}
+
+.result {
+    margin-top: 14px;
+    padding: 20px;
+    text-align: center;
+    border-radius: 18px;
+    background: rgba(245,247,250,.92);
+}
+
+.result.success {
+    background: rgba(231,248,238,.94);
+}
+
+.result.error {
+    background: rgba(255,238,238,.94);
+}
+
+.result-icon {
+    font-size: 35px;
+}
+
+.result-name {
+    margin-top: 5px;
+    font-size: 23px;
+    font-weight: 950;
+}
+
+.result-info {
+    margin-top: 5px;
+    color: #697587;
+    line-height: 1.8;
+    font-size: 13px;
+}
+
+label {
+    display: block;
+    margin-top: 13px;
+    margin-bottom: 6px;
+    font-size: 12px;
+    font-weight: 850;
+    color: #425166;
+}
+
+input, select {
+    width: 100%;
+    padding: 13px 14px;
+    border: 1px solid #dbe1e8;
+    border-radius: 11px;
+    background: white;
+    color: #25344a;
+    font-size: 15px;
+    outline: none;
+}
+
+input:focus, select:focus {
+    border-color: #239b91;
+    box-shadow: 0 0 0 3px rgba(35,155,145,.1);
+}
+
+.student-card,
+.report-row {
+    background: rgba(255,255,255,.9);
+    border: 1px solid #e1e6ec;
+    border-radius: 16px;
+    padding: 15px;
+    margin-top: 10px;
+}
+
+.student-name,
+.report-name {
+    font-size: 18px;
+    font-weight: 900;
+}
+
+.student-id {
+    display: inline-block;
+    margin-top: 5px;
+    padding: 4px 9px;
+    border-radius: 7px;
+    background: #edf7f6;
+    color: #176d73;
+    font-size: 11px;
+    font-weight: 850;
+}
+
+.student-info {
+    margin-top: 8px;
+    color: #697587;
+    font-size: 13px;
+    line-height: 1.8;
+}
+
+.student-actions {
+    display: flex;
+    gap: 7px;
+    margin-top: 10px;
+}
+
+.student-actions .btn {
+    flex: 1;
+}
+
+.report-date {
+    margin-top: 3px;
+    color: #7b8695;
+    font-size: 11px;
+}
+
+.time-row {
+    display: flex;
+    gap: 8px;
+    margin-top: 10px;
+}
+
+.time-box {
+    flex: 1;
+    padding: 11px;
+    border-radius: 10px;
+    background: #f4f6f9;
+    text-align: center;
+}
+
+.time-label {
+    color: #7a8492;
+    font-size: 10px;
+    font-weight: 750;
+}
+
+.time-value {
+    margin-top: 4px;
+    font-size: 14px;
+    font-weight: 900;
+}
+
+.empty {
+    padding: 28px 10px;
+    text-align: center;
+    color: #7b8695;
+}
+
+canvas {
+    display: none;
+}
+
+@media (max-width:520px) {
+    .header-inner {
+        min-height: 70px;
+        padding: 9px 12px;
+    }
+
+    .logo {
+        width: 50px;
+        height: 50px;
+        border-width: 3px;
+    }
+
+    .school-title h1 {
+        font-size: 14px;
+    }
+
+    .school-title p {
+        font-size: 8px;
+    }
+
+    main {
+        padding: 12px 10px 40px;
+    }
+
+    .card {
+        padding: 15px;
+    }
+
+    .dashboard-grid {
+        gap: 7px;
+    }
+
+    .stat {
+        padding: 13px 4px;
+    }
+
+    .stat-number {
+        font-size: 23px;
+    }
+
+    .time-row,
+    .camera-buttons,
+    .student-actions {
+        flex-direction: column;
+    }
+}
+</style>
+
+</head>
+
+<body>
+
+<div class="background">
+    <div class="blob blob1"></div>
+    <div class="blob blob2"></div>
+    <div class="blob blob3"></div>
+</div>
+
+<header>
+
+<div class="header-inner">
+
+```
+<div class="logo">
+    <img src="school-logo.png"
+         alt="School Logo">
+</div>
+
+<div class="school-title">
+    <h1>ST. THERESA'S GEMS INTERNATIONAL PRESCHOOL</h1>
+    <p>SMART ATTENDANCE MANAGEMENT SYSTEM</p>
+</div>
+```
+
+</div>
+
+<nav class="nav">
+
+<button class="active"
+     onclick="showPage('dashboard',this)">
+🏠<br>Home </button>
+
+<button onclick="showPage('scanner',this)">
+    📷<br>Scan
+</button>
+
+<button onclick="showPage('students',this)">
+    👧<br>Students
+</button>
+
+<button onclick="showPage('reports',this)">
+    📊<br>Reports
+</button>
+
+</nav>
+
+</header>
+
+<main>
+
+<!-- DASHBOARD -->
+
+<section id="dashboard"
+         class="page active">
+
+<div class="hero">
+
+<h2>Good Day 👋</h2>
+
+<p>
+Welcome to the St. Theresa's Gems attendance management system.
+</p>
+
+</div>
+
+<div class="card">
+
+<div class="card-title">
+Today's Overview
+</div>
+
+<div class="card-subtitle">
+Attendance statistics for today.
+</div>
+
+<div class="dashboard-grid">
+
+<div class="stat">
+<div id="totalStudents"
+     class="stat-number">0</div>
+<div class="stat-label">TOTAL STUDENTS</div>
+</div>
+
+<div class="stat">
+<div id="arrivedToday"
+     class="stat-number">0</div>
+<div class="stat-label">ARRIVED</div>
+</div>
+
+<div class="stat">
+<div id="leftToday"
+     class="stat-number">0</div>
+<div class="stat-label">LEFT</div>
+</div>
+
+</div>
+</div>
+
+<div class="card">
+
+<div class="card-title">
+Quick Attendance
+</div>
+
+<div class="card-subtitle">
+Scan a student's QR code to record attendance.
+</div>
+
+<button class="btn primary full"
+     onclick="openScanner()">
+📷 START QR SCANNER </button>
+
+</div>
+
+<div class="card">
+
+<div class="card-title">
+Today's Attendance
+</div>
+
+<div id="todayPreview"></div>
+
+</div>
+
+</section>
+
+<!-- SCANNER -->
+
+<section id="scanner"
+         class="page">
+
+<div class="card">
+
+<div class="card-title">
+📷 QR Attendance Scanner
+</div>
+
+<div class="card-subtitle">
+Place the student's QR code inside the scanning frame.
+</div>
+
+<div class="video-container">
+
+<video id="video"
+    autoplay
+    muted
+    playsinline> </video>
+
+<div class="scan-frame"></div>
+<div class="scan-line"></div>
+
+</div>
+
+<div class="camera-buttons">
+
+<button id="startButton"
+     class="btn primary"
+     onclick="startCamera()">
+📷 Start Camera </button>
+
+<button id="stopButton"
+     class="btn danger"
+     onclick="stopCamera()"
+     style="display:none">
+⏹ Stop Camera </button>
+
+</div>
+
+<div id="status"
+     class="status">
+Camera not started.
+</div>
+
+</div>
+
+<div id="scanResult"
+     class="result">
+
+<div class="result-icon">📷</div>
+
+<div class="result-name">
+Ready
+</div>
+
+<div class="result-info">
+Start the camera to begin scanning.
+</div>
+
+</div>
+
+<canvas id="canvas"></canvas>
+
+</section>
+
+<!-- STUDENTS -->
+
+<section id="students"
+         class="page">
+
+<div class="card">
+
+<div class="card-title">
+👧 Student Management
+</div>
+
+<div class="card-subtitle">
+Add and manage student information.
+</div>
+
+<input id="search"
+    placeholder="🔎 Search student or Student ID..."
+    oninput="displayStudents()">
+
+<div id="studentList"></div>
+
+</div>
+
+<div class="card">
+
+<button class="btn primary full"
+     onclick="openAddStudent()">
+➕ ADD NEW STUDENT </button>
+
+</div>
+
+</section>
+
+<!-- ADD STUDENT -->
+
+<section id="addStudent"
+         class="page">
+
+<div class="card">
+
+<div id="formTitle"
+     class="card-title">
+➕ Add New Student
+</div>
+
+<div class="card-subtitle">
+Enter the student's information.
+</div>
+
+<label>Student Name</label>
+
+<input id="studentName"
+    placeholder="Example: Yonal">
+
+<label>Class</label>
+
+<select id="studentClass">
+
+<option value="">
+Select Class
+</option>
+
+<option>Nursery</option>
+<option>LKG</option>
+<option>UKG</option>
+
+</select>
+
+<label>Parent / Guardian Name</label>
+
+<input id="parentName"
+    placeholder="Parent name">
+
+<label>Parent WhatsApp Number</label>
+
+<input id="parentPhone"
+    type="tel"
+    placeholder="+94764120923">
+
+<div style="display:flex;gap:8px;margin-top:18px;">
+
+<button class="btn primary"
+     onclick="saveStudent()">
+💾 Save Student </button>
+
+<button class="btn secondary"
+     onclick="clearForm()">
+Clear </button>
+
+</div>
+
+</div>
+
+</section>
+
+<!-- REPORTS -->
+
+<section id="reports"
+         class="page">
+
+<div class="card">
+
+<div class="card-title">
+📊 Attendance Reports
+</div>
+
+<div class="card-subtitle">
+View attendance records and delete individual records.
+</div>
+
+<label>Attendance Date</label>
+
+<input type="date"
+    id="reportDate"
+    onchange="displayReports()">
+
+</div>
+
+<div id="reportList"></div>
+
+</section>
+
+</main>
+
+<script>
+
+/* =========================================================
+   DATA
+========================================================= */
+
+let students = [];
+let attendance = [];
+let editingId = null;
+
+
+/* =========================================================
+   LOAD DATA
+========================================================= */
+
+function loadData() {
+
+    try {
+
+        students =
+            JSON.parse(
+                localStorage.getItem("STG_students")
+            ) || [];
+
+        attendance =
+            JSON.parse(
+                localStorage.getItem("STG_attendance")
+            ) || [];
+
+    } catch(error) {
+
+        students = [];
+        attendance = [];
+
+    }
+
+}
+
+
+/* =========================================================
+   SAVE DATA
+========================================================= */
+
+function saveData() {
+
+    localStorage.setItem(
+        "STG_students",
+        JSON.stringify(students)
+    );
+
+    localStorage.setItem(
+        "STG_attendance",
+        JSON.stringify(attendance)
+    );
+
+}
+
+
+/* =========================================================
+   NAVIGATION
+========================================================= */
+
+function showPage(pageId, button = null) {
+
+    document
+        .querySelectorAll(".page")
+        .forEach(page =>
+            page.classList.remove("active")
+        );
+
+    const page =
+        document.getElementById(pageId);
+
+    if(page) {
+        page.classList.add("active");
+    }
+
+    document
+        .querySelectorAll(".nav button")
+        .forEach(btn =>
+            btn.classList.remove("active")
+        );
+
+    if(button) {
+        button.classList.add("active");
+    }
+
+    if(pageId === "dashboard") {
+        updateDashboard();
+    }
+
+    if(pageId === "students") {
+        displayStudents();
+    }
+
+    if(pageId === "reports") {
+        setReportDate();
+        displayReports();
+    }
+
+}
+
+
+function openScanner() {
+
+    const scanButton =
+        document.querySelectorAll(".nav button")[1];
+
+    showPage("scanner", scanButton);
+
+    startCamera();
+
+}
+
+
+/* =========================================================
+   STUDENT ID
+========================================================= */
+
+function createStudentID() {
+
+    let number = 1;
+    let id;
+
+    do {
+
+        id =
+            "STG-STU-" +
+            String(number).padStart(4,"0");
+
+        number++;
+
+    } while(
+        students.some(
+            student =>
+                String(student.id)
+                .toUpperCase()
+                === id
+        )
+    );
+
+    return id;
+
+}
+
+
+/* =========================================================
+   STUDENTS
+========================================================= */
+
+function openAddStudent() {
+
+    clearForm();
+
+    showPage("addStudent");
+
+}
+
+
+function saveStudent() {
+
+    const name =
+        document.getElementById("studentName")
+        .value.trim();
+
+    const studentClass =
+        document.getElementById("studentClass")
+        .value.trim();
+
+    const parent =
+        document.getElementById("parentName")
+        .value.trim();
+
+    const phone =
+        document.getElementById("parentPhone")
+        .value.trim();
+
+
+    if(!name || !studentClass || !parent || !phone) {
+
+        alert("Please fill in all fields.");
+
+        return;
+
+    }
+
+
+    if(editingId) {
+
+        const student =
+            students.find(
+                s => String(s.id) === String(editingId)
+            );
+
+        if(student) {
+
+            student.name = name;
+            student.class = studentClass;
+            student.parent = parent;
+            student.phone = phone;
+
+        }
+
+    } else {
+
+        students.push({
+
+            id: createStudentID(),
+            name: name,
+            class: studentClass,
+            parent: parent,
+            phone: phone
+
+        });
+
+    }
+
+
+    saveData();
+
+    clearForm();
+
+    alert("Student saved successfully.");
+
+    showPage("students");
+
+}
+
+
+function displayStudents() {
+
+    const list =
+        document.getElementById("studentList");
+
+    const search =
+        document.getElementById("search")
+        .value.trim()
+        .toLowerCase();
+
+
+    const filtered =
+        students.filter(student =>
+
+            String(student.name)
+                .toLowerCase()
+                .includes(search)
+
+            ||
+
+            String(student.id)
+                .toLowerCase()
+                .includes(search)
+
+        );
+
+
+    if(filtered.length === 0) {
+
+        list.innerHTML =
+            '<div class="empty">No students found.</div>';
+
+        return;
+
+    }
+
+
+    list.innerHTML =
+        filtered.map(student => `
+
+<div class="student-card">
+
+<div class="student-name">
+👧 ${escapeHTML(student.name)}
+</div>
+
+<div class="student-id">
+🆔 ${escapeHTML(student.id)}
+</div>
+
+<div class="student-info">
+
+🏫 Class:
+<strong>${escapeHTML(student.class)}</strong>
+
+<br>
+
+👨‍👩‍👧 Parent:
+${escapeHTML(student.parent)}
+
+<br>
+
+📱 WhatsApp:
+${escapeHTML(student.phone)}
+
+</div>
+
+<div class="student-actions">
+
+<button class="btn primary"
+        onclick="editStudent('${escapeJS(student.id)}')">
+✏️ Edit
+</button>
+
+<button class="btn danger"
+        onclick="deleteStudent('${escapeJS(student.id)}')">
+🗑 Delete
+</button>
+
+</div>
+
+</div>
+
+`).join("");
+
+}
+
+
+function editStudent(id) {
+
+    const student =
+        students.find(
+            s => String(s.id) === String(id)
+        );
+
+    if(!student) return;
+
+
+    editingId = student.id;
+
+    document.getElementById("studentName").value =
+        student.name;
+
+    document.getElementById("studentClass").value =
+        student.class;
+
+    document.getElementById("parentName").value =
+        student.parent;
+
+    document.getElementById("parentPhone").value =
+        student.phone;
+
+    document.getElementById("formTitle").textContent =
+        "✏️ Edit Student";
+
+    showPage("addStudent");
+
+}
+
+
+function deleteStudent(id) {
+
+    const student =
+        students.find(
+            s => String(s.id) === String(id)
+        );
+
+    if(!student) return;
+
+
+    if(!confirm(
+        "Delete " + student.name + "?"
+    )) {
+        return;
+    }
+
+
+    students =
+        students.filter(
+            s => String(s.id) !== String(id)
+        );
+
+
+    saveData();
+
+    displayStudents();
+
+    updateDashboard();
+
+}
+
+
+function clearForm() {
+
+    document.getElementById("studentName").value = "";
+    document.getElementById("studentClass").value = "";
+    document.getElementById("parentName").value = "";
+    document.getElementById("parentPhone").value = "";
+
+    document.getElementById("formTitle").textContent =
+        "➕ Add New Student";
+
+    editingId = null;
+
+}
+
+
+/* =========================================================
+   CAMERA
+========================================================= */
+
+const video =
+    document.getElementById("video");
+
+const canvas =
+    document.getElementById("canvas");
+
+const ctx =
+    canvas.getContext("2d", {
+        willReadFrequently: true
+    });
+
+let stream = null;
+let scanning = false;
+let detector = null;
+let nativeDetectorAvailable = false;
+let detectorBusy = false;
+let fallbackBusy = false;
+let lastCode = "";
+let lastScanTime = 0;
+
+
+/* =========================================================
+   BARCODE DETECTOR
+========================================================= */
+
+async function setupBarcodeDetector() {
+
+    nativeDetectorAvailable = false;
+    detector = null;
+
+    try {
+
+        if(!("BarcodeDetector" in window)) {
+            return false;
+        }
+
+        const formats =
+            await BarcodeDetector.getSupportedFormats();
+
+        if(!formats.includes("qr_code")) {
+            return false;
+        }
+
+        detector =
+            new BarcodeDetector({
+                formats: ["qr_code"]
+            });
+
+        nativeDetectorAvailable = true;
+
+        return true;
+
+    } catch(error) {
+
+        return false;
+
+    }
+
+}
+
+
+/* =========================================================
+   START CAMERA
+========================================================= */
+
+async function startCamera() {
+
+    if(scanning) return;
+
+
+    try {
+
+        if(
+            !navigator.mediaDevices ||
+            !navigator.mediaDevices.getUserMedia
+        ) {
+
+            throw new Error(
+                "Camera is unavailable. Open the GitHub Pages HTTPS link."
+            );
+
+        }
+
+
+        document.getElementById("status").textContent =
+            "Starting camera...";
+
+
+        stream =
+            await navigator.mediaDevices.getUserMedia({
+
+                video: {
+
+                    facingMode: {
+                        ideal: "environment"
+                    },
+
+                    width: {
+                        ideal: 1280
+                    },
+
+                    height: {
+                        ideal: 720
+                    },
+
+                    frameRate: {
+                        ideal: 30,
+                        max: 30
+                    }
+
+                },
+
+                audio: false
+
+            });
+
+
+        video.srcObject = stream;
+
+        await video.play();
+
+        await setupBarcodeDetector();
+
+        scanning = true;
+
+
+        document.getElementById("startButton")
+            .style.display = "none";
+
+        document.getElementById("stopButton")
+            .style.display = "block";
+
+
+        document.getElementById("status")
+            .textContent =
+                nativeDetectorAvailable
+                ? "🟢 Fast QR scanner ready"
+                : "🟢 QR scanner ready";
+
+
+        scanLoop();
+
+
+    } catch(error) {
+
+        console.error(error);
+
+        document.getElementById("status")
+            .textContent =
+                "❌ " + error.message;
+
+        alert(
+            "Camera could not be opened.\n\n" +
+            "Please allow camera access and use the HTTPS GitHub Pages link."
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   STOP CAMERA
+========================================================= */
+
+function stopCamera() {
+
+    scanning = false;
+
+    if(stream) {
+
+        stream
+            .getTracks()
+            .forEach(track => track.stop());
+
+    }
+
+    stream = null;
+
+    video.srcObject = null;
+
+    document.getElementById("startButton")
+        .style.display = "block";
+
+    document.getElementById("stopButton")
+        .style.display = "none";
+
+    document.getElementById("status")
+        .textContent =
+            "Camera stopped.";
+
+}
+
+
+/* =========================================================
+   SCAN LOOP
+========================================================= */
+
+function scanLoop() {
+
+    if(!scanning) return;
+
+
+    if(nativeDetectorAvailable) {
+        nativeScan();
+    } else {
+        fallbackScan();
+    }
+
+
+    requestAnimationFrame(scanLoop);
+
+}
+
+
+/* =========================================================
+   NATIVE QR SCAN
+========================================================= */
+
+async function nativeScan() {
+
+    if(
+        detectorBusy ||
+        !detector ||
+        video.readyState < 2
+    ) {
+        return;
+    }
+
+
+    detectorBusy = true;
+
+
+    try {
+
+        const codes =
+            await detector.detect(video);
+
+        if(codes && codes.length) {
+
+            const value =
+                codes[0].rawValue;
+
+            if(value) {
+                handleQR(value);
+            }
+
+        }
+
+    } catch(error) {
+
+        console.log(error);
+
+    } finally {
+
+        detectorBusy = false;
+
+    }
+
+}
+
+
+/* =========================================================
+   FALLBACK QR SCAN
+========================================================= */
+
+function fallbackScan() {
+
+    if(
+        fallbackBusy ||
+        video.readyState < 2 ||
+        !video.videoWidth
+    ) {
+        return;
+    }
+
+
+    fallbackBusy = true;
+
+
+    try {
+
+        const width = video.videoWidth;
+        const height = video.videoHeight;
+
+        const size =
+            Math.floor(
+                Math.min(width,height) * .7
+            );
+
+        const sx =
+            Math.floor((width-size)/2);
+
+        const sy =
+            Math.floor((height-size)/2);
+
+        const output = 480;
+
+        canvas.width = output;
+        canvas.height = output;
+
+
+        ctx.drawImage(
+            video,
+            sx,
+            sy,
+            size,
+            size,
+            0,
+            0,
+            output,
+            output
+        );
+
+
+        const image =
+            ctx.getImageData(
+                0,
+                0,
+                output,
+                output
+            );
+
+
+        const code =
+            jsQR(
+                image.data,
+                output,
+                output,
+                {
+                    inversionAttempts:
+                        "attemptBoth"
+                }
+            );
+
+
+        if(code) {
+            handleQR(code.data);
+        }
+
+
+    } catch(error) {
+
+        console.log(error);
+
+    } finally {
+
+        fallbackBusy = false;
+
+    }
+
+}
+
+
+/* =========================================================
+   QR RESULT
+========================================================= */
+
+function handleQR(data) {
+
+    const id =
+        String(data)
+        .trim()
+        .toUpperCase();
+
+    const now = Date.now();
+
+
+    if(
+        id === lastCode &&
+        now-lastScanTime < 2500
+    ) {
+        return;
+    }
+
+
+    lastCode = id;
+    lastScanTime = now;
+
+
+    const student =
+        students.find(
+            s =>
+                String(s.id)
+                .trim()
+                .toUpperCase()
+                === id
+        );
+
+
+    if(!student) {
+
+        showScanError(id);
+
+        beep();
+
+        return;
+
+    }
+
+
+    recordAttendance(student);
+
+}
+
+
+/* =========================================================
+   ATTENDANCE
+========================================================= */
+
+function recordAttendance(student) {
+
+    const now = new Date();
+
+    const date =
+        getDateString(now);
+
+    const time =
+        getTimeString(now);
+
+
+    let record =
+        attendance.find(
+            item =>
+                item.studentId === student.id &&
+                item.date === date
+        );
+
+
+    if(!record) {
+
+        record = {
+
+            studentId: student.id,
+            studentName: student.name,
+            class: student.class,
+            parent: student.parent,
+            phone: student.phone,
+            date: date,
+            arrival: time,
+            leaving: null
+
+        };
+
+        attendance.push(record);
+
+        saveData();
+
+        showArrival(student,time);
+
+        updateDashboard();
+
+        beep();
+
+        return;
+
+    }
+
+
+    if(!record.leaving) {
+
+        record.leaving = time;
+
+        saveData();
+
+        showLeaving(student,time);
+
+        updateDashboard();
+
+        beep();
+
+        return;
+
+    }
+
+
+    showCompleted(student,record);
+
+    beep();
+
+}
+
+
+/* =========================================================
+   ARRIVAL RESULT
+========================================================= */
+
+function showArrival(student,time) {
+
+    const result =
+        document.getElementById("scanResult");
+
+
+    result.className = "result success";
+
+
+    result.innerHTML = `
+
+<div class="result-icon">🟢</div>
+
+<div class="result-name">
+${escapeHTML(student.name)}
+</div>
+
+<div class="result-info">
+
+<strong>ARRIVAL RECORDED</strong>
+
+<br>
+
+🕐 ${escapeHTML(time)}
+
+<br>
+
+🏫 ${escapeHTML(student.class)}
+
+<br>
+
+🆔 ${escapeHTML(student.id)}
+
+</div>
+
+<br>
+
+<button class="btn whatsapp full"
+onclick="sendWhatsApp(
+'${escapeJS(student.phone)}',
+'${escapeJS(student.name)}',
+'arrival',
+'${escapeJS(time)}'
+)">
+
+📱 Send WhatsApp
+
+</button>
+
+`;
+
+}
+
+
+/* =========================================================
+   LEAVING RESULT
+========================================================= */
+
+function showLeaving(student,time) {
+
+    const result =
+        document.getElementById("scanResult");
+
+
+    result.className = "result success";
+
+
+    result.innerHTML = `
+
+<div class="result-icon">🔴</div>
+
+<div class="result-name">
+${escapeHTML(student.name)}
+</div>
+
+<div class="result-info">
+
+<strong>LEAVING RECORDED</strong>
+
+<br>
+
+🕐 ${escapeHTML(time)}
+
+<br>
+
+🏫 ${escapeHTML(student.class)}
+
+<br>
+
+🆔 ${escapeHTML(student.id)}
+
+</div>
+
+<br>
+
+<button class="btn whatsapp full"
+onclick="sendWhatsApp(
+'${escapeJS(student.phone)}',
+'${escapeJS(student.name)}',
+'leaving',
+'${escapeJS(time)}'
+)">
+
+📱 Send WhatsApp
+
+</button>
+
+`;
+
+}
+
+
+/* =========================================================
+   WHATSAPP
+========================================================= */
+
 function sendWhatsApp(
     phone,
     studentName,
-    parentName,
     type,
     time
 ) {
 
     const cleanPhone =
-        String(phone)
-        .replace(/\D/g, "");
+        String(phone).replace(/\D/g,"");
 
-    if (!cleanPhone) {
-        alert("No valid WhatsApp number.");
+
+    if(!cleanPhone) {
+
+        alert(
+            "No valid WhatsApp number."
+        );
+
         return;
+
     }
 
+
     const date =
-        new Date()
-        .toLocaleDateString(
+        new Date().toLocaleDateString(
             "en-GB",
             {
                 day: "2-digit",
@@ -27,9 +1895,11 @@ function sendWhatsApp(
             }
         );
 
+
     let message;
 
-    if (type === "arrival") {
+
+    if(type === "arrival") {
 
         message =
 `ST.THERESA'S GEMS INTERNATIONAL PRESCHOOL
@@ -59,15 +1929,558 @@ Thank you.`;
 
     }
 
+
     const url =
         "https://wa.me/" +
         cleanPhone +
         "?text=" +
         encodeURIComponent(message);
 
+
     window.open(
         url,
         "_blank"
     );
+
 }
-```
+
+
+/* =========================================================
+   ERROR
+========================================================= */
+
+function showScanError(id) {
+
+    const result =
+        document.getElementById("scanResult");
+
+
+    result.className = "result error";
+
+
+    result.innerHTML = `
+
+<div class="result-icon">❌</div>
+
+<div class="result-name">
+Student Not Found
+</div>
+
+<div class="result-info">
+
+QR Code:
+
+<br>
+
+<strong>
+${escapeHTML(id)}
+</strong>
+
+<br><br>
+
+Add this Student ID to the student database first.
+
+</div>
+
+`;
+
+}
+
+
+/* =========================================================
+   COMPLETED
+========================================================= */
+
+function showCompleted(student,record) {
+
+    const result =
+        document.getElementById("scanResult");
+
+
+    result.className = "result";
+
+
+    result.innerHTML = `
+
+<div class="result-icon">✅</div>
+
+<div class="result-name">
+${escapeHTML(student.name)}
+</div>
+
+<div class="result-info">
+
+Attendance already completed.
+
+<br><br>
+
+🟢 Arrival:
+${escapeHTML(record.arrival)}
+
+<br>
+
+🔴 Leaving:
+${escapeHTML(record.leaving)}
+
+</div>
+
+<br>
+
+<button class="btn whatsapp full"
+onclick="sendWhatsApp(
+'${escapeJS(student.phone)}',
+'${escapeJS(student.name)}',
+'leaving',
+'${escapeJS(record.leaving)}'
+)">
+
+📱 Send WhatsApp Again
+
+</button>
+
+`;
+
+}
+
+
+/* =========================================================
+   DASHBOARD
+========================================================= */
+
+function updateDashboard() {
+
+    const today =
+        getDateString(new Date());
+
+
+    const records =
+        attendance.filter(
+            r => r.date === today
+        );
+
+
+    document.getElementById(
+        "totalStudents"
+    ).textContent =
+        students.length;
+
+
+    document.getElementById(
+        "arrivedToday"
+    ).textContent =
+        records.length;
+
+
+    document.getElementById(
+        "leftToday"
+    ).textContent =
+        records.filter(
+            r => r.leaving
+        ).length;
+
+
+    displayTodayPreview();
+
+}
+
+
+function displayTodayPreview() {
+
+    const container =
+        document.getElementById(
+            "todayPreview"
+        );
+
+
+    const today =
+        getDateString(new Date());
+
+
+    const records =
+        attendance.filter(
+            r => r.date === today
+        );
+
+
+    if(records.length === 0) {
+
+        container.innerHTML =
+            '<div class="empty">No attendance recorded yet.</div>';
+
+        return;
+
+    }
+
+
+    container.innerHTML =
+        records
+        .slice()
+        .reverse()
+        .slice(0,5)
+        .map(record => `
+
+<div class="report-row">
+
+<div class="report-name">
+👧 ${escapeHTML(record.studentName)}
+</div>
+
+<div class="time-row">
+
+<div class="time-box">
+
+<div class="time-label">
+🟢 ARRIVAL
+</div>
+
+<div class="time-value">
+${escapeHTML(record.arrival)}
+</div>
+
+</div>
+
+<div class="time-box">
+
+<div class="time-label">
+🔴 LEAVING
+</div>
+
+<div class="time-value">
+${record.leaving
+    ? escapeHTML(record.leaving)
+    : "—"}
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+`).join("");
+
+}
+
+
+/* =========================================================
+   REPORTS
+========================================================= */
+
+function setReportDate() {
+
+    const input =
+        document.getElementById(
+            "reportDate"
+        );
+
+
+    if(!input.value) {
+
+        input.value =
+            getDateString(new Date());
+
+    }
+
+}
+
+
+function displayReports() {
+
+    const date =
+        document.getElementById(
+            "reportDate"
+        ).value;
+
+
+    const container =
+        document.getElementById(
+            "reportList"
+        );
+
+
+    const records =
+        attendance
+        .map((record,index) => ({
+            record,
+            index
+        }))
+        .filter(
+            item =>
+                item.record.date === date
+        );
+
+
+    if(records.length === 0) {
+
+        container.innerHTML = `
+
+<div class="card">
+
+<div class="empty">
+No attendance records for this date.
+</div>
+
+</div>
+
+`;
+
+        return;
+
+    }
+
+
+    container.innerHTML =
+        records
+        .slice()
+        .reverse()
+        .map(item => {
+
+            const record =
+                item.record;
+
+            const index =
+                item.index;
+
+
+            return `
+
+<div class="report-row">
+
+<div class="report-name">
+👧 ${escapeHTML(record.studentName)}
+</div>
+
+<div class="report-date">
+
+🆔 ${escapeHTML(record.studentId)}
+&nbsp; • &nbsp;
+📅 ${escapeHTML(record.date)}
+
+</div>
+
+<div class="time-row">
+
+<div class="time-box">
+
+<div class="time-label">
+🟢 ARRIVAL
+</div>
+
+<div class="time-value">
+${escapeHTML(record.arrival)}
+</div>
+
+</div>
+
+<div class="time-box">
+
+<div class="time-label">
+🔴 LEAVING
+</div>
+
+<div class="time-value">
+${record.leaving
+    ? escapeHTML(record.leaving)
+    : "Not yet"}
+</div>
+
+</div>
+
+</div>
+
+<button class="btn danger full"
+        style="margin-top:11px"
+        onclick="deleteAttendanceRecord(${index})">
+
+🗑 Delete This Attendance Record
+
+</button>
+
+</div>
+
+`;
+
+        })
+        .join("");
+
+}
+
+
+/* =========================================================
+   DELETE ONE REPORT
+========================================================= */
+
+function deleteAttendanceRecord(index) {
+
+    const record =
+        attendance[index];
+
+
+    if(!record) return;
+
+
+    if(!confirm(
+        "Delete attendance record?\n\n" +
+        record.studentName +
+        "\n" +
+        record.date +
+        "\n\n" +
+        "This will NOT delete the student."
+    )) {
+
+        return;
+
+    }
+
+
+    attendance.splice(index,1);
+
+    saveData();
+
+    displayReports();
+
+    updateDashboard();
+
+    alert(
+        "Attendance record deleted."
+    );
+
+}
+
+
+/* =========================================================
+   DATE & TIME
+========================================================= */
+
+function getDateString(date) {
+
+    return (
+        date.getFullYear() +
+        "-" +
+        String(
+            date.getMonth()+1
+        ).padStart(2,"0") +
+        "-" +
+        String(
+            date.getDate()
+        ).padStart(2,"0")
+    );
+
+}
+
+
+function getTimeString(date) {
+
+    return date.toLocaleTimeString(
+        [],
+        {
+            hour: "2-digit",
+            minute: "2-digit",
+            second: "2-digit"
+        }
+    );
+
+}
+
+
+/* =========================================================
+   BEEP
+========================================================= */
+
+function beep() {
+
+    try {
+
+        const AudioContext =
+            window.AudioContext ||
+            window.webkitAudioContext;
+
+
+        if(!AudioContext) return;
+
+
+        const audio =
+            new AudioContext();
+
+
+        const oscillator =
+            audio.createOscillator();
+
+
+        const gain =
+            audio.createGain();
+
+
+        oscillator.frequency.value =
+            1000;
+
+        gain.gain.value =
+            .08;
+
+
+        oscillator.connect(gain);
+
+        gain.connect(
+            audio.destination
+        );
+
+
+        oscillator.start();
+
+        oscillator.stop(
+            audio.currentTime + .08
+        );
+
+    } catch(error) {
+
+        console.log(error);
+
+    }
+
+}
+
+
+/* =========================================================
+   SECURITY / TEXT
+========================================================= */
+
+function escapeHTML(text) {
+
+    const div =
+        document.createElement("div");
+
+    div.textContent =
+        text;
+
+    return div.innerHTML;
+
+}
+
+
+function escapeJS(text) {
+
+    return String(text)
+        .replace(/\\/g,"\\\\")
+        .replace(/'/g,"\\'");
+
+}
+
+
+/* =========================================================
+   START
+========================================================= */
+
+loadData();
+
+updateDashboard();
+
+displayStudents();
+
+setReportDate();
+
+displayReports();
+
+</script>
+
+</body>
+</html>
