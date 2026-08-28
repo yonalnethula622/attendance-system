@@ -1,11 +1,10 @@
-```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>STG Smart Attendance System</title>
+<title>St. Theresa's Gems International Preschool</title>
 
 <script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.js"></script>
 
@@ -19,11 +18,10 @@ body {
     min-height: 100vh;
     font-family: Arial, Helvetica, sans-serif;
     color: #173042;
-
     background:
         radial-gradient(circle at 10% 10%, rgba(35,155,145,.18), transparent 30%),
         radial-gradient(circle at 90% 20%, rgba(228,173,62,.18), transparent 30%),
-        linear-gradient(135deg,#eef8f7,#faf7ef,#edf4fa);
+        linear-gradient(135deg, #eef8f7, #faf7ef, #edf4fa);
 }
 
 .background {
@@ -41,6 +39,7 @@ body {
     border-radius: 50%;
     filter: blur(60px);
     opacity: .25;
+    animation: float 14s ease-in-out infinite alternate;
 }
 
 .blob1 {
@@ -53,17 +52,30 @@ body {
     background: #e9bb59;
     right: -100px;
     top: 35%;
+    animation-delay: -5s;
 }
 
 .blob3 {
     background: #729bd0;
     bottom: -120px;
     left: 35%;
+    animation-delay: -8s;
 }
 
-/* LOGIN */
+@keyframes float {
+    from {
+        transform: translate(0,0) scale(1);
+    }
+    to {
+        transform: translate(50px,-40px) scale(1.15);
+    }
+}
 
-#loginScreen {
+/* =========================================================
+   LOGIN
+========================================================= */
+
+#loginPage {
     min-height: 100vh;
     display: flex;
     align-items: center;
@@ -75,20 +87,22 @@ body {
     width: 100%;
     max-width: 420px;
     background: rgba(255,255,255,.94);
+    backdrop-filter: blur(18px);
     border-radius: 24px;
-    padding: 30px;
-    box-shadow: 0 15px 50px rgba(30,50,70,.15);
+    padding: 28px;
+    box-shadow: 0 15px 45px rgba(30,50,70,.15);
+    border: 1px solid rgba(255,255,255,.9);
 }
 
 .login-logo {
-    width: 85px;
-    height: 85px;
+    width: 90px;
+    height: 90px;
     margin: 0 auto 15px;
     border-radius: 50%;
     overflow: hidden;
-    background: #176d73;
-    border: 4px solid white;
-    box-shadow: 0 8px 25px rgba(23,109,115,.25);
+    background: linear-gradient(145deg,#176d73,#239b91);
+    border: 5px solid white;
+    box-shadow: 0 8px 25px rgba(24,110,110,.25);
 }
 
 .login-logo img {
@@ -99,20 +113,44 @@ body {
 
 .login-title {
     text-align: center;
+    color: #164e59;
     font-size: 21px;
     font-weight: 900;
-    color: #164e59;
 }
 
 .login-subtitle {
     text-align: center;
-    color: #778394;
+    color: #7a8593;
     font-size: 12px;
-    margin-top: 5px;
-    margin-bottom: 20px;
+    margin: 7px 0 20px;
 }
 
-/* HEADER */
+.login-error {
+    display: none;
+    background: #fff0f0;
+    color: #b83c3c;
+    padding: 11px;
+    border-radius: 10px;
+    margin-top: 12px;
+    font-size: 12px;
+    text-align: center;
+}
+
+.login-loading {
+    display: none;
+    text-align: center;
+    color: #687586;
+    font-size: 12px;
+    margin-top: 12px;
+}
+
+/* =========================================================
+   APP
+========================================================= */
+
+#app {
+    display: none;
+}
 
 header {
     position: sticky;
@@ -140,7 +178,7 @@ header {
     flex-shrink: 0;
     border-radius: 50%;
     overflow: hidden;
-    background: #176d73;
+    background: linear-gradient(145deg,#176d73,#239b91);
     border: 4px solid white;
     box-shadow: 0 6px 20px rgba(24,110,110,.25);
 }
@@ -149,6 +187,7 @@ header {
     width: 100%;
     height: 100%;
     object-fit: contain;
+    display: block;
 }
 
 .school-title {
@@ -172,29 +211,16 @@ header {
     font-weight: 700;
 }
 
-.user-area {
-    text-align: right;
-}
-
-.user-email {
-    font-size: 10px;
-    color: #778394;
-    max-width: 170px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-
-.logout {
-    margin-top: 5px;
+.logout-button {
     border: none;
-    background: transparent;
-    color: #c94545;
+    background: #edf1f5;
+    color: #566273;
+    border-radius: 10px;
+    padding: 9px 11px;
+    cursor: pointer;
     font-size: 11px;
     font-weight: 800;
-    cursor: pointer;
 }
-
-/* NAV */
 
 .nav {
     max-width: 1100px;
@@ -221,9 +247,8 @@ header {
 .nav button.active {
     color: white;
     background: linear-gradient(135deg,#176d73,#239b91);
+    box-shadow: 0 5px 15px rgba(23,109,115,.22);
 }
-
-/* MAIN */
 
 main {
     max-width: 1100px;
@@ -237,6 +262,18 @@ main {
 
 .page.active {
     display: block;
+    animation: pageIn .25s ease;
+}
+
+@keyframes pageIn {
+    from {
+        opacity: 0;
+        transform: translateY(8px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 .card {
@@ -267,6 +304,7 @@ main {
     border-radius: 22px;
     margin-bottom: 15px;
     background: linear-gradient(135deg,rgba(23,109,115,.96),rgba(35,155,145,.9));
+    box-shadow: 0 12px 30px rgba(25,105,110,.22);
 }
 
 .hero h2 {
@@ -302,8 +340,16 @@ main {
 .stat-label {
     margin-top: 3px;
     color: #788493;
-    font-size: 10px;
+    font-size: 11px;
     font-weight: 700;
+}
+
+.absent-stat .stat-number {
+    color: #c94545;
+}
+
+.present-stat .stat-number {
+    color: #239b91;
 }
 
 .btn {
@@ -313,6 +359,11 @@ main {
     font-size: 13px;
     font-weight: 850;
     cursor: pointer;
+    transition: .15s;
+}
+
+.btn:hover {
+    transform: translateY(-1px);
 }
 
 .primary {
@@ -330,6 +381,11 @@ main {
     background: linear-gradient(135deg,#c94545,#df5a5a);
 }
 
+.warning {
+    color: #6c4d00;
+    background: #f7df96;
+}
+
 .whatsapp {
     color: white;
     background: #25D366;
@@ -338,8 +394,6 @@ main {
 .full {
     width: 100%;
 }
-
-/* SCANNER */
 
 .video-container {
     width: 100%;
@@ -417,6 +471,10 @@ video {
     background: rgba(255,238,238,.94);
 }
 
+.result.warning-result {
+    background: rgba(255,248,222,.95);
+}
+
 .result-icon {
     font-size: 35px;
 }
@@ -433,8 +491,6 @@ video {
     line-height: 1.8;
     font-size: 13px;
 }
-
-/* FORM */
 
 label {
     display: block;
@@ -460,8 +516,6 @@ input:focus, select:focus {
     border-color: #239b91;
     box-shadow: 0 0 0 3px rgba(35,155,145,.1);
 }
-
-/* STUDENTS / REPORTS */
 
 .student-card,
 .report-row {
@@ -538,24 +592,28 @@ input:focus, select:focus {
     font-weight: 900;
 }
 
-.absent-box {
-    margin-top: 12px;
-    padding: 12px;
-    border-radius: 12px;
-    background: #fff0f0;
-    color: #c94545;
-    text-align: center;
-    font-weight: 850;
+.status-badge {
+    display: inline-block;
+    margin-top: 8px;
+    padding: 5px 9px;
+    border-radius: 8px;
+    font-size: 10px;
+    font-weight: 900;
 }
 
-.present-box {
-    margin-top: 12px;
-    padding: 12px;
-    border-radius: 12px;
-    background: #eaf8ef;
-    color: #22834a;
-    text-align: center;
-    font-weight: 850;
+.status-present {
+    color: #17704f;
+    background: #dff6e9;
+}
+
+.status-absent {
+    color: #a52d2d;
+    background: #ffe2e2;
+}
+
+.status-left {
+    color: #6c4d00;
+    background: #fff0bd;
 }
 
 .empty {
@@ -564,34 +622,48 @@ input:focus, select:focus {
     color: #7b8695;
 }
 
-.sync-status {
-    text-align: center;
-    font-size: 11px;
-    color: #718091;
-    margin-top: 10px;
+.info-box {
+    padding: 13px;
+    border-radius: 12px;
+    background: #edf7f6;
+    color: #42656a;
+    font-size: 12px;
+    line-height: 1.7;
+    margin-bottom: 12px;
 }
 
-.hidden-test {
-    display: none;
+.deadline-box {
+    padding: 15px;
+    border-radius: 14px;
+    background: #fff7dc;
+    color: #695522;
+    font-size: 13px;
+    line-height: 1.7;
+    margin-bottom: 15px;
+}
+
+.user-email {
+    color: #778394;
+    font-size: 10px;
+    margin-top: 3px;
 }
 
 canvas {
     display: none;
 }
 
-@media(max-width:700px) {
-
+@media (max-width:700px) {
     .dashboard-grid {
         grid-template-columns: repeat(2,1fr);
     }
 
-    .user-area {
-        display: none;
+    .logout-button {
+        padding: 8px;
+        font-size: 10px;
     }
 }
 
-@media(max-width:520px) {
-
+@media (max-width:520px) {
     .header-inner {
         min-height: 70px;
         padding: 9px 12px;
@@ -600,6 +672,7 @@ canvas {
     .logo {
         width: 50px;
         height: 50px;
+        border-width: 3px;
     }
 
     .school-title h1 {
@@ -618,6 +691,18 @@ canvas {
         padding: 15px;
     }
 
+    .dashboard-grid {
+        gap: 7px;
+    }
+
+    .stat {
+        padding: 13px 4px;
+    }
+
+    .stat-number {
+        font-size: 23px;
+    }
+
     .time-row,
     .camera-buttons,
     .student-actions {
@@ -629,9 +714,17 @@ canvas {
 
 <body>
 
-<!-- LOGIN -->
+<div class="background">
+    <div class="blob blob1"></div>
+    <div class="blob blob2"></div>
+    <div class="blob blob3"></div>
+</div>
 
-<div id="loginScreen">
+<!-- =========================================================
+     LOGIN
+========================================================= -->
+
+<div id="loginPage">
 
     <div class="login-card">
 
@@ -647,12 +740,13 @@ canvas {
             SMART ATTENDANCE MANAGEMENT SYSTEM
         </div>
 
-        <label>Email</label>
+        <label>Email Address</label>
 
         <input
             id="loginEmail"
             type="email"
-            placeholder="School email"
+            placeholder="Enter your email"
+            autocomplete="email"
         >
 
         <label>Password</label>
@@ -660,10 +754,12 @@ canvas {
         <input
             id="loginPassword"
             type="password"
-            placeholder="Password"
+            placeholder="Enter your password"
+            autocomplete="current-password"
         >
 
         <button
+            id="loginButton"
             class="btn primary full"
             style="margin-top:18px"
             onclick="loginUser()"
@@ -671,11 +767,10 @@ canvas {
             🔐 SIGN IN
         </button>
 
-        <div
-            id="loginStatus"
-            class="status"
-        >
-            Sign in using your Firebase account.
+        <div id="loginError" class="login-error"></div>
+
+        <div id="loginLoading" class="login-loading">
+            Signing in...
         </div>
 
     </div>
@@ -683,457 +778,509 @@ canvas {
 </div>
 
 
-<!-- APP -->
+<!-- =========================================================
+     APPLICATION
+========================================================= -->
 
-<div id="app" style="display:none;">
+<div id="app">
 
 <header>
 
-<div class="header-inner">
+    <div class="header-inner">
 
-<div class="logo">
-    <img src="school-logo.png" alt="School Logo">
-</div>
+        <div class="logo">
+            <img
+                src="school-logo.png"
+                alt="School Logo">
+        </div>
 
-<div class="school-title">
+        <div class="school-title">
 
-<h1>
-ST. THERESA'S GEMS INTERNATIONAL PRESCHOOL
-</h1>
+            <h1>
+                ST. THERESA'S GEMS INTERNATIONAL PRESCHOOL
+            </h1>
 
-<p>
-SMART ATTENDANCE MANAGEMENT SYSTEM
-</p>
+            <p>
+                SMART ATTENDANCE MANAGEMENT SYSTEM
+            </p>
 
-</div>
+            <div
+                id="currentUserEmail"
+                class="user-email">
+            </div>
 
-<div class="user-area">
+        </div>
 
-<div id="userEmail" class="user-email"></div>
+        <button
+            class="logout-button"
+            onclick="logoutUser()">
+            🚪 Logout
+        </button>
 
-<button
-    class="logout"
-    onclick="logoutUser()"
->
-Logout
-</button>
-
-</div>
-
-</div>
+    </div>
 
 
-<nav class="nav">
+    <nav class="nav">
 
-<button
-    class="active"
-    onclick="showPage('dashboard',this)"
->
-🏠<br>Home
-</button>
+        <button
+            class="active"
+            onclick="showPage('dashboard',this)">
+            🏠<br>Home
+        </button>
 
-<button
-    onclick="showPage('scanner',this)"
->
-📷<br>Scan
-</button>
+        <button
+            onclick="showPage('scanner',this)">
+            📷<br>Scan
+        </button>
 
-<button
-    onclick="showPage('students',this)"
->
-👧<br>Students
-</button>
+        <button
+            onclick="showPage('students',this)">
+            👧<br>Students
+        </button>
 
-<button
-    onclick="showPage('reports',this)"
->
-📊<br>Reports
-</button>
+        <button
+            onclick="showPage('reports',this)">
+            📊<br>Reports
+        </button>
 
-</nav>
+    </nav>
 
 </header>
 
 
 <main>
 
-<!-- DASHBOARD -->
+<!-- =========================================================
+     DASHBOARD
+========================================================= -->
 
-<section id="dashboard" class="page active">
+<section
+    id="dashboard"
+    class="page active">
 
-<div class="hero">
+    <div class="hero">
 
-<h2>
-Good Day 👋
-</h2>
+        <h2>
+            Good Day 👋
+        </h2>
 
-<p>
-Welcome to the St. Theresa's Gems attendance management system.
-</p>
+        <p>
+            Welcome to the St. Theresa's Gems attendance management system.
+        </p>
 
-<p>
-🇱🇰 Attendance timezone: Sri Lanka
-</p>
-
-</div>
-
-
-<div class="card">
-
-<div class="card-title">
-Today's Overview
-</div>
-
-<div class="card-subtitle">
-Attendance for today in Sri Lankan time.
-</div>
-
-<div class="dashboard-grid">
-
-<div class="stat">
-<div id="totalStudents" class="stat-number">0</div>
-<div class="stat-label">TOTAL</div>
-</div>
-
-<div class="stat">
-<div id="arrivedToday" class="stat-number">0</div>
-<div class="stat-label">PRESENT</div>
-</div>
-
-<div class="stat">
-<div id="absentToday" class="stat-number">0</div>
-<div class="stat-label">ABSENT</div>
-</div>
-
-<div class="stat">
-<div id="leftToday" class="stat-number">0</div>
-<div class="stat-label">LEFT</div>
-</div>
-
-</div>
-
-<div
-    id="syncStatus"
-    class="sync-status"
->
-☁️ Connected to shared database
-</div>
-
-</div>
+    </div>
 
 
-<div class="card">
+    <div class="card">
 
-<div class="card-title">
-Quick Attendance
-</div>
+        <div class="card-title">
+            Today's Overview
+        </div>
 
-<div class="card-subtitle">
-Scan a student's QR code to record attendance.
-</div>
-
-<button
-    class="btn primary full"
-    onclick="openScanner()"
->
-📷 START QR SCANNER
-</button>
-
-</div>
+        <div class="card-subtitle">
+            Attendance statistics using Sri Lankan time.
+        </div>
 
 
-<div class="card">
+        <div class="dashboard-grid">
 
-<div class="card-title">
-Today's Attendance
-</div>
+            <div class="stat">
 
-<div id="todayPreview"></div>
+                <div
+                    id="totalStudents"
+                    class="stat-number">
+                    0
+                </div>
 
-</div>
+                <div class="stat-label">
+                    TOTAL
+                </div>
 
-</section>
-
-
-<!-- SCANNER -->
-
-<section id="scanner" class="page">
-
-<div class="card">
-
-<div class="card-title">
-📷 QR Attendance Scanner
-</div>
-
-<div class="card-subtitle">
-Arrival can only be recorded until 9:00 AM Sri Lanka time.
-</div>
+            </div>
 
 
-<div class="video-container">
+            <div class="stat present-stat">
 
-<video
-    id="video"
-    autoplay
-    muted
-    playsinline
-></video>
+                <div
+                    id="arrivedToday"
+                    class="stat-number">
+                    0
+                </div>
 
-<div class="scan-frame"></div>
+                <div class="stat-label">
+                    PRESENT
+                </div>
 
-<div class="scan-line"></div>
-
-</div>
-
-
-<div class="camera-buttons">
-
-<button
-    id="startButton"
-    class="btn primary"
-    onclick="startCamera()"
->
-📷 Start Camera
-</button>
-
-<button
-    id="stopButton"
-    class="btn danger"
-    onclick="stopCamera()"
-    style="display:none"
->
-⏹ Stop Camera
-</button>
-
-</div>
+            </div>
 
 
-<div id="status" class="status">
-Camera not started.
-</div>
+            <div class="stat absent-stat">
 
-</div>
+                <div
+                    id="absentToday"
+                    class="stat-number">
+                    0
+                </div>
 
+                <div class="stat-label">
+                    ABSENT
+                </div>
 
-<div id="scanResult" class="result">
-
-<div class="result-icon">
-📷
-</div>
-
-<div class="result-name">
-Ready
-</div>
-
-<div class="result-info">
-Start the camera to begin scanning.
-</div>
-
-</div>
+            </div>
 
 
-<canvas id="canvas"></canvas>
+            <div class="stat">
+
+                <div
+                    id="leftToday"
+                    class="stat-number">
+                    0
+                </div>
+
+                <div class="stat-label">
+                    LEFT
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="card">
+
+        <div class="card-title">
+            Attendance Deadline
+        </div>
+
+        <div class="deadline-box">
+
+            🇱🇰 <strong>Sri Lanka Time</strong><br>
+
+            QR arrival scanning is available until
+            <strong>9:00 AM</strong>.
+
+            <br><br>
+
+            After 9:00 AM, students who have not been recorded
+            as present are automatically marked
+            <strong>ABSENT</strong>.
+
+        </div>
+
+    </div>
+
+
+    <div class="card">
+
+        <div class="card-title">
+            Quick Attendance
+        </div>
+
+        <div class="card-subtitle">
+            Scan a student's QR code to record attendance.
+        </div>
+
+        <button
+            class="btn primary full"
+            onclick="openScanner()">
+            📷 START QR SCANNER
+        </button>
+
+    </div>
+
+
+    <div class="card">
+
+        <div class="card-title">
+            Today's Attendance
+        </div>
+
+        <div id="todayPreview"></div>
+
+    </div>
 
 </section>
 
 
-<!-- STUDENTS -->
+<!-- =========================================================
+     SCANNER
+========================================================= -->
 
-<section id="students" class="page">
+<section
+    id="scanner"
+    class="page">
 
-<div class="card">
+    <div class="card">
 
-<div class="card-title">
-👧 Student Management
-</div>
+        <div class="card-title">
+            📷 QR Attendance Scanner
+        </div>
 
-<div class="card-subtitle">
-Students are shared between all devices.
-</div>
-
-<input
-    id="search"
-    placeholder="🔎 Search student or Student ID..."
-    oninput="displayStudents()"
->
-
-<div id="studentList"></div>
-
-</div>
+        <div class="card-subtitle">
+            Place the student's QR code inside the scanning frame.
+        </div>
 
 
-<div class="card">
+        <div class="deadline-box">
 
-<button
-    class="btn primary full"
-    onclick="openAddStudent()"
->
-➕ ADD NEW STUDENT
-</button>
+            🇱🇰 Arrival scanning deadline:
+            <strong>9:00 AM Sri Lanka time</strong>.
 
-</div>
+            <br>
 
-</section>
+            After the deadline, new students cannot be marked
+            present by arrival scanning.
 
-
-<!-- ADD STUDENT -->
-
-<section id="addStudent" class="page">
-
-<div class="card">
-
-<div
-    id="formTitle"
-    class="card-title"
->
-➕ Add New Student
-</div>
-
-<div class="card-subtitle">
-Enter the student's information.
-</div>
+        </div>
 
 
-<label>Student Name</label>
+        <div class="video-container">
 
-<input
-    id="studentName"
-    placeholder="Example: Yonal"
->
+            <video
+                id="video"
+                autoplay
+                muted
+                playsinline>
+            </video>
 
+            <div class="scan-frame"></div>
+            <div class="scan-line"></div>
 
-<label>Class</label>
-
-<select id="studentClass">
-
-<option value="">
-Select Class
-</option>
-
-<option>Nursery</option>
-<option>LKG</option>
-<option>UKG</option>
-
-</select>
+        </div>
 
 
-<label>Parent / Guardian Name</label>
+        <div class="camera-buttons">
 
-<input
-    id="parentName"
-    placeholder="Parent name"
->
+            <button
+                id="startButton"
+                class="btn primary"
+                onclick="startCamera()">
+                📷 Start Camera
+            </button>
+
+            <button
+                id="stopButton"
+                class="btn danger"
+                onclick="stopCamera()"
+                style="display:none">
+                ⏹ Stop Camera
+            </button>
+
+        </div>
 
 
-<label>Parent WhatsApp Number</label>
+        <div
+            id="status"
+            class="status">
+            Camera not started.
+        </div>
 
-<input
-    id="parentPhone"
-    type="tel"
-    placeholder="+94764120923"
->
+    </div>
 
 
-<div style="display:flex;gap:8px;margin-top:18px;">
+    <div
+        id="scanResult"
+        class="result">
 
-<button
-    class="btn primary"
-    onclick="saveStudent()"
->
-💾 Save Student
-</button>
+        <div class="result-icon">
+            📷
+        </div>
 
-<button
-    class="btn secondary"
-    onclick="clearForm()"
->
-Clear
-</button>
+        <div class="result-name">
+            Ready
+        </div>
 
-</div>
+        <div class="result-info">
+            Start the camera to begin scanning.
+        </div>
 
-</div>
+    </div>
+
+
+    <canvas id="canvas"></canvas>
 
 </section>
 
 
-<!-- REPORTS -->
+<!-- =========================================================
+     STUDENTS
+========================================================= -->
 
-<section id="reports" class="page">
+<section
+    id="students"
+    class="page">
 
-<div class="card">
+    <div class="card">
 
-<div class="card-title">
-📊 Attendance Reports
-</div>
+        <div class="card-title">
+            👧 Student Management
+        </div>
 
-<div class="card-subtitle">
-Present and absent students are shown here.
-</div>
-
-<label>
-Attendance Date
-</label>
-
-<input
-    type="date"
-    id="reportDate"
-    onchange="displayReports()"
->
-
-</div>
+        <div class="card-subtitle">
+            Add and manage student information.
+        </div>
 
 
-<div id="reportList"></div>
+        <input
+            id="search"
+            placeholder="🔎 Search student or Student ID..."
+            oninput="displayStudents()"
+        >
+
+
+        <div id="studentList"></div>
+
+    </div>
+
+
+    <div class="card">
+
+        <button
+            class="btn primary full"
+            onclick="openAddStudent()">
+            ➕ ADD NEW STUDENT
+        </button>
+
+    </div>
 
 </section>
 
 
-<!-- HIDDEN ADMIN TEST AREA -->
+<!-- =========================================================
+     ADD STUDENT
+========================================================= -->
 
-<section id="adminTest" class="page hidden-test">
+<section
+    id="addStudent"
+    class="page">
 
-<div class="card">
+    <div class="card">
 
-<div class="card-title">
-🔧 Attendance Test
-</div>
+        <div
+            id="formTitle"
+            class="card-title">
+            ➕ Add New Student
+        </div>
 
-<div class="card-subtitle">
-Hidden testing area.
-</div>
+        <div class="card-subtitle">
+            Enter the student's information.
+        </div>
 
-<label>
-Test Sri Lanka Time
-</label>
 
-<input
-    type="time"
-    id="testTime"
->
+        <label>
+            Student Name
+        </label>
 
-<button
-    class="btn primary full"
-    style="margin-top:15px"
-    onclick="saveTestTime()"
->
-Save Test Time
-</button>
+        <input
+            id="studentName"
+            placeholder="Example: Yonal"
+        >
 
-<button
-    class="btn secondary full"
-    style="margin-top:8px"
-    onclick="disableTestMode()"
->
-Use Real Sri Lanka Time
-</button>
 
-<div
-    id="testStatus"
-    class="status"
-></div>
+        <label>
+            Class
+        </label>
 
-</div>
+        <select id="studentClass">
+
+            <option value="">
+                Select Class
+            </option>
+
+            <option>
+                Nursery
+            </option>
+
+            <option>
+                LKG
+            </option>
+
+            <option>
+                UKG
+            </option>
+
+        </select>
+
+
+        <label>
+            Parent / Guardian Name
+        </label>
+
+        <input
+            id="parentName"
+            placeholder="Parent name"
+        >
+
+
+        <label>
+            Parent WhatsApp Number
+        </label>
+
+        <input
+            id="parentPhone"
+            type="tel"
+            placeholder="+94764120923"
+        >
+
+
+        <div style="display:flex;gap:8px;margin-top:18px;">
+
+            <button
+                class="btn primary"
+                onclick="saveStudent()">
+                💾 Save Student
+            </button>
+
+            <button
+                class="btn secondary"
+                onclick="clearForm()">
+                Clear
+            </button>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================================================
+     REPORTS
+========================================================= -->
+
+<section
+    id="reports"
+    class="page">
+
+    <div class="card">
+
+        <div class="card-title">
+            📊 Attendance Reports
+        </div>
+
+        <div class="card-subtitle">
+            View shared attendance records from Firebase.
+        </div>
+
+
+        <label>
+            Attendance Date
+        </label>
+
+        <input
+            type="date"
+            id="reportDate"
+            onchange="displayReports()"
+        >
+
+    </div>
+
+
+    <div id="reportSummary"></div>
+
+    <div id="reportList"></div>
 
 </section>
 
@@ -1142,7 +1289,9 @@ Use Real Sri Lanka Time
 </div>
 
 
-<!-- FIREBASE -->
+<!-- =========================================================
+     FIREBASE
+========================================================= -->
 
 <script type="module">
 
@@ -1160,16 +1309,14 @@ import {
 import {
     getFirestore,
     collection,
-    addDoc,
     doc,
+    getDocs,
+    getDoc,
     setDoc,
     updateDoc,
     deleteDoc,
-    getDocs,
     query,
-    where,
-    onSnapshot,
-    serverTimestamp
+    where
 } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-firestore.js";
 
 
@@ -1201,7 +1348,7 @@ const firebaseConfig = {
 
 
 /* =========================================================
-   FIREBASE INITIALIZATION
+   INITIALIZE FIREBASE
 ========================================================= */
 
 const app =
@@ -1215,7 +1362,7 @@ const db =
 
 
 /* =========================================================
-   DATA
+   GLOBALS
 ========================================================= */
 
 let students = [];
@@ -1223,8 +1370,52 @@ let attendance = [];
 
 let editingId = null;
 
-let unsubscribeStudents = null;
-let unsubscribeAttendance = null;
+let currentUser = null;
+
+
+/* =========================================================
+   AUTH STATE
+========================================================= */
+
+onAuthStateChanged(
+    auth,
+    async user => {
+
+        if(user) {
+
+            currentUser = user;
+
+            document.getElementById(
+                "loginPage"
+            ).style.display = "none";
+
+            document.getElementById(
+                "app"
+            ).style.display = "block";
+
+            document.getElementById(
+                "currentUserEmail"
+            ).textContent =
+                user.email || "";
+
+            await refreshAllData();
+
+        } else {
+
+            currentUser = null;
+
+            document.getElementById(
+                "loginPage"
+            ).style.display = "flex";
+
+            document.getElementById(
+                "app"
+            ).style.display = "none";
+
+        }
+
+    }
+);
 
 
 /* =========================================================
@@ -1234,32 +1425,49 @@ let unsubscribeAttendance = null;
 window.loginUser = async function() {
 
     const email =
-        document
-            .getElementById("loginEmail")
-            .value
-            .trim();
+        document.getElementById(
+            "loginEmail"
+        ).value.trim();
 
     const password =
-        document
-            .getElementById("loginPassword")
-            .value;
+        document.getElementById(
+            "loginPassword"
+        ).value;
 
-    const status =
-        document.getElementById("loginStatus");
 
+    const errorBox =
+        document.getElementById(
+            "loginError"
+        );
+
+    const loading =
+        document.getElementById(
+            "loginLoading"
+        );
+
+
+    errorBox.style.display = "none";
 
     if(!email || !password) {
 
-        status.textContent =
-            "Please enter email and password.";
+        errorBox.textContent =
+            "Please enter your email and password.";
+
+        errorBox.style.display =
+            "block";
 
         return;
 
     }
 
 
-    status.textContent =
-        "Signing in...";
+    loading.style.display =
+        "block";
+
+
+    document.getElementById(
+        "loginButton"
+    ).disabled = true;
 
 
     try {
@@ -1274,55 +1482,54 @@ window.loginUser = async function() {
 
         console.error(error);
 
-        status.textContent =
-            "❌ " + error.message;
+        let message =
+            "Unable to sign in.";
+
+        if(
+            error.code ===
+            "auth/invalid-credential"
+        ) {
+
+            message =
+                "Incorrect email or password.";
+
+        } else if(
+            error.code ===
+            "auth/invalid-email"
+        ) {
+
+            message =
+                "Please enter a valid email address.";
+
+        } else if(
+            error.code ===
+            "auth/too-many-requests"
+        ) {
+
+            message =
+                "Too many attempts. Please try again later.";
+
+        }
+
+
+        errorBox.textContent =
+            message;
+
+        errorBox.style.display =
+            "block";
+
+    } finally {
+
+        loading.style.display =
+            "none";
+
+        document.getElementById(
+            "loginButton"
+        ).disabled = false;
 
     }
 
 };
-
-
-/* =========================================================
-   AUTH STATE
-========================================================= */
-
-onAuthStateChanged(
-    auth,
-    user => {
-
-        if(user) {
-
-            document
-                .getElementById("loginScreen")
-                .style.display = "none";
-
-            document
-                .getElementById("app")
-                .style.display = "block";
-
-            document
-                .getElementById("userEmail")
-                .textContent =
-                    user.email || "";
-
-            startRealtimeListeners();
-
-        } else {
-
-            document
-                .getElementById("loginScreen")
-                .style.display = "flex";
-
-            document
-                .getElementById("app")
-                .style.display = "none";
-
-            stopRealtimeListeners();
-
-        }
-
-    }
-);
 
 
 /* =========================================================
@@ -1339,254 +1546,137 @@ window.logoutUser = async function() {
 
 
 /* =========================================================
-   REALTIME FIRESTORE
+   LOAD ALL DATA FROM FIRESTORE
 ========================================================= */
 
-function startRealtimeListeners() {
+async function refreshAllData() {
 
-    stopRealtimeListeners();
+    try {
 
+        await loadStudents();
 
-    unsubscribeStudents =
-        onSnapshot(
-            collection(db,"students"),
-            snapshot => {
+        await loadAttendance();
 
-                students =
-                    snapshot.docs.map(
-                        item => ({
-                            id: item.id,
-                            ...item.data()
-                        })
-                    );
-
-                displayStudents();
-                updateDashboard();
-                displayReports();
-
-            },
-            error => {
-
-                console.error(error);
-
-                document.getElementById(
-                    "syncStatus"
-                ).textContent =
-                    "❌ Database error";
-
-            }
-        );
-
-
-    unsubscribeAttendance =
-        onSnapshot(
-            collection(db,"attendance"),
-            snapshot => {
-
-                attendance =
-                    snapshot.docs.map(
-                        item => ({
-                            id: item.id,
-                            ...item.data()
-                        })
-                    );
-
-                updateDashboard();
-                displayReports();
-
-                document.getElementById(
-                    "syncStatus"
-                ).textContent =
-                    "☁️ Live database connected";
-
-            },
-            error => {
-
-                console.error(error);
-
-                document.getElementById(
-                    "syncStatus"
-                ).textContent =
-                    "❌ Database error";
-
-            }
-        );
-
-}
-
-
-function stopRealtimeListeners() {
-
-    if(unsubscribeStudents) {
-
-        unsubscribeStudents();
-        unsubscribeStudents = null;
-
-    }
-
-    if(unsubscribeAttendance) {
-
-        unsubscribeAttendance();
-        unsubscribeAttendance = null;
-
-    }
-
-}
-
-
-/* =========================================================
-   NAVIGATION
-========================================================= */
-
-window.showPage = function(pageId,button=null) {
-
-    document
-        .querySelectorAll(".page")
-        .forEach(
-            page =>
-                page.classList.remove("active")
-        );
-
-
-    const page =
-        document.getElementById(pageId);
-
-    if(page) {
-
-        page.classList.add("active");
-
-    }
-
-
-    document
-        .querySelectorAll(".nav button")
-        .forEach(
-            btn =>
-                btn.classList.remove("active")
-        );
-
-
-    if(button) {
-
-        button.classList.add("active");
-
-    }
-
-
-    if(pageId === "dashboard") {
+        await applyAbsentStatus();
 
         updateDashboard();
 
-    }
-
-
-    if(pageId === "students") {
-
         displayStudents();
-
-    }
-
-
-    if(pageId === "reports") {
 
         setReportDate();
 
         displayReports();
 
+    } catch(error) {
+
+        console.error(
+            "Firebase loading error:",
+            error
+        );
+
+        alert(
+            "Could not load data from Firebase.\n\n" +
+            "Please check your internet connection and Firestore rules."
+        );
+
     }
-
-};
-
-
-window.openScanner = function() {
-
-    const button =
-        document.querySelectorAll(".nav button")[1];
-
-    showPage(
-        "scanner",
-        button
-    );
-
-    startCamera();
-
-};
-
-
-/* =========================================================
-   STUDENT ID
-========================================================= */
-
-function createStudentID() {
-
-    let number = 1;
-
-    let id;
-
-    do {
-
-        id =
-            "STG-STU-" +
-            String(number)
-                .padStart(4,"0");
-
-        number++;
-
-    } while(
-        students.some(
-            student =>
-                String(student.id)
-                .toUpperCase()
-                === id
-        )
-    );
-
-    return id;
 
 }
 
 
 /* =========================================================
-   STUDENTS
+   LOAD STUDENTS
 ========================================================= */
 
-window.openAddStudent = function() {
+async function loadStudents() {
 
-    clearForm();
+    const snapshot =
+        await getDocs(
+            collection(
+                db,
+                "students"
+            )
+        );
 
-    showPage("addStudent");
 
-};
+    students =
+        snapshot.docs.map(
+            item => {
 
+                return {
+                    id: item.id,
+                    ...item.data()
+                };
+
+            }
+        );
+
+}
+
+
+/* =========================================================
+   LOAD ATTENDANCE
+========================================================= */
+
+async function loadAttendance() {
+
+    const snapshot =
+        await getDocs(
+            collection(
+                db,
+                "attendance"
+            )
+        );
+
+
+    attendance =
+        snapshot.docs.map(
+            item => {
+
+                return {
+                    id: item.id,
+                    ...item.data()
+                };
+
+            }
+        );
+
+}
+
+
+/* =========================================================
+   SAVE STUDENT TO FIRESTORE
+========================================================= */
 
 window.saveStudent = async function() {
 
     const name =
-        document
-            .getElementById("studentName")
-            .value
-            .trim();
+        document.getElementById(
+            "studentName"
+        ).value.trim();
 
     const studentClass =
-        document
-            .getElementById("studentClass")
-            .value
-            .trim();
+        document.getElementById(
+            "studentClass"
+        ).value.trim();
 
     const parent =
-        document
-            .getElementById("parentName")
-            .value
-            .trim();
+        document.getElementById(
+            "parentName"
+        ).value.trim();
 
     const phone =
-        document
-            .getElementById("parentPhone")
-            .value
-            .trim();
+        document.getElementById(
+            "parentPhone"
+        ).value.trim();
 
 
-    if(!name || !studentClass || !parent || !phone) {
+    if(
+        !name ||
+        !studentClass ||
+        !parent ||
+        !phone
+    ) {
 
         alert(
             "Please fill in all fields."
@@ -1618,7 +1708,7 @@ window.saveStudent = async function() {
         } else {
 
             const id =
-                createStudentID();
+                await createStudentID();
 
             await setDoc(
                 doc(
@@ -1632,12 +1722,14 @@ window.saveStudent = async function() {
                     parent,
                     phone,
                     createdAt:
-                        serverTimestamp()
+                        new Date().toISOString()
                 }
             );
 
         }
 
+
+        await loadStudents();
 
         clearForm();
 
@@ -1647,12 +1739,16 @@ window.saveStudent = async function() {
 
         showPage("students");
 
+        displayStudents();
+
+        updateDashboard();
+
     } catch(error) {
 
         console.error(error);
 
         alert(
-            "Could not save student.\n\n" +
+            "Could not save the student.\n\n" +
             error.message
         );
 
@@ -1661,6 +1757,49 @@ window.saveStudent = async function() {
 };
 
 
+/* =========================================================
+   CREATE STUDENT ID
+========================================================= */
+
+async function createStudentID() {
+
+    let number = 1;
+
+    while(true) {
+
+        const id =
+            "STG-STU-" +
+            String(number).padStart(4,"0");
+
+
+        const existing =
+            await getDoc(
+                doc(
+                    db,
+                    "students",
+                    id
+                )
+            );
+
+
+        if(!existing.exists()) {
+
+            return id;
+
+        }
+
+
+        number++;
+
+    }
+
+}
+
+
+/* =========================================================
+   DISPLAY STUDENTS
+========================================================= */
+
 window.displayStudents = function() {
 
     const list =
@@ -1668,31 +1807,25 @@ window.displayStudents = function() {
             "studentList"
         );
 
-    if(!list) return;
-
-
     const search =
-        document
-            .getElementById("search")
-            .value
-            .trim()
-            .toLowerCase();
+        document.getElementById(
+            "search"
+        ).value.trim().toLowerCase();
 
 
     const filtered =
         students.filter(
             student =>
 
-                String(student.name || "")
+                String(student.name)
                     .toLowerCase()
                     .includes(search)
 
                 ||
 
-                String(student.id || "")
+                String(student.id)
                     .toLowerCase()
                     .includes(search)
-
         );
 
 
@@ -1707,81 +1840,73 @@ window.displayStudents = function() {
 
 
     list.innerHTML =
-        filtered
-        .sort(
-            (a,b) =>
-                String(a.name)
-                .localeCompare(
-                    String(b.name)
-                )
-        )
-        .map(
+        filtered.map(
             student => `
 
 <div class="student-card">
 
-<div class="student-name">
-👧 ${escapeHTML(student.name)}
-</div>
+    <div class="student-name">
+        👧 ${escapeHTML(student.name)}
+    </div>
 
-<div class="student-id">
-🆔 ${escapeHTML(student.id)}
-</div>
+    <div class="student-id">
+        🆔 ${escapeHTML(student.id)}
+    </div>
 
-<div class="student-info">
+    <div class="student-info">
 
-🏫 Class:
-<strong>
-${escapeHTML(student.class)}
-</strong>
+        🏫 Class:
+        <strong>
+            ${escapeHTML(student.class)}
+        </strong>
 
-<br>
+        <br>
 
-👨‍👩‍👧 Parent:
-${escapeHTML(student.parent)}
+        👨‍👩‍👧 Parent:
+        ${escapeHTML(student.parent)}
 
-<br>
+        <br>
 
-📱 WhatsApp:
-${escapeHTML(student.phone)}
+        📱 WhatsApp:
+        ${escapeHTML(student.phone)}
 
-</div>
+    </div>
 
-<div class="student-actions">
+    <div class="student-actions">
 
-<button
-    class="btn primary"
-    onclick="editStudent('${escapeJS(student.id)}')"
->
-✏️ Edit
-</button>
+        <button
+            class="btn primary"
+            onclick="editStudent('${escapeJS(student.id)}')">
+            ✏️ Edit
+        </button>
 
-<button
-    class="btn danger"
-    onclick="deleteStudent('${escapeJS(student.id)}')"
->
-🗑 Delete
-</button>
+        <button
+            class="btn danger"
+            onclick="deleteStudent('${escapeJS(student.id)}')">
+            🗑 Delete
+        </button>
 
-</div>
+    </div>
 
 </div>
 
 `
-        )
-        .join("");
+        ).join("");
 
 };
 
+
+/* =========================================================
+   EDIT STUDENT
+========================================================= */
 
 window.editStudent = function(id) {
 
     const student =
         students.find(
-            s =>
-                String(s.id)
-                === String(id)
+            s => String(s.id) === String(id)
         );
+
 
     if(!student) return;
 
@@ -1825,23 +1950,28 @@ window.editStudent = function(id) {
 };
 
 
+/* =========================================================
+   DELETE STUDENT
+========================================================= */
+
 window.deleteStudent = async function(id) {
 
     const student =
         students.find(
-            s =>
-                String(s.id)
-                === String(id)
+            s => String(s.id) === String(id)
         );
+
 
     if(!student) return;
 
 
-    if(!confirm(
-        "Delete " +
-        student.name +
-        "?"
-    )) {
+    if(
+        !confirm(
+            "Delete " +
+            student.name +
+            "?\n\nThis will remove the student from the student database."
+        )
+    ) {
 
         return;
 
@@ -1858,7 +1988,16 @@ window.deleteStudent = async function(id) {
             )
         );
 
+
+        await loadStudents();
+
+        displayStudents();
+
+        updateDashboard();
+
     } catch(error) {
+
+        console.error(error);
 
         alert(
             "Could not delete student.\n\n" +
@@ -1869,6 +2008,10 @@ window.deleteStudent = async function(id) {
 
 };
 
+
+/* =========================================================
+   CLEAR FORM
+========================================================= */
 
 window.clearForm = function() {
 
@@ -1888,10 +2031,12 @@ window.clearForm = function() {
         "parentPhone"
     ).value = "";
 
+
     document.getElementById(
         "formTitle"
     ).textContent =
         "➕ Add New Student";
+
 
     editingId = null;
 
@@ -1899,239 +2044,301 @@ window.clearForm = function() {
 
 
 /* =========================================================
-   SRI LANKA TIME
+   OPEN ADD STUDENT
 ========================================================= */
 
-function getSriLankaParts() {
+window.openAddStudent = function() {
 
-    const now =
-        new Date();
+    clearForm();
+
+    showPage("addStudent");
+
+};
 
 
-    const parts =
-        new Intl.DateTimeFormat(
-            "en-GB",
+/* =========================================================
+   SRI LANKA DATE
+========================================================= */
+
+function getSriLankaNow() {
+
+    return new Date(
+        new Date().toLocaleString(
+            "en-US",
             {
                 timeZone:
-                    "Asia/Colombo",
-
-                year: "numeric",
-                month: "2-digit",
-                day: "2-digit",
-
-                hour: "2-digit",
-                minute: "2-digit",
-                second: "2-digit",
-
-                hourCycle: "h23"
+                    "Asia/Colombo"
             }
         )
-        .formatToParts(now);
-
-
-    const result = {};
-
-
-    parts.forEach(
-        part => {
-
-            if(part.type !== "literal") {
-
-                result[part.type] =
-                    part.value;
-
-            }
-
-        }
     );
-
-
-    return result;
-
-}
-
-
-function getSriLankaDate() {
-
-    const p =
-        getSriLankaParts();
-
-    return (
-        p.year +
-        "-" +
-        p.month +
-        "-" +
-        p.day
-    );
-
-}
-
-
-function getSriLankaTime() {
-
-    const p =
-        getSriLankaParts();
-
-    return (
-        p.hour +
-        ":" +
-        p.minute +
-        ":" +
-        p.second
-    );
-
-}
-
-
-function isBeforeNineAM() {
-
-    const p =
-        getSriLankaParts();
-
-    const hour =
-        Number(p.hour);
-
-    const minute =
-        Number(p.minute);
-
-    const second =
-        Number(p.second);
-
-
-    const seconds =
-        hour * 3600 +
-        minute * 60 +
-        second;
-
-
-    return seconds < 9 * 3600;
 
 }
 
 
 /* =========================================================
-   ATTENDANCE
+   SRI LANKA DATE STRING
 ========================================================= */
 
-async function findTodayRecord(studentId) {
+function getSriLankaDateString(date = getSriLankaNow()) {
 
-    const date =
-        getSriLankaDate();
-
-
-    const found =
-        attendance.find(
-            item =>
-                item.studentId === studentId &&
-                item.date === date
-        );
-
-
-    return found || null;
+    return (
+        date.getFullYear() +
+        "-" +
+        String(
+            date.getMonth() + 1
+        ).padStart(2,"0") +
+        "-" +
+        String(
+            date.getDate()
+        ).padStart(2,"0")
+    );
 
 }
 
 
+/* =========================================================
+   SRI LANKA TIME
+========================================================= */
+
+function getSriLankaTimeString(date = getSriLankaNow()) {
+
+    return date.toLocaleTimeString(
+        "en-US",
+        {
+            timeZone:
+                "Asia/Colombo",
+
+            hour:
+                "2-digit",
+
+            minute:
+                "2-digit",
+
+            second:
+                "2-digit",
+
+            hour12:
+                true
+        }
+    );
+
+}
+
+
+/* =========================================================
+   CHECK 9 AM DEADLINE
+========================================================= */
+
+function isAfterAttendanceDeadline() {
+
+    const now =
+        getSriLankaNow();
+
+
+    const hours =
+        now.getHours();
+
+    const minutes =
+        now.getMinutes();
+
+
+    return (
+        hours > 9 ||
+        (
+            hours === 9 &&
+            minutes >= 0
+        )
+    );
+
+}
+
+
+/* =========================================================
+   MARK ABSENT STUDENTS
+========================================================= */
+
+async function applyAbsentStatus() {
+
+    if(!currentUser) return;
+
+    if(!isAfterAttendanceDeadline()) {
+
+        return;
+
+    }
+
+
+    const today =
+        getSriLankaDateString();
+
+
+    const todayRecords =
+        attendance.filter(
+            r => r.date === today
+        );
+
+
+    const presentIds =
+        new Set(
+            todayRecords
+                .filter(
+                    r =>
+                        r.status === "present" ||
+                        r.arrival
+                )
+                .map(
+                    r => r.studentId
+                )
+        );
+
+
+    const absentStudents =
+        students.filter(
+            student =>
+                !presentIds.has(student.id)
+        );
+
+
+    for(
+        const student
+        of absentStudents
+    ) {
+
+        const attendanceId =
+            student.id +
+            "_" +
+            today;
+
+
+        const existing =
+            await getDoc(
+                doc(
+                    db,
+                    "attendance",
+                    attendanceId
+                )
+            );
+
+
+        if(existing.exists()) {
+
+            continue;
+
+        }
+
+
+        const absentRecord = {
+
+            studentId:
+                student.id,
+
+            studentName:
+                student.name,
+
+            class:
+                student.class,
+
+            parent:
+                student.parent,
+
+            phone:
+                student.phone,
+
+            date:
+                today,
+
+            arrival:
+                null,
+
+            leaving:
+                null,
+
+            status:
+                "absent",
+
+            absentMarkedAt:
+                getSriLankaTimeString(),
+
+            createdAt:
+                new Date().toISOString()
+
+        };
+
+
+        await setDoc(
+            doc(
+                db,
+                "attendance",
+                attendanceId
+            ),
+            absentRecord
+        );
+
+    }
+
+
+    await loadAttendance();
+
+}
+
+
+/* =========================================================
+   RECORD QR ATTENDANCE
+========================================================= */
+
 async function recordAttendance(student) {
 
+    const now =
+        getSriLankaNow();
+
     const date =
-        getSriLankaDate();
+        getSriLankaDateString(now);
 
     const time =
-        getSriLankaTime();
+        getSriLankaTimeString(now);
 
 
-    let record =
-        await findTodayRecord(
-            student.id
+    const attendanceId =
+        student.id +
+        "_" +
+        date;
+
+
+    const attendanceRef =
+        doc(
+            db,
+            "attendance",
+            attendanceId
+        );
+
+
+    const existing =
+        await getDoc(
+            attendanceRef
         );
 
 
     /*
-       AFTER 9 AM:
-       If there is no record, mark absent.
-       This prevents a normal scan from creating
-       a late arrival.
+       IMPORTANT:
+       Arrival is only allowed before 9:00 AM.
     */
 
-    if(!record && !isBeforeNineAM()) {
-
-        await markStudentAbsent(
-            student
-        );
-
-        showAbsentAfterNine(
-            student
-        );
-
-        beep();
-
-        return;
-
-    }
-
-
-    if(!record) {
-
-        const ref =
-            await addDoc(
-                collection(
-                    db,
-                    "attendance"
-                ),
-                {
-
-                    studentId:
-                        student.id,
-
-                    studentName:
-                        student.name,
-
-                    class:
-                        student.class,
-
-                    parent:
-                        student.parent,
-
-                    phone:
-                        student.phone,
-
-                    date:
-                        date,
-
-                    arrival:
-                        time,
-
-                    leaving:
-                        null,
-
-                    status:
-                        "present",
-
-                    createdAt:
-                        serverTimestamp()
-
-                }
-            );
-
-
-        showArrival(
-            student,
-            time
-        );
-
-        beep();
-
-        return;
-
-    }
-
-
     if(
-        record.status === "absent"
+        !existing.exists()
+        &&
+        isAfterAttendanceDeadline()
     ) {
 
-        showAlreadyAbsent(
+        /*
+           Before displaying the error,
+           make sure the student is marked absent.
+        */
+
+        await applyAbsentStatus();
+
+        await loadAttendance();
+
+        showAbsentScanResult(
             student
         );
 
@@ -2142,70 +2349,14 @@ async function recordAttendance(student) {
     }
 
 
-    if(!record.leaving) {
+    /*
+       No existing record.
+       Create PRESENT record.
+    */
 
-        await updateDoc(
-            doc(
-                db,
-                "attendance",
-                record.id
-            ),
-            {
-                leaving:
-                    time
-            }
-        );
+    if(!existing.exists()) {
 
-
-        showLeaving(
-            student,
-            time
-        );
-
-        beep();
-
-        return;
-
-    }
-
-
-    showCompleted(
-        student,
-        record
-    );
-
-    beep();
-
-}
-
-
-/* =========================================================
-   ABSENT
-========================================================= */
-
-async function markStudentAbsent(student) {
-
-    const date =
-        getSriLankaDate();
-
-
-    const existing =
-        attendance.find(
-            record =>
-                record.studentId === student.id &&
-                record.date === date
-        );
-
-
-    if(existing) return;
-
-
-    await addDoc(
-        collection(
-            db,
-            "attendance"
-        ),
-        {
+        const record = {
 
             studentId:
                 student.id,
@@ -2226,100 +2377,112 @@ async function markStudentAbsent(student) {
                 date,
 
             arrival:
-                null,
+                time,
 
             leaving:
                 null,
 
             status:
-                "absent",
+                "present",
 
             createdAt:
-                serverTimestamp()
+                new Date().toISOString()
 
-        }
-    );
-
-}
+        };
 
 
-async function finalizeTodayAbsences() {
+        await setDoc(
+            attendanceRef,
+            record
+        );
 
-    if(isBeforeNineAM()) {
+
+        await loadAttendance();
+
+        showArrival(
+            student,
+            time
+        );
+
+        updateDashboard();
+
+        beep();
 
         return;
 
     }
 
 
-    const today =
-        getSriLankaDate();
+    const record =
+        existing.data();
 
 
-    const todayRecords =
-        attendance.filter(
-            r =>
-                r.date === today
+    /*
+       Student is absent.
+       A QR scan after 9 AM must NOT turn
+       the student into present.
+    */
+
+    if(record.status === "absent") {
+
+        showAbsentScanResult(
+            student
         );
 
+        beep();
 
-    const existingIds =
-        new Set(
-            todayRecords.map(
-                r =>
-                    r.studentId
-            )
-        );
-
-
-    for(
-        const student
-        of students
-    ) {
-
-        if(
-            !existingIds.has(
-                student.id
-            )
-        ) {
-
-            try {
-
-                await markStudentAbsent(
-                    student
-                );
-
-            } catch(error) {
-
-                console.error(
-                    "Absent error:",
-                    error
-                );
-
-            }
-
-        }
+        return;
 
     }
+
+
+    /*
+       Existing present record.
+       If no leaving time, this scan means leaving.
+    */
+
+    if(!record.leaving) {
+
+        await updateDoc(
+            attendanceRef,
+            {
+                leaving:
+                    time,
+
+                status:
+                    "present"
+            }
+        );
+
+
+        await loadAttendance();
+
+        showLeaving(
+            student,
+            time
+        );
+
+        updateDashboard();
+
+        beep();
+
+        return;
+
+    }
+
+
+    showCompleted(
+        student,
+        record
+    );
+
+    beep();
 
 }
 
 
-/*
-   Check every 30 seconds.
-   Once Sri Lanka reaches 9:00 AM,
-   all students without attendance
-   are marked absent.
-*/
-
-setInterval(
-    finalizeTodayAbsences,
-    30000
-);
-
-
 /* =========================================================
-   SCAN RESULTS
+   ARRIVAL RESULT
 ========================================================= */
 
 function showArrival(student,time) {
@@ -2337,18 +2500,16 @@ function showArrival(student,time) {
     result.innerHTML = `
 
 <div class="result-icon">
-🟢
+    🟢
 </div>
 
 <div class="result-name">
-${escapeHTML(student.name)}
+    ${escapeHTML(student.name)}
 </div>
 
 <div class="result-info">
 
-<strong>
-ARRIVAL RECORDED
-</strong>
+<strong>ARRIVAL RECORDED</strong>
 
 <br>
 
@@ -2373,15 +2534,20 @@ ARRIVAL RECORDED
         '${escapeJS(student.name)}',
         'arrival',
         '${escapeJS(time)}'
-    )"
->
-📱 Send WhatsApp
+    )">
+
+    📱 Send WhatsApp
+
 </button>
 
 `;
 
 }
 
+
+/* =========================================================
+   LEAVING RESULT
+========================================================= */
 
 function showLeaving(student,time) {
 
@@ -2398,18 +2564,16 @@ function showLeaving(student,time) {
     result.innerHTML = `
 
 <div class="result-icon">
-🔴
+    🔴
 </div>
 
 <div class="result-name">
-${escapeHTML(student.name)}
+    ${escapeHTML(student.name)}
 </div>
 
 <div class="result-info">
 
-<strong>
-LEAVING RECORDED
-</strong>
+<strong>LEAVING RECORDED</strong>
 
 <br>
 
@@ -2434,9 +2598,10 @@ LEAVING RECORDED
         '${escapeJS(student.name)}',
         'leaving',
         '${escapeJS(time)}'
-    )"
->
-📱 Send WhatsApp
+    )">
+
+    📱 Send WhatsApp
+
 </button>
 
 `;
@@ -2444,7 +2609,11 @@ LEAVING RECORDED
 }
 
 
-function showAbsentAfterNine(student) {
+/* =========================================================
+   ABSENT SCAN RESULT
+========================================================= */
+
+function showAbsentScanResult(student) {
 
     const result =
         document.getElementById(
@@ -2453,24 +2622,22 @@ function showAbsentAfterNine(student) {
 
 
     result.className =
-        "result error";
+        "result warning-result";
 
 
     result.innerHTML = `
 
 <div class="result-icon">
-❌
+    ⚠️
 </div>
 
 <div class="result-name">
-${escapeHTML(student.name)}
+    ${escapeHTML(student.name)}
 </div>
 
 <div class="result-info">
 
-<strong>
-ABSENT
-</strong>
+<strong>STUDENT IS ABSENT</strong>
 
 <br><br>
 
@@ -2478,8 +2645,14 @@ The 9:00 AM arrival deadline has passed.
 
 <br>
 
-This student's attendance has been
-marked as absent.
+This student's attendance cannot be changed
+to present by scanning the QR code after the deadline.
+
+<br><br>
+
+📅 ${escapeHTML(
+    getSriLankaDateString()
+)}
 
 </div>
 
@@ -2488,7 +2661,107 @@ marked as absent.
 }
 
 
-function showAlreadyAbsent(student) {
+/* =========================================================
+   WHATSAPP
+========================================================= */
+
+window.sendWhatsApp = function(
+    phone,
+    studentName,
+    type,
+    time
+) {
+
+    const cleanPhone =
+        String(phone)
+            .replace(/\D/g,"");
+
+
+    if(!cleanPhone) {
+
+        alert(
+            "No valid WhatsApp number."
+        );
+
+        return;
+
+    }
+
+
+    const date =
+        getSriLankaNow()
+            .toLocaleDateString(
+                "en-GB",
+                {
+                    timeZone:
+                        "Asia/Colombo",
+
+                    day:
+                        "2-digit",
+
+                    month:
+                        "long",
+
+                    year:
+                        "numeric"
+                }
+            );
+
+
+    let message;
+
+
+    if(type === "arrival") {
+
+        message =
+`ST.THERESA'S GEMS INTERNATIONAL PRESCHOOL
+
+Dear Parent,
+
+This is to inform you that ${studentName} has arrived safely at preschool.
+
+Date: ${date}
+Arrival Time: ${time}
+
+Thank you.`;
+
+    } else {
+
+        message =
+`ST.THERESA'S GEMS INTERNATIONAL PRESCHOOL
+
+Dear Parent,
+
+This is to inform you that ${studentName} has left preschool safely.
+
+Date: ${date}
+Leaving Time: ${time}
+
+Thank you.`;
+
+    }
+
+
+    const url =
+        "https://wa.me/" +
+        cleanPhone +
+        "?text=" +
+        encodeURIComponent(message);
+
+
+    window.open(
+        url,
+        "_blank"
+    );
+
+};
+
+
+/* =========================================================
+   ERROR
+========================================================= */
+
+function showScanError(id) {
 
     const result =
         document.getElementById(
@@ -2503,17 +2776,26 @@ function showAlreadyAbsent(student) {
     result.innerHTML = `
 
 <div class="result-icon">
-❌
+    ❌
 </div>
 
 <div class="result-name">
-${escapeHTML(student.name)}
+    Student Not Found
 </div>
 
 <div class="result-info">
 
-This student is already marked
-<strong>ABSENT</strong> for today.
+QR Code:
+
+<br>
+
+<strong>
+    ${escapeHTML(id)}
+</strong>
+
+<br><br>
+
+Add this Student ID to the student database first.
 
 </div>
 
@@ -2522,7 +2804,14 @@ This student is already marked
 }
 
 
-function showCompleted(student,record) {
+/* =========================================================
+   COMPLETED
+========================================================= */
+
+function showCompleted(
+    student,
+    record
+) {
 
     const result =
         document.getElementById(
@@ -2537,11 +2826,11 @@ function showCompleted(student,record) {
     result.innerHTML = `
 
 <div class="result-icon">
-✅
+    ✅
 </div>
 
 <div class="result-name">
-${escapeHTML(student.name)}
+    ${escapeHTML(student.name)}
 </div>
 
 <div class="result-info">
@@ -2560,131 +2849,51 @@ ${escapeHTML(record.leaving || "—")}
 
 </div>
 
+<br>
+
+<button
+    class="btn whatsapp full"
+    onclick="sendWhatsApp(
+        '${escapeJS(student.phone)}',
+        '${escapeJS(student.name)}',
+        'leaving',
+        '${escapeJS(record.leaving || "")}'
+    )">
+
+    📱 Send WhatsApp Again
+
+</button>
+
 `;
 
 }
 
 
 /* =========================================================
-   WHATSAPP
-========================================================= */
-
-window.sendWhatsApp =
-function(
-    phone,
-    studentName,
-    type,
-    time
-) {
-
-    const cleanPhone =
-        String(phone)
-        .replace(/\D/g,"");
-
-
-    if(!cleanPhone) {
-
-        alert(
-            "No valid WhatsApp number."
-        );
-
-        return;
-
-    }
-
-
-    const date =
-        new Intl.DateTimeFormat(
-            "en-GB",
-            {
-                timeZone:
-                    "Asia/Colombo",
-
-                day: "2-digit",
-                month: "long",
-                year: "numeric"
-            }
-        )
-        .format(new Date());
-
-
-    let message;
-
-
-    if(type === "arrival") {
-
-        message =
-`ST. THERESA'S GEMS INTERNATIONAL PRESCHOOL
-
-Dear Parent,
-
-This is to inform you that ${studentName} has arrived safely at preschool.
-
-Date: ${date}
-Arrival Time: ${time}
-
-Thank you.`;
-
-    } else {
-
-        message =
-`ST. THERESA'S GEMS INTERNATIONAL PRESCHOOL
-
-Dear Parent,
-
-This is to inform you that ${studentName} has left preschool safely.
-
-Date: ${date}
-Leaving Time: ${time}
-
-Thank you.`;
-
-    }
-
-
-    const url =
-        "https://wa.me/" +
-        cleanPhone +
-        "?text=" +
-        encodeURIComponent(
-            message
-        );
-
-
-    window.open(
-        url,
-        "_blank"
-    );
-
-};
-
-
-/* =========================================================
    DASHBOARD
 ========================================================= */
 
-window.updateDashboard =
-function() {
+function updateDashboard() {
 
     const today =
-        getSriLankaDate();
+        getSriLankaDateString();
 
 
     const records =
         attendance.filter(
-            r =>
-                r.date === today
+            r => r.date === today
         );
 
 
-    const present =
+    const presentRecords =
         records.filter(
             r =>
-                r.status !== "absent"
+                r.status === "present" ||
+                r.arrival
         );
 
 
-    const absent =
+    const absentRecords =
         records.filter(
             r =>
                 r.status === "absent"
@@ -2700,28 +2909,31 @@ function() {
     document.getElementById(
         "arrivedToday"
     ).textContent =
-        present.length;
+        presentRecords.length;
 
 
     document.getElementById(
         "absentToday"
     ).textContent =
-        absent.length;
+        absentRecords.length;
 
 
     document.getElementById(
         "leftToday"
     ).textContent =
-        present.filter(
-            r =>
-                r.leaving
+        presentRecords.filter(
+            r => r.leaving
         ).length;
 
 
     displayTodayPreview();
 
-};
+}
 
+
+/* =========================================================
+   TODAY PREVIEW
+========================================================= */
 
 function displayTodayPreview() {
 
@@ -2731,17 +2943,13 @@ function displayTodayPreview() {
         );
 
 
-    if(!container) return;
-
-
     const today =
-        getSriLankaDate();
+        getSriLankaDateString();
 
 
     const records =
         attendance.filter(
-            r =>
-                r.date === today
+            r => r.date === today
         );
 
 
@@ -2757,53 +2965,57 @@ function displayTodayPreview() {
 
     container.innerHTML =
         records
-        .slice()
-        .reverse()
-        .slice(0,8)
-        .map(
-            record => {
-
-                if(
-                    record.status === "absent"
-                ) {
-
-                    return `
-
-<div class="report-row">
-
-<div class="report-name">
-👧 ${escapeHTML(record.studentName)}
-</div>
-
-<div class="absent-box">
-❌ ABSENT
-</div>
-
-</div>
-
-`;
-
-                }
-
-
-                return `
+            .slice()
+            .sort(
+                (a,b) =>
+                    String(a.studentName)
+                        .localeCompare(
+                            String(b.studentName)
+                        )
+            )
+            .map(
+                record => `
 
 <div class="report-row">
 
 <div class="report-name">
-👧 ${escapeHTML(record.studentName)}
+    👧 ${escapeHTML(record.studentName)}
 </div>
+
+<div class="report-date">
+    🆔 ${escapeHTML(record.studentId)}
+</div>
+
+${
+    record.status === "absent"
+
+    ?
+
+    `<span class="status-badge status-absent">
+        ❌ ABSENT
+    </span>`
+
+    :
+
+    `<span class="status-badge status-present">
+        🟢 PRESENT
+    </span>`
+}
 
 <div class="time-row">
 
 <div class="time-box">
 
 <div class="time-label">
-🟢 ARRIVAL
+    🟢 ARRIVAL
 </div>
 
 <div class="time-value">
-${escapeHTML(record.arrival || "—")}
+    ${
+        record.arrival
+        ? escapeHTML(record.arrival)
+        : "—"
+    }
 </div>
 
 </div>
@@ -2811,13 +3023,15 @@ ${escapeHTML(record.arrival || "—")}
 <div class="time-box">
 
 <div class="time-label">
-🔴 LEAVING
+    🔴 LEAVING
 </div>
 
 <div class="time-value">
-${record.leaving
-    ? escapeHTML(record.leaving)
-    : "—"}
+    ${
+        record.leaving
+        ? escapeHTML(record.leaving)
+        : "—"
+    }
 </div>
 
 </div>
@@ -2826,17 +3040,15 @@ ${record.leaving
 
 </div>
 
-`;
-
-            }
-        )
-        .join("");
+`
+            )
+            .join("");
 
 }
 
 
 /* =========================================================
-   REPORTS
+   REPORT DATE
 ========================================================= */
 
 function setReportDate() {
@@ -2850,15 +3062,18 @@ function setReportDate() {
     if(!input.value) {
 
         input.value =
-            getSriLankaDate();
+            getSriLankaDateString();
 
     }
 
 }
 
 
-window.displayReports =
-function() {
+/* =========================================================
+   REPORTS
+========================================================= */
+
+window.displayReports = function() {
 
     const date =
         document.getElementById(
@@ -2872,15 +3087,93 @@ function() {
         );
 
 
-    if(!container) return;
+    const summary =
+        document.getElementById(
+            "reportSummary"
+        );
 
 
     const records =
-        attendance
-        .filter(
+        attendance.filter(
             record =>
                 record.date === date
         );
+
+
+    const present =
+        records.filter(
+            r =>
+                r.status === "present" ||
+                r.arrival
+        ).length;
+
+
+    const absent =
+        records.filter(
+            r =>
+                r.status === "absent"
+        ).length;
+
+
+    summary.innerHTML = `
+
+<div class="card">
+
+<div class="dashboard-grid">
+
+<div class="stat">
+
+<div class="stat-number">
+    ${students.length}
+</div>
+
+<div class="stat-label">
+    TOTAL
+</div>
+
+</div>
+
+<div class="stat present-stat">
+
+<div class="stat-number">
+    ${present}
+</div>
+
+<div class="stat-label">
+    PRESENT
+</div>
+
+</div>
+
+<div class="stat absent-stat">
+
+<div class="stat-number">
+    ${absent}
+</div>
+
+<div class="stat-label">
+    ABSENT
+</div>
+
+</div>
+
+<div class="stat">
+
+<div class="stat-number">
+    ${records.filter(r => r.leaving).length}
+</div>
+
+<div class="stat-label">
+    LEFT
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+`;
 
 
     if(records.length === 0) {
@@ -2904,21 +3197,21 @@ No attendance records for this date.
 
     container.innerHTML =
         records
-        .slice()
-        .reverse()
-        .map(
-            record => {
-
-                const absent =
-                    record.status === "absent";
-
-
-                return `
+            .slice()
+            .sort(
+                (a,b) =>
+                    String(a.studentName)
+                        .localeCompare(
+                            String(b.studentName)
+                        )
+            )
+            .map(
+                record => `
 
 <div class="report-row">
 
 <div class="report-name">
-👧 ${escapeHTML(record.studentName)}
+    👧 ${escapeHTML(record.studentName)}
 </div>
 
 <div class="report-date">
@@ -2927,981 +3220,83 @@ No attendance records for this date.
 
 &nbsp; • &nbsp;
 
+🏫 ${escapeHTML(record.class)}
+
+&nbsp; • &nbsp;
+
 📅 ${escapeHTML(record.date)}
 
 </div>
 
+
 ${
-    absent
+    record.status === "absent"
 
     ?
 
-    `
-    <div class="absent-box">
-    ❌ ABSENT
-    </div>
-    `
+    `<span class="status-badge status-absent">
+        ❌ ABSENT
+    </span>`
 
     :
 
-    `
+    `<span class="status-badge status-present">
+        🟢 PRESENT
+    </span>`
+}
 
-    <div class="time-row">
 
-    <div class="time-box">
+<div class="time-row">
 
-    <div class="time-label">
+<div class="time-box">
+
+<div class="time-label">
     🟢 ARRIVAL
-    </div>
+</div>
 
-    <div class="time-value">
-    ${escapeHTML(record.arrival || "—")}
-    </div>
+<div class="time-value">
+    ${
+        record.arrival
+        ? escapeHTML(record.arrival)
+        : "—"
+    }
+</div>
 
-    </div>
+</div>
 
-    <div class="time-box">
+<div class="time-box">
 
-    <div class="time-label">
+<div class="time-label">
     🔴 LEAVING
-    </div>
+</div>
 
-    <div class="time-value">
-    ${escapeHTML(record.leaving || "Not yet")}
-    </div>
-
-    </div>
-
-    </div>
-
-    `
-}
-
-<button
-    class="btn danger full"
-    style="margin-top:11px"
-    onclick="deleteAttendanceRecord('${escapeJS(record.id)}')"
->
-🗑 Delete This Attendance Record
-</button>
+<div class="time-value">
+    ${
+        record.leaving
+        ? escapeHTML(record.leaving)
+        : "—"
+    }
+</div>
 
 </div>
 
-`;
-
-            }
-        )
-        .join("");
-
-};
-
-
-/* =========================================================
-   DELETE ATTENDANCE
-========================================================= */
-
-window.deleteAttendanceRecord =
-async function(id) {
-
-    const record =
-        attendance.find(
-            r =>
-                r.id === id
-        );
-
-
-    if(!record) return;
-
-
-    if(!confirm(
-        "Delete attendance record?\n\n" +
-        record.studentName +
-        "\n" +
-        record.date +
-        "\n\n" +
-        "This will NOT delete the student."
-    )) {
-
-        return;
-
-    }
-
-
-    try {
-
-        await deleteDoc(
-            doc(
-                db,
-                "attendance",
-                id
-            )
-        );
-
-
-        alert(
-            "Attendance record deleted."
-        );
-
-    } catch(error) {
-
-        alert(
-            "Could not delete record.\n\n" +
-            error.message
-        );
-
-    }
-
-};
-
-
-/* =========================================================
-   CAMERA
-========================================================= */
-
-const video =
-    document.getElementById(
-        "video"
-    );
-
-const canvas =
-    document.getElementById(
-        "canvas"
-    );
-
-const ctx =
-    canvas.getContext(
-        "2d",
-        {
-            willReadFrequently:
-                true
-        }
-    );
-
-
-let stream = null;
-let scanning = false;
-let detector = null;
-let nativeDetectorAvailable = false;
-let detectorBusy = false;
-let fallbackBusy = false;
-let lastCode = "";
-let lastScanTime = 0;
-
-
-/* =========================================================
-   BARCODE DETECTOR
-========================================================= */
-
-async function setupBarcodeDetector() {
-
-    nativeDetectorAvailable =
-        false;
-
-    detector = null;
-
-
-    try {
-
-        if(
-            !(
-                "BarcodeDetector"
-                in window
-            )
-        ) {
-
-            return false;
-
-        }
-
-
-        const formats =
-            await BarcodeDetector
-            .getSupportedFormats();
-
-
-        if(
-            !formats.includes(
-                "qr_code"
-            )
-        ) {
-
-            return false;
-
-        }
-
-
-        detector =
-            new BarcodeDetector({
-                formats: ["qr_code"]
-            });
-
-
-        nativeDetectorAvailable =
-            true;
-
-
-        return true;
-
-    } catch(error) {
-
-        return false;
-
-    }
-
-}
-
-
-/* =========================================================
-   START CAMERA
-========================================================= */
-
-window.startCamera =
-async function() {
-
-    if(scanning) return;
-
-
-    try {
-
-        if(
-            !navigator.mediaDevices ||
-            !navigator.mediaDevices.getUserMedia
-        ) {
-
-            throw new Error(
-                "Camera unavailable. Use HTTPS."
-            );
-
-        }
-
-
-        document.getElementById(
-            "status"
-        ).textContent =
-            "Starting camera...";
-
-
-        stream =
-            await navigator
-            .mediaDevices
-            .getUserMedia({
-
-                video: {
-
-                    facingMode: {
-                        ideal:
-                            "environment"
-                    },
-
-                    width: {
-                        ideal: 1280
-                    },
-
-                    height: {
-                        ideal: 720
-                    },
-
-                    frameRate: {
-                        ideal: 30,
-                        max: 30
-                    }
-
-                },
-
-                audio: false
-
-            });
-
-
-        video.srcObject =
-            stream;
-
-
-        await video.play();
-
-
-        await setupBarcodeDetector();
-
-
-        scanning = true;
-
-
-        document.getElementById(
-            "startButton"
-        ).style.display =
-            "none";
-
-
-        document.getElementById(
-            "stopButton"
-        ).style.display =
-            "block";
-
-
-        document.getElementById(
-            "status"
-        ).textContent =
-            nativeDetectorAvailable
-            ? "🟢 Fast QR scanner ready"
-            : "🟢 QR scanner ready";
-
-
-        scanLoop();
-
-
-    } catch(error) {
-
-        console.error(error);
-
-
-        document.getElementById(
-            "status"
-        ).textContent =
-            "❌ " +
-            error.message;
-
-
-        alert(
-            "Camera could not be opened.\n\n" +
-            "Please allow camera access and use HTTPS."
-        );
-
-    }
-
-};
-
-
-/* =========================================================
-   STOP CAMERA
-========================================================= */
-
-window.stopCamera =
-function() {
-
-    scanning = false;
-
-
-    if(stream) {
-
-        stream
-        .getTracks()
-        .forEach(
-            track =>
-                track.stop()
-        );
-
-    }
-
-
-    stream = null;
-
-    video.srcObject = null;
-
-
-    document.getElementById(
-        "startButton"
-    ).style.display =
-        "block";
-
-
-    document.getElementById(
-        "stopButton"
-    ).style.display =
-        "none";
-
-
-    document.getElementById(
-        "status"
-    ).textContent =
-        "Camera stopped.";
-
-};
-
-
-/* =========================================================
-   SCAN LOOP
-========================================================= */
-
-function scanLoop() {
-
-    if(!scanning) return;
-
-
-    if(
-        nativeDetectorAvailable
-    ) {
-
-        nativeScan();
-
-    } else {
-
-        fallbackScan();
-
-    }
-
-
-    requestAnimationFrame(
-        scanLoop
-    );
-
-}
-
-
-async function nativeScan() {
-
-    if(
-        detectorBusy ||
-        !detector ||
-        video.readyState < 2
-    ) {
-
-        return;
-
-    }
-
-
-    detectorBusy = true;
-
-
-    try {
-
-        const codes =
-            await detector.detect(
-                video
-            );
-
-
-        if(
-            codes &&
-            codes.length
-        ) {
-
-            const value =
-                codes[0].rawValue;
-
-
-            if(value) {
-
-                handleQR(value);
-
-            }
-
-        }
-
-    } catch(error) {
-
-        console.log(error);
-
-    } finally {
-
-        detectorBusy = false;
-
-    }
-
-}
-
-
-function fallbackScan() {
-
-    if(
-        fallbackBusy ||
-        video.readyState < 2 ||
-        !video.videoWidth
-    ) {
-
-        return;
-
-    }
-
-
-    fallbackBusy = true;
-
-
-    try {
-
-        const width =
-            video.videoWidth;
-
-        const height =
-            video.videoHeight;
-
-
-        const size =
-            Math.floor(
-                Math.min(
-                    width,
-                    height
-                ) * .7
-            );
-
-
-        const sx =
-            Math.floor(
-                (width-size)/2
-            );
-
-
-        const sy =
-            Math.floor(
-                (height-size)/2
-            );
-
-
-        const output = 480;
-
-
-        canvas.width =
-            output;
-
-        canvas.height =
-            output;
-
-
-        ctx.drawImage(
-            video,
-            sx,
-            sy,
-            size,
-            size,
-            0,
-            0,
-            output,
-            output
-        );
-
-
-        const image =
-            ctx.getImageData(
-                0,
-                0,
-                output,
-                output
-            );
-
-
-        const code =
-            jsQR(
-                image.data,
-                output,
-                output,
-                {
-                    inversionAttempts:
-                        "attemptBoth"
-                }
-            );
-
-
-        if(code) {
-
-            handleQR(
-                code.data
-            );
-
-        }
-
-    } catch(error) {
-
-        console.log(error);
-
-    } finally {
-
-        fallbackBusy = false;
-
-    }
-
-}
-
-
-/* =========================================================
-   QR RESULT
-========================================================= */
-
-function handleQR(data) {
-
-    const id =
-        String(data)
-        .trim()
-        .toUpperCase();
-
-
-    const now =
-        Date.now();
-
-
-    if(
-        id === lastCode &&
-        now-lastScanTime < 2500
-    ) {
-
-        return;
-
-    }
-
-
-    lastCode =
-        id;
-
-    lastScanTime =
-        now;
-
-
-    const student =
-        students.find(
-            s =>
-                String(s.id)
-                .trim()
-                .toUpperCase()
-                === id
-        );
-
-
-    if(!student) {
-
-        showScanError(id);
-
-        beep();
-
-        return;
-
-    }
-
-
-    recordAttendance(
-        student
-    );
-
-}
-
-
-/* =========================================================
-   ERROR
-========================================================= */
-
-function showScanError(id) {
-
-    const result =
-        document.getElementById(
-            "scanResult"
-        );
-
-
-    result.className =
-        "result error";
-
-
-    result.innerHTML = `
-
-<div class="result-icon">
-❌
 </div>
 
-<div class="result-name">
-Student Not Found
-</div>
 
-<div class="result-info">
+${
+    record.status === "absent"
 
-QR Code:
+    ?
 
-<br>
+    `<div style="margin-top:10px;color:#9a4141;font-size:12px;">
+        ⏰ Not scanned before 9:00 AM
+    </div>`
 
-<strong>
-${escapeHTML(id)}
-</strong>
+    :
 
-<br><br>
-
-Add this Student ID to the
-student database first.
-
-</div>
-
-`;
-
+    ""
 }
 
 
-/* =========================================================
-   BEEP
-========================================================= */
-
-function beep() {
-
-    try {
-
-        const AudioContext =
-            window.AudioContext ||
-            window.webkitAudioContext;
-
-
-        if(!AudioContext) return;
-
-
-        const audio =
-            new AudioContext();
-
-
-        const oscillator =
-            audio.createOscillator();
-
-
-        const gain =
-            audio.createGain();
-
-
-        oscillator.frequency.value =
-            1000;
-
-
-        gain.gain.value =
-            .08;
-
-
-        oscillator.connect(gain);
-
-        gain.connect(
-            audio.destination
-        );
-
-
-        oscillator.start();
-
-
-        oscillator.stop(
-            audio.currentTime +
-            .08
-        );
-
-    } catch(error) {
-
-        console.log(error);
-
-    }
-
-}
-
-
-/* =========================================================
-   SECURITY / TEXT
-========================================================= */
-
-function escapeHTML(text) {
-
-    const div =
-        document.createElement(
-            "div"
-        );
-
-
-    div.textContent =
-        text ?? "";
-
-
-    return div.innerHTML;
-
-}
-
-
-function escapeJS(text) {
-
-    return String(
-        text ?? ""
-    )
-    .replace(
-        /\\/g,
-        "\\\\"
-    )
-    .replace(
-        /'/g,
-        "\\'"
-    );
-
-}
-
-
-/* =========================================================
-   HIDDEN TEST MODE
-========================================================= */
-
-/*
-   TEST MODE IS NOT SHOWN IN THE NORMAL UI.
-
-   To open:
-   Press CTRL + SHIFT + T
-
-   Then the hidden test page becomes available.
-*/
-
-let testMode = false;
-let testTime = null;
-
-
-document.addEventListener(
-    "keydown",
-    event => {
-
-        if(
-            event.ctrlKey &&
-            event.shiftKey &&
-            event.key.toLowerCase()
-                === "t"
-        ) {
-
-            testMode =
-                !testMode;
-
-
-            const page =
-                document.getElementById(
-                    "adminTest"
-                );
-
-
-            if(testMode) {
-
-                page.classList.remove(
-                    "hidden-test"
-                );
-
-                page.classList.add(
-                    "active"
-                );
-
-
-                document.getElementById(
-                    "testStatus"
-                ).textContent =
-                    "🔧 Hidden test mode ON";
-
-            } else {
-
-                page.classList.add(
-                    "hidden-test"
-                );
-
-            }
-
-        }
-
-    }
-);
-
-
-window.saveTestTime =
-function() {
-
-    const value =
-        document.getElementById(
-            "testTime"
-        ).value;
-
-
-    if(!value) {
-
-        alert(
-            "Choose a test time."
-        );
-
-        return;
-
-    }
-
-
-    testTime =
-        value;
-
-
-    document.getElementById(
-        "testStatus"
-    ).textContent =
-        "🧪 Test time set to " +
-        value;
-
-};
-
-
-window.disableTestMode =
-function() {
-
-    testTime = null;
-
-    testMode = false;
-
-
-    document.getElementById(
-        "adminTest"
-    ).classList.add(
-        "hidden-test"
-    );
-
-
-    alert(
-        "Real Sri Lanka time is now being used."
-    );
-
-};
-
-
-/* =========================================================
-   OVERRIDE TIME FOR TESTING
-========================================================= */
-
-const originalIsBeforeNineAM =
-    isBeforeNineAM;
-
-
-/*
-   Replace the function during testing.
-*/
-
-isBeforeNineAM =
-function() {
-
-    if(
-        testMode &&
-        testTime
-    ) {
-
-        const parts =
-            testTime.split(":");
-
-
-        const hour =
-            Number(parts[0]);
-
-
-        const minute =
-            Number(parts[1]);
-
-
-        return (
-            hour * 60 +
-            minute
-        ) < 9 * 60;
-
-    }
-
-
-    return originalIsBeforeNineAM();
-
-};
-
-
-/* =========================================================
-   START
-========================================================= */
-
-setTimeout(
-    () => {
-
-        setReportDate();
-
-    },
-    500
-);
-
-</script>
-
-</body>
-</html>
-```
+${
+    record.status ===
