@@ -4243,54 +4243,42 @@ function setReportDate() {
    DISPLAY REPORTS
 ========================================================= */
 
-function displayReports() {
+window.displayReports = function() {
 
     const dateInput =
-        document.getElementById(
-            "reportDate"
-        );
-
+        document.getElementById("reportDate");
 
     const summary =
-        document.getElementById(
-            "reportSummary"
-        );
-
+        document.getElementById("reportSummary");
 
     const list =
-        document.getElementById(
-            "reportList"
-        );
+        document.getElementById("reportList");
 
+    if (!dateInput || !summary || !list) {
+        return;
+    }
 
     const selectedDate =
         dateInput.value ||
         getSriLankaDateString();
 
-
     const records =
         attendance.filter(
             record =>
-                record.date ===
-                selectedDate
+                record.date === selectedDate
         );
-
 
     const present =
         records.filter(
             record =>
-                record.status ===
-                "present"
+                record.status === "present"
         ).length;
-
 
     const absent =
         records.filter(
             record =>
-                record.status ===
-                "absent"
+                record.status === "absent"
         ).length;
-
 
     const left =
         records.filter(
@@ -4298,6 +4286,10 @@ function displayReports() {
                 record.leaving
         ).length;
 
+
+    /* =====================================================
+       SUMMARY
+    ===================================================== */
 
     summary.innerHTML = `
 
@@ -4325,6 +4317,7 @@ function displayReports() {
 
         </div>
 
+
         <div class="stat absent-stat">
 
             <div class="stat-number">
@@ -4337,6 +4330,7 @@ function displayReports() {
 
         </div>
 
+
         <div class="stat">
 
             <div class="stat-number">
@@ -4348,6 +4342,7 @@ function displayReports() {
             </div>
 
         </div>
+
 
         <div class="stat">
 
@@ -4368,24 +4363,35 @@ function displayReports() {
 `;
 
 
-    if(records.length === 0) {
+    /* =====================================================
+       NO RECORDS
+    ===================================================== */
+
+    if (records.length === 0) {
 
         list.innerHTML = `
-            <div class="card">
-                <div class="empty">
-                    No attendance records found for this date.
-                </div>
-            </div>
-        `;
+
+<div class="card">
+
+    <div class="empty">
+        No attendance records found for this date.
+    </div>
+
+</div>
+
+`;
 
         return;
-
     }
 
 
+    /* =====================================================
+       SORT RECORDS
+    ===================================================== */
+
     const sorted =
         [...records].sort(
-            (a,b) =>
+            (a, b) =>
                 String(
                     a.studentName || ""
                 ).localeCompare(
@@ -4396,6 +4402,10 @@ function displayReports() {
         );
 
 
+    /* =====================================================
+       DISPLAY RECORDS
+    ===================================================== */
+
     list.innerHTML =
         sorted.map(
             record => {
@@ -4403,41 +4413,54 @@ function displayReports() {
                 let statusHTML;
 
 
-                if(
-                    record.status ===
-                    "absent"
+                /* =========================
+                   STATUS
+                ========================= */
+
+                if (
+                    record.status === "absent"
                 ) {
 
                     statusHTML = `
-                        <span class="status-badge status-absent">
-                            ABSENT
-                        </span>
-                    `;
+
+<span class="status-badge status-absent">
+    ABSENT
+</span>
+
+`;
 
                 }
 
-                else if(
+                else if (
                     record.leaving
                 ) {
 
                     statusHTML = `
-                        <span class="status-badge status-left">
-                            LEFT
-                        </span>
-                    `;
+
+<span class="status-badge status-left">
+    LEFT
+</span>
+
+`;
 
                 }
 
                 else {
 
                     statusHTML = `
-                        <span class="status-badge status-present">
-                            PRESENT
-                        </span>
-                    `;
+
+<span class="status-badge status-present">
+    PRESENT
+</span>
+
+`;
 
                 }
 
+
+                /* =========================
+                   REPORT CARD
+                ========================= */
 
                 return `
 
@@ -4448,6 +4471,7 @@ function displayReports() {
             record.studentName || "Unknown"
         )}
     </div>
+
 
     <div class="report-date">
 
@@ -4463,7 +4487,9 @@ function displayReports() {
 
     </div>
 
+
     ${statusHTML}
+
 
     <div class="time-row">
 
@@ -4481,6 +4507,7 @@ function displayReports() {
 
         </div>
 
+
         <div class="time-box">
 
             <div class="time-label">
@@ -4497,6 +4524,20 @@ function displayReports() {
 
     </div>
 
+
+    <!-- DELETE BUTTON -->
+
+    <button
+        class="btn danger full"
+        style="margin-top:12px;"
+        onclick="deleteAttendance('${escapeJS(
+            record.id
+        )}')">
+
+        🗑 Delete Attendance Record
+
+    </button>
+
 </div>
 
 `;
@@ -4504,9 +4545,137 @@ function displayReports() {
             }
         ).join("");
 
-}
+};
 
 
+/* =========================================================
+   DELETE ATTENDANCE RECORD
+========================================================= */
+
+window.deleteAttendance = async function(id) {
+
+    if (!currentUser) {
+
+        alert(
+            "Please sign in first."
+        );
+
+        return;
+    }
+
+
+    if (!id) {
+
+        alert(
+            "Attendance record ID is missing."
+        );
+
+        return;
+    }
+
+
+    const record =
+        attendance.find(
+            item =>
+                String(item.id) ===
+                String(id)
+        );
+
+
+    if (!record) {
+
+        alert(
+            "Attendance record could not be found."
+        );
+
+        return;
+    }
+
+
+    const studentName =
+        record.studentName ||
+        "this student";
+
+
+    const recordDate =
+        record.date ||
+        "this date";
+
+
+    const confirmed =
+        confirm(
+            "Delete attendance record?\n\n" +
+
+            "Student: " +
+            studentName +
+
+            "\nDate: " +
+            recordDate +
+
+            "\n\nThis will permanently remove this attendance record from Firebase."
+        );
+
+
+    if (!confirmed) {
+
+        return;
+    }
+
+
+    try {
+
+        await deleteDoc(
+            doc(
+                db,
+                "attendance",
+                id
+            )
+        );
+
+
+        /* =========================
+           REFRESH LOCAL DATA
+        ========================= */
+
+        await loadAttendance();
+
+
+        /* =========================
+           REFRESH REPORT
+        ========================= */
+
+        displayReports();
+
+
+        /* =========================
+           REFRESH DASHBOARD
+        ========================= */
+
+        updateDashboard();
+
+
+        alert(
+            "Attendance record deleted successfully."
+        );
+
+    }
+
+    catch(error) {
+
+        console.error(
+            "Delete attendance error:",
+            error
+        );
+
+
+        alert(
+            "Could not delete the attendance record.\n\n" +
+            error.message
+        );
+
+    }
+
+};
 /* =========================================================
    ESCAPE HTML
 ========================================================= */
