@@ -532,6 +532,120 @@
             display: flex;
             gap: 10px;
             justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .scan-choice {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-top: 15px;
+        }
+
+        .scan-choice button {
+            min-height: 75px;
+            border: 2px solid #e2e8f0;
+            border-radius: 14px;
+            background: #f8fafc;
+            font-weight: 900;
+            font-size: 15px;
+        }
+
+        .scan-choice button:hover {
+            border-color: #2563eb;
+            background: #eff6ff;
+        }
+
+        .scan-choice button.selected {
+            border-color: #2563eb;
+            background: #dbeafe;
+            color: #1d4ed8;
+        }
+
+        .scan-mode {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            padding: 8px 12px;
+            border-radius: 999px;
+            background: #eff6ff;
+            color: #1d4ed8;
+            font-size: 12px;
+            font-weight: 900;
+            margin-bottom: 10px;
+        }
+
+        .scan-capture {
+            width: 100%;
+            max-width: 650px;
+            margin: 12px auto 0;
+            display: block;
+            font-size: 17px;
+            padding: 15px;
+        }
+
+        .scan-success-popup {
+            position: fixed;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%) scale(.92);
+            z-index: 1000;
+            width: min(90vw, 430px);
+            background: white;
+            border-radius: 20px;
+            padding: 25px;
+            text-align: center;
+            box-shadow: 0 20px 60px rgba(0,0,0,.22);
+            opacity: 0;
+            pointer-events: none;
+            transition: .18s ease;
+        }
+
+        .scan-success-popup.show {
+            opacity: 1;
+            transform: translate(-50%, -50%) scale(1);
+        }
+
+        .scan-success-popup .popup-icon {
+            font-size: 52px;
+        }
+
+        .scan-success-popup .popup-name {
+            font-size: 24px;
+            font-weight: 900;
+            margin: 8px 0;
+        }
+
+        .scan-success-popup .popup-action {
+            font-size: 15px;
+            font-weight: 900;
+            color: #64748b;
+        }
+
+        .delete-action-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-top: 12px;
+        }
+
+        .delete-action-grid .btn {
+            font-size: 12px;
+        }
+
+        .muted-action {
+            background: #e2e8f0;
+            color: #64748b;
+        }
+
+        @media(max-width: 700px) {
+            .scan-choice {
+                grid-template-columns: 1fr;
+            }
+
+            .delete-action-grid {
+                grid-template-columns: 1fr;
+            }
         }
 
         .status {
@@ -1109,96 +1223,111 @@
         </div>
 
         <div class="card-subtitle">
-            Place the student's QR code inside the scanning frame.
+            Choose what you want to record before scanning.
         </div>
 
+        <div id="scanModeBadge" class="scan-mode" style="display:none"></div>
 
-        <div class="deadline-box">
+        <div id="scanChoiceBox">
 
-            🇱🇰 Arrival scanning deadline:
-            <strong>9:00 AM Sri Lanka time</strong>.
+            <div class="card-subtitle" style="margin-bottom:8px;">
+                What are you recording?
+            </div>
 
-            <br><br>
-
-            After the deadline, a student who has not arrived
-            will be recorded as <strong>ABSENT</strong>.
-
-            <br><br>
-
-            Leaving scans are allowed at any time.
-
-        </div>
-
-
-        <div class="video-container">
-
-            <video
-                id="video"
-                autoplay
-                muted
-                playsinline
-            ></video>
-
-            <div class="scan-frame"></div>
-
-            <div class="scan-line"></div>
+            <div class="scan-choice">
+                <button id="arrivalChoiceButton" type="button">
+                    🟢<br>ARRIVAL
+                </button>
+                <button id="leavingChoiceButton" type="button">
+                    🔴<br>LEAVING
+                </button>
+            </div>
 
         </div>
 
+        <div id="scannerControls" style="display:none">
 
-        <div class="camera-buttons">
+            <div class="deadline-box" style="margin-top:15px;">
+                🇱🇰 Arrival deadline: <strong>9:00 AM Sri Lanka time</strong>.
+                <br><br>
+                The teacher's selected action is the only action this scan will record.
+            </div>
+
+            <div class="video-container">
+                <video
+                    id="video"
+                    autoplay
+                    muted
+                    playsinline
+                ></video>
+
+                <div class="scan-frame"></div>
+                <div class="scan-line"></div>
+            </div>
+
+            <div class="camera-buttons">
+
+                <button
+                    id="startButton"
+                    type="button"
+                    class="btn primary"
+                >
+                    📷 Start Camera
+                </button>
+
+                <button
+                    id="stopButton"
+                    type="button"
+                    class="btn danger"
+                    style="display:none"
+                >
+                    ⏹ Stop Camera
+                </button>
+
+            </div>
 
             <button
-                id="startButton"
+                id="captureScanButton"
                 type="button"
-                class="btn primary"
+                class="btn primary scan-capture"
+                disabled
             >
-                📷 Start Camera
+                📸 SCAN QR
             </button>
-
 
             <button
-                id="stopButton"
+                id="changeScanModeButton"
                 type="button"
-                class="btn danger"
-                style="display:none"
+                class="btn secondary scan-capture"
             >
-                ⏹ Stop Camera
+                🔄 Change Arrival / Leaving
             </button>
 
-        </div>
+            <div id="status" class="status">
+                Camera not started.
+            </div>
 
-
-        <div
-            id="status"
-            class="status"
-        >
-            Camera not started.
         </div>
 
     </div>
 
-
+    <div id="scanResult" class="result">
+        <div class="result-icon">📷</div>
+        <div class="result-name">Choose Arrival or Leaving</div>
+        <div class="result-info">
+            Select an action above to begin.
+        </div>
+    </div>
 
     <div
-        id="scanResult"
-        class="result"
+        id="scanSuccessPopup"
+        class="scan-success-popup"
+        aria-live="polite"
     >
-
-        <div class="result-icon">
-            📷
-        </div>
-
-        <div class="result-name">
-            Ready
-        </div>
-
-        <div class="result-info">
-            Start the camera to begin scanning.
-        </div>
-
+        <div id="popupIcon" class="popup-icon">✓</div>
+        <div id="popupName" class="popup-name"></div>
+        <div id="popupAction" class="popup-action"></div>
     </div>
-
 
     <canvas id="canvas"></canvas>
 
@@ -1544,6 +1673,8 @@ let lastScannedCode = "";
 let lastScanTime = 0;
 
 let processingScan = false;
+let selectedScanType = null;
+let popupTimer = null;
 
 
 
@@ -2712,10 +2843,15 @@ document
                     }
 
 
-                    showPage(
-                        button.dataset.page,
-                        button
-                    );
+                    if (button.dataset.page === "scanner") {
+                        openScanner();
+                        button.classList.add("active");
+                    } else {
+                        showPage(
+                            button.dataset.page,
+                            button
+                        );
+                    }
 
                 }
             );
@@ -2731,22 +2867,68 @@ document
 
 function openScanner() {
 
-    showPage(
-        "scanner"
-    );
+    stopCamera();
 
+    selectedScanType = null;
 
-    setTimeout(
-        () => {
+    const choiceBox = document.getElementById("scanChoiceBox");
+    const controls = document.getElementById("scannerControls");
+    const badge = document.getElementById("scanModeBadge");
 
-            startCamera();
+    if (choiceBox) choiceBox.style.display = "block";
+    if (controls) controls.style.display = "none";
+    if (badge) {
+        badge.style.display = "none";
+        badge.textContent = "";
+    }
 
-        },
-        150
-    );
+    const result = document.getElementById("scanResult");
+    result.className = "result";
+    result.innerHTML = `
+        <div class="result-icon">📷</div>
+        <div class="result-name">Choose Arrival or Leaving</div>
+        <div class="result-info">Select the action before opening the camera.</div>
+    `;
 
+    document.querySelectorAll("#arrivalChoiceButton, #leavingChoiceButton")
+        .forEach(button => button.classList.remove("selected"));
+
+    showPage("scanner");
 }
 
+
+function selectScanType(type) {
+
+    if (type !== "arrival" && type !== "leaving") return;
+
+    stopCamera();
+    selectedScanType = type;
+
+    const choiceBox = document.getElementById("scanChoiceBox");
+    const controls = document.getElementById("scannerControls");
+    const badge = document.getElementById("scanModeBadge");
+
+    if (choiceBox) choiceBox.style.display = "none";
+    if (controls) controls.style.display = "block";
+
+    if (badge) {
+        badge.style.display = "inline-flex";
+        badge.textContent = type === "arrival" ? "🟢 ARRIVAL MODE" : "🔴 LEAVING MODE";
+    }
+
+    const result = document.getElementById("scanResult");
+    result.className = "result";
+    result.innerHTML = `
+        <div class="result-icon">${type === "arrival" ? "🟢" : "🔴"}</div>
+        <div class="result-name">${type === "arrival" ? "Arrival Scan" : "Leaving Scan"}</div>
+        <div class="result-info">Start the camera, position the QR inside the frame, then press <strong>SCAN QR</strong>.</div>
+    `;
+
+    document.getElementById("arrivalChoiceButton")?.classList.toggle("selected", type === "arrival");
+    document.getElementById("leavingChoiceButton")?.classList.toggle("selected", type === "leaving");
+
+    setTimeout(() => startCamera(), 100);
+}
 
 
 /* =========================================================
@@ -3087,321 +3269,189 @@ async function applyAbsentStatus() {
    RECORD ATTENDANCE
 ========================================================= */
 
-async function recordAttendance(
-    student
-) {
+async function recordAttendance(student, action = selectedScanType) {
 
     if (!currentUser) {
-
-        alert(
-            "Please sign in first."
-        );
-
-        return;
-
+        alert("Please sign in first.");
+        return false;
     }
 
-
-    const now =
-        getSriLankaNow();
-
-
-    const date =
-        getSriLankaDateString(
-            now
-        );
-
-
-    const time =
-        getSriLankaTimeString(
-            now
-        );
-
-
-    const attendanceId =
-        student.id +
-        "_" +
-        date;
-
-
-    const attendanceRef =
-        doc(
-            db,
-            "attendance",
-            attendanceId
-        );
-
-
-    let existing =
-        await getDoc(
-            attendanceRef
-        );
-
-
-    /* =====================================================
-       TEST MODE
-       RESET AN EXISTING ABSENT RECORD
-    ===================================================== */
-
-    if (
-        TEST_MODE &&
-        existing.exists() &&
-        existing.data().status === "absent"
-    ) {
-
-        const record = {
-
-            studentId:
-                student.id,
-
-            studentName:
-                student.name,
-
-            class:
-                student.class,
-
-            parent:
-                student.parent,
-
-            phone:
-                student.phone,
-
-            date:
-                date,
-
-            arrival:
-                time,
-
-            leaving:
-                null,
-
-            status:
-                "present",
-
-            createdAt:
-                new Date().toISOString(),
-
-            testModeReset:
-                true
-
-        };
-
-
-        await setDoc(
-            attendanceRef,
-            record
-        );
-
-
-        await loadAttendance();
-
-
-        showArrival(
-            student,
-            time
-        );
-
-
-        beep();
-
-
-        updateDashboard();
-
-
-        return;
-
+    if (action !== "arrival" && action !== "leaving") {
+        alert("Please choose ARRIVAL or LEAVING first.");
+        return false;
     }
 
-
-
-    /* =====================================================
-       AFTER 9 AM IN NORMAL MODE
-    ===================================================== */
-
-    if (
-        !existing.exists() &&
-        isAfterAttendanceDeadline()
-    ) {
-
-        await applyAbsentStatus();
-
-
-        await loadAttendance();
-
-
-        showAbsentScanResult(
-            student
-        );
-
-
-        beep();
-
-
-        updateDashboard();
-
-
-        return;
-
-    }
-
-
-
-    /* =====================================================
-       FIRST SCAN = ARRIVAL
-    ===================================================== */
-
-    if (!existing.exists()) {
-
-        const record = {
-
-            studentId:
-                student.id,
-
-            studentName:
-                student.name,
-
-            class:
-                student.class,
-
-            parent:
-                student.parent,
-
-            phone:
-                student.phone,
-
-            date:
-                date,
-
-            arrival:
-                time,
-
-            leaving:
-                null,
-
-            status:
-                "present",
-
-            createdAt:
-                new Date().toISOString()
-
-        };
-
-
-        await setDoc(
-            attendanceRef,
-            record
-        );
-
-
-        await loadAttendance();
-
-
-        showArrival(
-            student,
-            time
-        );
-
-
-        updateDashboard();
-
-
-        beep();
-
-
-        return;
-
-    }
-
-
-
-    /* =====================================================
-       EXISTING RECORD
-    ===================================================== */
-
-    const record =
-        existing.data();
-
-
-
-    /* =====================================================
-       ABSENT STUDENT
-    ===================================================== */
-
-    if (
-        record.status ===
-        "absent"
-    ) {
-
-        showAbsentScanResult(
-            student
-        );
-
-
-        beep();
-
-
-        return;
-
-    }
-
-
-
-    /* =====================================================
-       SECOND SCAN = LEAVING
-       NO TIME LIMIT
-    ===================================================== */
-
-    if (!record.leaving) {
-
-        await updateDoc(
-            attendanceRef,
-            {
-
-                leaving:
-                    time,
-
-                status:
-                    "present"
-
+    const now = getSriLankaNow();
+    const date = getSriLankaDateString(now);
+    const time = getSriLankaTimeString(now);
+    const attendanceId = student.id + "_" + date;
+    const attendanceRef = doc(db, "attendance", attendanceId);
+    const existing = await getDoc(attendanceRef);
+
+    /* ARRIVAL */
+    if (action === "arrival") {
+
+        if (!existing.exists()) {
+
+            if (isAfterAttendanceDeadline()) {
+                await applyAbsentStatus();
+                await loadAttendance();
+
+                const refreshed = await getDoc(attendanceRef);
+                if (refreshed.exists() && refreshed.data().status === "absent") {
+                    showAbsentScanResult(student);
+                    beep();
+                    updateDashboard();
+                    return false;
+                }
             }
-        );
 
+            await setDoc(attendanceRef, {
+                studentId: student.id,
+                studentName: student.name,
+                class: student.class,
+                parent: student.parent,
+                phone: student.phone,
+                date,
+                arrival: time,
+                leaving: null,
+                status: "present",
+                createdAt: new Date().toISOString()
+            });
+
+            await loadAttendance();
+            showArrival(student, time);
+            showScanSuccessPopup(student.name, "ARRIVED", "🟢");
+            updateDashboard();
+            beep();
+            return true;
+        }
+
+        const record = existing.data();
+
+        if (record.status === "absent") {
+            if (TEST_MODE) {
+                await updateDoc(attendanceRef, {
+                    arrival: time,
+                    status: "present",
+                    testModeReset: true
+                });
+                await loadAttendance();
+                showArrival(student, time);
+                showScanSuccessPopup(student.name, "ARRIVED", "🟢");
+                updateDashboard();
+                beep();
+                return true;
+            }
+
+            showAbsentScanResult(student);
+            beep();
+            return false;
+        }
+
+        if (record.arrival) {
+            showActionAlreadyRecorded(student, "arrival", record.arrival);
+            beep();
+            return false;
+        }
+
+        await updateDoc(attendanceRef, {
+            arrival: time,
+            status: "present"
+        });
 
         await loadAttendance();
-
-
-        showLeaving(
-            student,
-            time
-        );
-
-
+        showArrival(student, time);
+        showScanSuccessPopup(student.name, "ARRIVED", "🟢");
         updateDashboard();
-
-
         beep();
-
-
-        return;
-
+        return true;
     }
 
+    /* LEAVING */
+    if (!existing.exists()) {
+        showLeavingBlocked(student, "This student has not been marked as arrived yet.");
+        beep();
+        return false;
+    }
 
+    const record = existing.data();
 
-    /* =====================================================
-       BOTH SCANS COMPLETED
-    ===================================================== */
+    if (record.status === "absent" || !record.arrival) {
+        showLeavingBlocked(student, "This student has no arrival record for today.");
+        beep();
+        return false;
+    }
 
-    showCompleted(
-        student,
-        record
-    );
+    if (record.leaving) {
+        showActionAlreadyRecorded(student, "leaving", record.leaving);
+        beep();
+        return false;
+    }
 
+    await updateDoc(attendanceRef, {
+        leaving: time,
+        status: "present"
+    });
 
+    await loadAttendance();
+    showLeaving(student, time);
+    showScanSuccessPopup(student.name, "LEFT", "🔴");
+    updateDashboard();
     beep();
-
+    return true;
 }
 
+
+function showActionAlreadyRecorded(student, type, time) {
+    const result = document.getElementById("scanResult");
+    const label = type === "arrival" ? "arrival" : "leaving";
+    const icon = type === "arrival" ? "🟢" : "🔴";
+
+    result.className = "result warning-result";
+    result.innerHTML = `
+        <div class="result-icon">⚠️</div>
+        <div class="result-name">${escapeHTML(student.name)}</div>
+        <div class="result-info">
+            ${icon} <strong>${label.toUpperCase()} ALREADY RECORDED</strong>
+            <br><br>
+            Time: ${escapeHTML(time || "—")}
+            <br><br>
+            If this is wrong, correct it from Reports using the separate ${label} delete button.
+        </div>
+    `;
+}
+
+
+function showLeavingBlocked(student, message) {
+    const result = document.getElementById("scanResult");
+    result.className = "result warning-result";
+    result.innerHTML = `
+        <div class="result-icon">⚠️</div>
+        <div class="result-name">${escapeHTML(student.name)}</div>
+        <div class="result-info">
+            <strong>LEAVING NOT RECORDED</strong>
+            <br><br>
+            ${escapeHTML(message)}
+        </div>
+    `;
+}
+
+
+function showScanSuccessPopup(name, action, icon) {
+    const popup = document.getElementById("scanSuccessPopup");
+    if (!popup) return;
+
+    clearTimeout(popupTimer);
+    document.getElementById("popupIcon").textContent = icon || "✓";
+    document.getElementById("popupName").textContent = name + " — " + action;
+    document.getElementById("popupAction").textContent = "Attendance recorded successfully";
+    popup.classList.add("show");
+
+    popupTimer = setTimeout(() => {
+        popup.classList.remove("show");
+    }, 2200);
+}
 
 
 /* =========================================================
@@ -3808,16 +3858,12 @@ Thank you.`;
 
 
 /* =========================================================
-   ULTRA FAST QR SCANNER
+   STILL-FRAME QR SCANNER
 ========================================================= */
 
 let qrDetector = null;
 let qrCanvas = null;
 let qrContext = null;
-
-let lastSuccessfulQR = "";
-let lastSuccessfulQRTime = 0;
-
 let scannerBusy = false;
 
 
@@ -3827,214 +3873,78 @@ let scannerBusy = false;
 
 async function startCamera() {
 
-    if (scanning) {
+    if (scanning) return;
+
+    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+        alert("Camera access is not supported by this browser.");
         return;
     }
 
-    if (
-        !navigator.mediaDevices ||
-        !navigator.mediaDevices.getUserMedia
-    ) {
-
-        alert(
-            "Camera access is not supported by this browser."
-        );
-
+    if (!selectedScanType) {
+        alert("Please choose ARRIVAL or LEAVING first.");
         return;
     }
 
     try {
+        const video = document.getElementById("video");
 
-        const video =
-            document.getElementById("video");
+        cameraStream = await navigator.mediaDevices.getUserMedia({
+            video: {
+                facingMode: { ideal: "environment" },
+                width: { ideal: 1280 },
+                height: { ideal: 720 },
+                frameRate: { ideal: 30, max: 60 }
+            },
+            audio: false
+        });
 
-        /*
-         * Prefer the rear camera.
-         *
-         * High resolution helps small QR codes,
-         * but we don't request an unnecessarily huge
-         * resolution because that can actually slow
-         * decoding on weaker phones.
-         */
-
-        cameraStream =
-            await navigator.mediaDevices.getUserMedia({
-
-                video: {
-
-                    facingMode: {
-                        ideal: "environment"
-                    },
-
-                    width: {
-                        ideal: 1280
-                    },
-
-                    height: {
-                        ideal: 720
-                    },
-
-                    frameRate: {
-                        ideal: 30,
-                        max: 60
-                    }
-                },
-
-                audio: false
-            });
-
-
-        video.srcObject =
-            cameraStream;
-
-
-        /*
-         * Remove unnecessary video processing.
-         */
-
-        video.setAttribute(
-            "playsinline",
-            ""
-        );
-
-        video.setAttribute(
-            "autoplay",
-            ""
-        );
-
-        video.muted =
-            true;
-
+        video.srcObject = cameraStream;
+        video.setAttribute("playsinline", "");
+        video.setAttribute("autoplay", "");
+        video.muted = true;
 
         await video.play();
 
+        scanning = true;
+        processingScan = false;
+        scannerBusy = false;
 
-        scanning =
-            true;
+        qrCanvas = document.getElementById("canvas");
+        qrContext = qrCanvas.getContext("2d", {
+            alpha: false,
+            desynchronized: true,
+            willReadFrequently: true
+        });
 
-        processingScan =
-            false;
+        qrDetector = null;
 
-
-        document.getElementById(
-            "startButton"
-        ).style.display =
-            "none";
-
-
-        document.getElementById(
-            "stopButton"
-        ).style.display =
-            "block";
-
-
-        document.getElementById(
-            "status"
-        ).textContent =
-            TEST_MODE
-                ? "🧪 TEST MODE: Ultra-fast QR scanner active."
-                : "⚡ Ultra-fast QR scanner active.";
-
-
-        /*
-         * Prepare canvas once.
-         * We DO NOT create a new canvas/context
-         * for every frame.
-         */
-
-        qrCanvas =
-            document.getElementById("canvas");
-
-
-        qrContext =
-            qrCanvas.getContext(
-                "2d",
-                {
-                    alpha: false,
-                    desynchronized: true,
-                    willReadFrequently: true
-                }
-            );
-
-
-        /*
-         * Use native BarcodeDetector when supported.
-         * It is generally much faster than running
-         * JavaScript QR decoding manually.
-         */
-
-        if (
-            "BarcodeDetector" in window
-        ) {
-
+        if ("BarcodeDetector" in window) {
             try {
-
-                const formats =
-                    await BarcodeDetector.getSupportedFormats();
-
-
-                if (
-                    formats.includes("qr_code")
-                ) {
-
-                    qrDetector =
-                        new BarcodeDetector({
-                            formats: ["qr_code"]
-                        });
-
+                const formats = await BarcodeDetector.getSupportedFormats();
+                if (formats.includes("qr_code")) {
+                    qrDetector = new BarcodeDetector({ formats: ["qr_code"] });
                 }
-
+            } catch (error) {
+                console.warn("Native QR detector unavailable:", error);
             }
-
-            catch (error) {
-
-                console.warn(
-                    "Native QR detector unavailable:",
-                    error
-                );
-
-                qrDetector =
-                    null;
-            }
-
         }
 
+        document.getElementById("startButton").style.display = "none";
+        document.getElementById("stopButton").style.display = "block";
+        document.getElementById("captureScanButton").disabled = false;
 
-        /*
-         * Start scanner.
-         */
+        document.getElementById("status").textContent =
+            selectedScanType === "arrival"
+                ? "🟢 Arrival mode: position the QR and press SCAN QR."
+                : "🔴 Leaving mode: position the QR and press SCAN QR.";
 
-        scanQRCodeFast();
-
+    } catch (error) {
+        console.error("Camera error:", error);
+        scanning = false;
+        document.getElementById("status").textContent = "Camera could not be started.";
+        alert("Could not access the camera.\n\nPlease allow camera permission and make sure the website is using HTTPS.");
     }
-
-    catch (error) {
-
-        console.error(
-            "Camera error:",
-            error
-        );
-
-
-        scanning =
-            false;
-
-
-        document.getElementById(
-            "status"
-        ).textContent =
-            "Camera could not be started.";
-
-
-        alert(
-            "Could not access the camera.\n\n" +
-            "Please allow camera permission and make sure the website is using HTTPS."
-        );
-
-    }
-
 }
-
 
 
 /* =========================================================
@@ -4042,679 +3952,188 @@ async function startCamera() {
 ========================================================= */
 
 function stopCamera() {
-
-    scanning =
-        false;
-
-    processingScan =
-        false;
-
-    scannerBusy =
-        false;
-
-
-    if (animationFrameId) {
-
-        cancelAnimationFrame(
-            animationFrameId
-        );
-
-        animationFrameId =
-            null;
-
-    }
-
+    scanning = false;
+    processingScan = false;
+    scannerBusy = false;
 
     if (cameraStream) {
-
-        cameraStream
-            .getTracks()
-            .forEach(
-                track => {
-
-                    track.stop();
-
-                }
-            );
-
-
-        cameraStream =
-            null;
-
+        cameraStream.getTracks().forEach(track => track.stop());
+        cameraStream = null;
     }
 
-
-    const video =
-        document.getElementById(
-            "video"
-        );
-
-
+    const video = document.getElementById("video");
     if (video) {
-
         video.pause();
-
-        video.srcObject =
-            null;
-
+        video.srcObject = null;
     }
 
+    const start = document.getElementById("startButton");
+    const stop = document.getElementById("stopButton");
+    const capture = document.getElementById("captureScanButton");
 
-    const start =
-        document.getElementById(
-            "startButton"
-        );
+    if (start) start.style.display = "block";
+    if (stop) stop.style.display = "none";
+    if (capture) capture.disabled = true;
 
-
-    const stop =
-        document.getElementById(
-            "stopButton"
-        );
-
-
-    if (start) {
-
-        start.style.display =
-            "block";
-
-    }
-
-
-    if (stop) {
-
-        stop.style.display =
-            "none";
-
-    }
-
-
-    const status =
-        document.getElementById(
-            "status"
-        );
-
-
-    if (status) {
-
-        status.textContent =
-            "Camera stopped.";
-
-    }
-
+    const status = document.getElementById("status");
+    if (status) status.textContent = selectedScanType ? "Camera stopped. Press Start Camera to continue." : "Camera not started.";
 }
 
 
-
 /* =========================================================
-   ULTRA FAST SCAN LOOP
+   CAPTURE + READ STILL FRAME
 ========================================================= */
 
-let lastDecodeTime =
-    0;
+async function captureAndScanQR() {
 
+    if (!scanning || !selectedScanType || scannerBusy) return;
 
-/*
- * We don't need to decode at the camera's full
- * 30/60 FPS.
- *
- * Around 20-25 decode attempts per second is already
- * extremely responsive while leaving CPU available
- * for the webpage.
- */
+    const video = document.getElementById("video");
 
-const QR_SCAN_INTERVAL =
-    40;
-
-
-
-async function scanQRCodeFast() {
-
-    if (!scanning) {
+    if (!video || video.readyState < video.HAVE_CURRENT_DATA || video.videoWidth <= 0) {
+        alert("Camera is not ready yet. Please wait a moment and try again.");
         return;
     }
 
+    scannerBusy = true;
+    const captureButton = document.getElementById("captureScanButton");
+    const status = document.getElementById("status");
+    captureButton.disabled = true;
+    status.textContent = "🔎 Reading the captured QR image...";
 
-    const video =
-        document.getElementById(
-            "video"
-        );
+    try {
+        const maxWidth = 1280;
+        const scale = Math.min(1, maxWidth / video.videoWidth);
+        const width = Math.max(320, Math.floor(video.videoWidth * scale));
+        const height = Math.max(240, Math.floor(video.videoHeight * scale));
 
+        qrCanvas.width = width;
+        qrCanvas.height = height;
+        qrContext.drawImage(video, 0, 0, width, height);
 
-    if (
-        !video ||
-        video.readyState <
-            video.HAVE_CURRENT_DATA ||
-        video.videoWidth <= 0 ||
-        video.videoHeight <= 0
-    ) {
+        let qrValue = null;
 
-        animationFrameId =
-            requestAnimationFrame(
-                scanQRCodeFast
-            );
-
-        return;
-
-    }
-
-
-    const now =
-        performance.now();
-
-
-    /*
-     * Don't start another decode while the
-     * previous native detector operation is running.
-     */
-
-    if (
-        !scannerBusy &&
-        now - lastDecodeTime >=
-            QR_SCAN_INTERVAL
-    ) {
-
-        lastDecodeTime =
-            now;
-
-
-        scannerBusy =
-            true;
-
-
-        try {
-
-            await decodeQR(video);
-
-        }
-
-        catch (error) {
-
-            console.warn(
-                "QR decode error:",
-                error
-            );
-
-        }
-
-        finally {
-
-            scannerBusy =
-                false;
-
-        }
-
-    }
-
-
-    if (scanning) {
-
-        animationFrameId =
-            requestAnimationFrame(
-                scanQRCodeFast
-            );
-
-    }
-
-}
-
-
-
-/* =========================================================
-   QR DECODER
-========================================================= */
-
-async function decodeQR(video) {
-
-    /*
-     * =====================================================
-     * METHOD 1
-     * Native browser BarcodeDetector
-     * =====================================================
-     */
-
-    if (qrDetector) {
-
-        try {
-
-            const detected =
-                await qrDetector.detect(
-                    video
-                );
-
-
-            if (
-                detected &&
-                detected.length > 0
-            ) {
-
-                for (
-                    const item
-                    of detected
-                ) {
-
-                    if (
-                        item.rawValue
-                    ) {
-
-                        processDetectedQR(
-                            item.rawValue
-                        );
-
-                        return;
-
-                    }
-
+        if (qrDetector) {
+            try {
+                const detected = await qrDetector.detect(qrCanvas);
+                if (detected && detected.length) {
+                    qrValue = detected.find(item => item.rawValue)?.rawValue || null;
                 }
-
+            } catch (error) {
+                console.warn("Native still-image QR detection failed:", error);
             }
-
         }
 
-        catch (error) {
-
-            /*
-             * If native detection fails,
-             * fall through to jsQR.
-             */
-
+        if (!qrValue && typeof jsQR === "function") {
+            const imageData = qrContext.getImageData(0, 0, width, height);
+            const code = jsQR(imageData.data, width, height, {
+                inversionAttempts: "attemptBoth"
+            });
+            if (code && code.data) qrValue = code.data;
         }
 
+        if (!qrValue) {
+            status.textContent = "❌ QR not found in the captured frame. Position it clearly inside the frame and try again.";
+            showScanNotRead();
+            beep();
+            return;
+        }
+
+        await handleQRCode(qrValue);
+        status.textContent = selectedScanType === "arrival"
+            ? "🟢 Arrival mode ready for the next student."
+            : "🔴 Leaving mode ready for the next student.";
+
+    } catch (error) {
+        console.error("Still-frame QR scan error:", error);
+        status.textContent = "Could not read the QR image.";
+        showScannerError(error);
+    } finally {
+        scannerBusy = false;
+        captureButton.disabled = !scanning;
     }
-
-
-    /*
-     * =====================================================
-     * METHOD 2
-     * jsQR fallback
-     * =====================================================
-     */
-
-    if (
-        typeof jsQR !==
-        "function"
-    ) {
-
-        return;
-
-    }
-
-
-    /*
-     * Don't process the full 1280x720 image.
-     *
-     * QR decoding becomes considerably faster
-     * when the image is reduced.
-     */
-
-    const maxWidth =
-        720;
-
-
-    const scale =
-        Math.min(
-            1,
-            maxWidth /
-                video.videoWidth
-        );
-
-
-    const width =
-        Math.max(
-            320,
-            Math.floor(
-                video.videoWidth *
-                scale
-            )
-        );
-
-
-    const height =
-        Math.max(
-            240,
-            Math.floor(
-                video.videoHeight *
-                scale
-            )
-        );
-
-
-    /*
-     * Reuse the same canvas.
-     */
-
-    if (
-        qrCanvas.width !== width ||
-        qrCanvas.height !== height
-    ) {
-
-        qrCanvas.width =
-            width;
-
-        qrCanvas.height =
-            height;
-
-    }
-
-
-    qrContext.drawImage(
-        video,
-        0,
-        0,
-        width,
-        height
-    );
-
-
-    const imageData =
-        qrContext.getImageData(
-            0,
-            0,
-            width,
-            height
-        );
-
-
-    const code =
-        jsQR(
-            imageData.data,
-            width,
-            height,
-            {
-                inversionAttempts:
-                    "dontInvert"
-            }
-        );
-
-
-    if (
-        code &&
-        code.data
-    ) {
-
-        processDetectedQR(
-            code.data
-        );
-
-    }
-
 }
 
 
-
-/* =========================================================
-   PROCESS DETECTED QR
-========================================================= */
-
-function processDetectedQR(
-    qrValue
-) {
-
-    qrValue =
-        String(
-            qrValue || ""
-        ).trim();
-
-
-    if (!qrValue) {
-        return;
-    }
-
-
-    const now =
-        Date.now();
-
-
-    /*
-     * Ignore the exact same QR for a short time.
-     *
-     * This prevents:
-     *
-     * QR detected
-     * QR detected
-     * QR detected
-     * QR detected
-     *
-     * from firing multiple attendance actions.
-     */
-
-    if (
-        qrValue ===
-            lastSuccessfulQR &&
-        now -
-            lastSuccessfulQRTime <
-            3000
-    ) {
-
-        return;
-
-    }
-
-
-    lastSuccessfulQR =
-        qrValue;
-
-
-    lastSuccessfulQRTime =
-        now;
-
-
-    /*
-     * Immediately handle the scan.
-     */
-
-    handleQRCode(
-        qrValue
-    );
-
+function showScanNotRead() {
+    const result = document.getElementById("scanResult");
+    result.className = "result error";
+    result.innerHTML = `
+        <div class="result-icon">🔎</div>
+        <div class="result-name">QR Not Recognised</div>
+        <div class="result-info">
+            The captured frame did not contain a readable QR code.
+            <br><br>
+            Keep the QR inside the frame, hold the camera steady, and press <strong>SCAN QR</strong> again.
+        </div>
+    `;
 }
 
+
+function showScannerError(error) {
+    const result = document.getElementById("scanResult");
+    result.className = "result error";
+    result.innerHTML = `
+        <div class="result-icon">❌</div>
+        <div class="result-name">Scan Error</div>
+        <div class="result-info">${escapeHTML(error?.message || "Unable to read the QR code.")}</div>
+    `;
+}
 
 
 /* =========================================================
    HANDLE QR CODE
 ========================================================= */
 
-async function handleQRCode(
-    qrValue
-) {
+async function handleQRCode(qrValue) {
 
-    if (processingScan) {
-        return;
-    }
+    if (processingScan) return;
 
+    qrValue = String(qrValue || "").trim();
+    if (!qrValue) return;
 
-    const student =
-        students.find(
-            student =>
-                String(
-                    student.id
-                )
-                    .trim()
-                    .toLowerCase() ===
-                String(
-                    qrValue
-                )
-                    .trim()
-                    .toLowerCase()
-        );
-
-
-    /*
-     * Unknown QR.
-     */
+    const student = students.find(student =>
+        String(student.id || "").trim().toLowerCase() === qrValue.toLowerCase()
+    );
 
     if (!student) {
-
-        showUnknownQR(
-            qrValue
-        );
-
-
+        showUnknownQR(qrValue);
         beep();
-
-
-        /*
-         * Allow the same physical QR to be
-         * scanned again after a short delay.
-         */
-
-        setTimeout(
-            () => {
-
-                if (
-                    lastSuccessfulQR ===
-                    qrValue
-                ) {
-
-                    lastSuccessfulQR =
-                        "";
-
-                }
-
-            },
-            1500
-        );
-
-
         return;
-
     }
 
-
-    processingScan =
-        true;
-
+    processingScan = true;
 
     try {
-
-        await recordAttendance(
-            student
-        );
-
+        await recordAttendance(student, selectedScanType);
+    } catch (error) {
+        console.error("Attendance error:", error);
+        showScannerError(error);
+    } finally {
+        processingScan = false;
     }
-
-    catch (error) {
-
-        console.error(
-            "Attendance error:",
-            error
-        );
-
-
-        const result =
-            document.getElementById(
-                "scanResult"
-            );
-
-
-        result.className =
-            "result error";
-
-
-        result.innerHTML = `
-
-<div class="result-icon">
-    ❌
-</div>
-
-<div class="result-name">
-    Attendance Error
-</div>
-
-<div class="result-info">
-
-Could not save attendance.
-
-<br><br>
-
-${escapeHTML(
-    error.message ||
-    "Unknown error"
-)}
-
-</div>
-
-`;
-
-    }
-
-
-    finally {
-
-        /*
-         * Short lock only.
-         *
-         * The scanner itself continues running,
-         * so there is no need to stop/restart
-         * the camera after every scan.
-         */
-
-        setTimeout(
-            () => {
-
-                processingScan =
-                    false;
-
-            },
-            350
-        );
-
-    }
-
 }
-
 
 
 /* =========================================================
    UNKNOWN QR
 ========================================================= */
 
-function showUnknownQR(
-    qrValue
-) {
-
-    const result =
-        document.getElementById(
-            "scanResult"
-        );
-
-
-    result.className =
-        "result error";
-
-
+function showUnknownQR(qrValue) {
+    const result = document.getElementById("scanResult");
+    result.className = "result error";
     result.innerHTML = `
-
-<div class="result-icon">
-    ❌
-</div>
-
-<div class="result-name">
-    Unknown QR Code
-</div>
-
-<div class="result-info">
-
-No student was found for this QR code.
-
-<br><br>
-
-QR Value:
-
-<strong>
-    ${escapeHTML(qrValue)}
-</strong>
-
-<br><br>
-
-Please make sure the QR code belongs to
-a registered student.
-
-</div>
-
-`;
-
+        <div class="result-icon">❌</div>
+        <div class="result-name">Unknown QR Code</div>
+        <div class="result-info">
+            No student was found for this QR code.
+            <br><br>
+            QR Value: <strong>${escapeHTML(qrValue)}</strong>
+        </div>
+    `;
 }
+
+
 /* =========================================================
    BEEP
 ========================================================= */
@@ -5065,448 +4484,172 @@ function setReportDate() {
    DISPLAY REPORTS
 ========================================================= */
 
-window.displayReports =
-function() {
+window.displayReports = function() {
 
-    const dateInput =
-        document.getElementById(
-            "reportDate"
-        );
+    const dateInput = document.getElementById("reportDate");
+    const summary = document.getElementById("reportSummary");
+    const list = document.getElementById("reportList");
 
+    if (!dateInput || !summary || !list) return;
 
-    const summary =
-        document.getElementById(
-            "reportSummary"
-        );
+    const selectedDate = dateInput.value || getSriLankaDateString();
+    const records = attendance.filter(record => record.date === selectedDate);
 
-
-    const list =
-        document.getElementById(
-            "reportList"
-        );
-
-
-    if (
-        !dateInput ||
-        !summary ||
-        !list
-    ) {
-
-        return;
-
-    }
-
-
-    const selectedDate =
-        dateInput.value ||
-        getSriLankaDateString();
-
-
-    const records =
-        attendance.filter(
-            record =>
-                record.date ===
-                selectedDate
-        );
-
-
-    const present =
-        records.filter(
-            record =>
-                record.status ===
-                "present"
-        ).length;
-
-
-    const absent =
-        records.filter(
-            record =>
-                record.status ===
-                "absent"
-        ).length;
-
-
-    const left =
-        records.filter(
-            record =>
-                record.leaving
-        ).length;
-
-
+    const present = records.filter(record => record.arrival).length;
+    const absent = records.filter(record => record.status === "absent").length;
+    const left = records.filter(record => record.leaving).length;
 
     summary.innerHTML = `
-
-<div class="card">
-
-    <div class="card-title">
-        ${escapeHTML(selectedDate)}
-    </div>
-
-    <div class="card-subtitle">
-        Attendance summary
-    </div>
-
-    <div class="dashboard-grid">
-
-        <div class="stat present-stat">
-
-            <div class="stat-number">
-                ${present}
+        <div class="card">
+            <div class="card-title">${escapeHTML(selectedDate)}</div>
+            <div class="card-subtitle">Attendance summary</div>
+            <div class="dashboard-grid">
+                <div class="stat present-stat"><div class="stat-number">${present}</div><div class="stat-label">ARRIVED</div></div>
+                <div class="stat absent-stat"><div class="stat-number">${absent}</div><div class="stat-label">ABSENT</div></div>
+                <div class="stat"><div class="stat-number">${left}</div><div class="stat-label">LEFT</div></div>
+                <div class="stat"><div class="stat-number">${records.length}</div><div class="stat-label">RECORDS</div></div>
             </div>
-
-            <div class="stat-label">
-                PRESENT
-            </div>
-
         </div>
-
-
-        <div class="stat absent-stat">
-
-            <div class="stat-number">
-                ${absent}
-            </div>
-
-            <div class="stat-label">
-                ABSENT
-            </div>
-
-        </div>
-
-
-        <div class="stat">
-
-            <div class="stat-number">
-                ${left}
-            </div>
-
-            <div class="stat-label">
-                LEFT
-            </div>
-
-        </div>
-
-
-        <div class="stat">
-
-            <div class="stat-number">
-                ${records.length}
-            </div>
-
-            <div class="stat-label">
-                RECORDS
-            </div>
-
-        </div>
-
-    </div>
-
-</div>
-
-`;
-
-
+    `;
 
     if (records.length === 0) {
-
-        list.innerHTML = `
-
-<div class="card">
-
-    <div class="empty">
-        No attendance records found for this date.
-    </div>
-
-</div>
-
-`;
-
+        list.innerHTML = `<div class="card"><div class="empty">No attendance records found for this date.</div></div>`;
         return;
-
     }
 
+    const sorted = [...records].sort((a,b) => String(a.studentName || "").localeCompare(String(b.studentName || "")));
 
+    list.innerHTML = sorted.map(record => {
+        let statusHTML;
+        if (record.status === "absent") {
+            statusHTML = `<span class="status-badge status-absent">ABSENT</span>`;
+        } else if (record.leaving) {
+            statusHTML = `<span class="status-badge status-left">LEFT</span>`;
+        } else if (record.arrival) {
+            statusHTML = `<span class="status-badge status-present">PRESENT</span>`;
+        } else {
+            statusHTML = `<span class="status-badge">NO ATTENDANCE</span>`;
+        }
 
-    const sorted =
-        [...records].sort(
-            (a, b) =>
-                String(
-                    a.studentName || ""
-                ).localeCompare(
-                    String(
-                        b.studentName || ""
-                    )
-                )
-        );
+        const arrivalButton = record.arrival
+            ? `<button class="btn danger" onclick="deleteAttendancePart('${escapeJS(record.id)}','arrival')">🗑 Delete Arrival</button>`
+            : `<button class="btn muted-action" disabled>Arrival not recorded</button>`;
 
+        const leavingButton = record.leaving
+            ? `<button class="btn danger" onclick="deleteAttendancePart('${escapeJS(record.id)}','leaving')">🗑 Delete Leaving</button>`
+            : `<button class="btn muted-action" disabled>Leaving not recorded</button>`;
 
-
-    list.innerHTML =
-        sorted.map(
-            record => {
-
-                let statusHTML;
-
-
-                if (
-                    record.status ===
-                    "absent"
-                ) {
-
-                    statusHTML = `
-
-<span class="status-badge status-absent">
-    ABSENT
-</span>
-
-`;
-
-                }
-
-
-                else if (
-                    record.leaving
-                ) {
-
-                    statusHTML = `
-
-<span class="status-badge status-left">
-    LEFT
-</span>
-
-`;
-
-                }
-
-
-                else {
-
-                    statusHTML = `
-
-<span class="status-badge status-present">
-    PRESENT
-</span>
-
-`;
-
-                }
-
-
-
-                return `
-
-<div class="card report-row">
-
-    <div class="report-name">
-        ${escapeHTML(
-            record.studentName ||
-            "Unknown"
-        )}
-    </div>
-
-
-    <div class="report-date">
-
-        🆔 ${escapeHTML(
-            record.studentId ||
-            "—"
-        )}
-
-        <br>
-
-        🏫 ${escapeHTML(
-            record.class ||
-            "—"
-        )}
-
-    </div>
-
-
-    ${statusHTML}
-
-
-    <div class="time-row">
-
-        <div class="time-box">
-
-            <div class="time-label">
-                ARRIVAL
+        return `
+            <div class="card report-row">
+                <div class="report-name">${escapeHTML(record.studentName || "Unknown")}</div>
+                <div class="report-date">
+                    🆔 ${escapeHTML(record.studentId || "—")}
+                    <br>
+                    🏫 ${escapeHTML(record.class || "—")}
+                </div>
+                ${statusHTML}
+                <div class="time-row">
+                    <div class="time-box">
+                        <div class="time-label">ARRIVAL</div>
+                        <div class="time-value">${escapeHTML(record.arrival || "—")}</div>
+                    </div>
+                    <div class="time-box">
+                        <div class="time-label">LEAVING</div>
+                        <div class="time-value">${escapeHTML(record.leaving || "—")}</div>
+                    </div>
+                </div>
+                <div class="delete-action-grid">
+                    ${arrivalButton}
+                    ${leavingButton}
+                </div>
             </div>
-
-            <div class="time-value">
-                ${escapeHTML(
-                    record.arrival ||
-                    "—"
-                )}
-            </div>
-
-        </div>
-
-
-        <div class="time-box">
-
-            <div class="time-label">
-                LEAVING
-            </div>
-
-            <div class="time-value">
-                ${escapeHTML(
-                    record.leaving ||
-                    "—"
-                )}
-            </div>
-
-        </div>
-
-    </div>
-
-
-    <button
-        class="btn danger full"
-        style="margin-top:12px;"
-        onclick="deleteAttendance('${escapeJS(
-            record.id
-        )}')"
-    >
-
-        🗑 Delete Attendance Record
-
-    </button>
-
-</div>
-
-`;
-
-            }
-        ).join("");
-
+        `;
+    }).join("");
 };
-
 
 
 /* =========================================================
-   DELETE ATTENDANCE
+   DELETE ATTENDANCE PART
 ========================================================= */
 
-window.deleteAttendance =
-async function(id) {
+window.deleteAttendancePart = async function(id, part) {
 
     if (!currentUser) {
-
-        alert(
-            "Please sign in first."
-        );
-
+        alert("Please sign in first.");
         return;
-
     }
 
-
-    if (!id) {
-
-        alert(
-            "Attendance record ID is missing."
-        );
-
+    if (part !== "arrival" && part !== "leaving") {
+        alert("Invalid attendance part.");
         return;
-
     }
 
-
-    const record =
-        attendance.find(
-            item =>
-                String(item.id) ===
-                String(id)
-        );
-
-
+    const record = attendance.find(item => String(item.id) === String(id));
     if (!record) {
-
-        alert(
-            "Attendance record could not be found."
-        );
-
-        return;
-
-    }
-
-
-    const studentName =
-        record.studentName ||
-        "this student";
-
-
-    const recordDate =
-        record.date ||
-        "this date";
-
-
-    const confirmed =
-        confirm(
-
-            "Delete attendance record?\n\n" +
-
-            "Student: " +
-            studentName +
-
-            "\nDate: " +
-            recordDate +
-
-            "\n\nThis will permanently remove this attendance record from Firebase."
-
-        );
-
-
-    if (!confirmed) {
+        alert("Attendance record could not be found.");
         return;
     }
 
+    const label = part === "arrival" ? "arrival" : "leaving";
+    const value = record[part];
+
+    if (!value) {
+        alert("There is no " + label + " record to delete.");
+        return;
+    }
+
+    const confirmed = confirm(
+        "Delete only the " + label + " record?\n\n" +
+        "Student: " + (record.studentName || "this student") + "\n" +
+        "Date: " + (record.date || "this date") + "\n" +
+        label.charAt(0).toUpperCase() + label.slice(1) + " time: " + value + "\n\n" +
+        "The other attendance action will remain."
+    );
+
+    if (!confirmed) return;
 
     try {
+        const attendanceRef = doc(db, "attendance", id);
+        const fresh = await getDoc(attendanceRef);
 
-        await deleteDoc(
-            doc(
-                db,
-                "attendance",
-                id
-            )
-        );
+        if (!fresh.exists()) {
+            alert("Attendance record no longer exists.");
+            await loadAttendance();
+            displayReports();
+            return;
+        }
 
+        const freshRecord = fresh.data();
+        const update = {};
+
+        if (part === "arrival") {
+            update.arrival = null;
+            update.status = freshRecord.leaving ? "present" : "no_arrival";
+        } else {
+            update.leaving = null;
+            update.status = freshRecord.arrival ? "present" : "no_arrival";
+        }
+
+        if (!freshRecord.arrival && !freshRecord.leaving) {
+            await deleteDoc(attendanceRef);
+        } else {
+            await updateDoc(attendanceRef, update);
+        }
 
         await loadAttendance();
-
-
         displayReports();
-
-
         updateDashboard();
 
-
         alert(
-            "Attendance record deleted successfully."
+            label.charAt(0).toUpperCase() + label.slice(1) +
+            " record deleted successfully."
         );
 
+    } catch (error) {
+        console.error("Delete attendance part error:", error);
+        alert("Could not delete the " + label + " record.\n\n" + error.message);
     }
-
-
-    catch (error) {
-
-        console.error(
-            "Delete attendance error:",
-            error
-        );
-
-
-        alert(
-            "Could not delete the attendance record.\n\n" +
-            error.message
-        );
-
-    }
-
 };
-
 
 
 /* =========================================================
@@ -5625,11 +4768,39 @@ document.getElementById(
 );
 
 
+document.getElementById("arrivalChoiceButton").addEventListener(
+    "click",
+    () => selectScanType("arrival")
+);
+
+
+document.getElementById("leavingChoiceButton").addEventListener(
+    "click",
+    () => selectScanType("leaving")
+);
+
+
 document.getElementById(
     "startButton"
 ).addEventListener(
     "click",
     startCamera
+);
+
+
+document.getElementById(
+    "captureScanButton"
+).addEventListener(
+    "click",
+    captureAndScanQR
+);
+
+
+document.getElementById(
+    "changeScanModeButton"
+).addEventListener(
+    "click",
+    openScanner
 );
 
 
